@@ -61,19 +61,33 @@ fi
 
 # --- Available skills ---
 echo "## Available Skills"
-for skill_md in /mnt/skills/*/SKILL.md /mnt/skills/*/*/SKILL.md 2>/dev/null; do
-    if [ -f "$skill_md" ]; then
-        skill_dir=$(dirname "$skill_md")
-        skill_name=$(basename "$skill_dir")
-        # Extract description from frontmatter
-        desc=$(sed -n '/^---$/,/^---$/{ /^description:/{ s/^description: *//; p; } }' "$skill_md" 2>/dev/null | head -1)
-        if [ -n "$desc" ]; then
-            echo "- **$skill_name** ($skill_md): $desc"
-        else
-            echo "- **$skill_name** ($skill_md)"
-        fi
+SKILL_DIRS=(
+    "$HOME/.claude/skills"
+    "$PROJECT_ROOT/.claude/skills"
+    "/mnt/skills"
+)
+found_skills=0
+for search_dir in "${SKILL_DIRS[@]}"; do
+    if [ -d "$search_dir" ]; then
+        while IFS= read -r skill_md; do
+            if [ -f "$skill_md" ]; then
+                skill_dir=$(dirname "$skill_md")
+                skill_name=$(basename "$skill_dir")
+                # Extract description from frontmatter
+                desc=$(sed -n '/^---$/,/^---$/{ /^description:/{ s/^description: *//; p; } }' "$skill_md" 2>/dev/null | head -1)
+                if [ -n "$desc" ]; then
+                    echo "- **$skill_name** ($skill_md): $desc"
+                else
+                    echo "- **$skill_name** ($skill_md)"
+                fi
+                found_skills=$((found_skills + 1))
+            fi
+        done < <(find "$search_dir" -name "SKILL.md" -type f 2>/dev/null)
     fi
 done
+if [ "$found_skills" -eq 0 ]; then
+    echo "- No skills found in searched locations: ${SKILL_DIRS[*]}"
+fi
 echo ""
 
 # --- Language / framework detection ---

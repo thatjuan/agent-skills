@@ -2,20 +2,53 @@
 
 Quick reference for the orchestrator on how to manage agent spawning, communication, and synthesis.
 
+## Table of Contents
+
+- [Spawning Agents](#spawning-agents)
+  - [Claude Code Agent Tool](#claude-code-agent-tool)
+  - [Codex / Platform Subagents](#codex--platform-subagents)
+  - [Sequential Fallback](#sequential-fallback)
+- [Agent Output Collection](#agent-output-collection)
+- [Conflict Resolution](#conflict-resolution)
+- [Prompt Assembly Checklist](#prompt-assembly-checklist)
+- [Phase Transition](#phase-transition)
+- [Error Handling](#error-handling)
+- [Verification Checklist](#verification-checklist)
+
+---
+
 ## Spawning Agents
 
-### With Subagents (Claude Code Teams)
+### Claude Code Agent Tool
 
-When subagents are available, use them for parallel execution. Each agent runs as an independent subagent with its own context.
+When running in Claude Code, use the `Agent` tool for spawning:
 
-**Planning agents** can all run in parallel since they're analyzing the same input independently.
+- **Planning agents**: Spawn all in parallel using multiple `Agent` tool calls in a single message. Use `run_in_background: true` to run concurrently while continuing orchestration work.
+- **R&D agents**: Use `subagent_type: "Explore"` for codebase research tasks that need read-only access.
+- **Execution agents (independent)**: Spawn in parallel with `run_in_background: true`. Use `isolation: "worktree"` when agents modify overlapping files to prevent conflicts.
+- **Execution agents (dependent)**: Spawn sequentially — wait for the predecessor agent to complete before launching the next.
+- **Integration/verification agents**: Spawn after all execution agents complete.
 
-**Execution agents** should be spawned respecting the dependency graph:
+Example pattern for parallel planning agents:
+```
+# In a single response, call Agent tool multiple times:
+Agent(prompt="You are [Architect persona]...", description="Architect analysis", run_in_background=true)
+Agent(prompt="You are [Backend persona]...", description="Backend analysis", run_in_background=true)
+Agent(prompt="You are [Security persona]...", description="Security analysis", run_in_background=true)
+```
+
+### Codex / Platform Subagents
+
+When platform subagents are available (e.g., Codex), use them for parallel execution. Each agent runs as an independent subagent with its own context.
+
+**Planning agents** can all run in parallel since they analyze the same input independently.
+
+**Execution agents** respect the dependency graph:
 - Independent steps → parallel
 - Dependent steps → sequential (wait for predecessor to complete)
 - Integration steps → after all dependencies complete
 
-### Without Subagents (Sequential Fallback)
+### Sequential Fallback
 
 If subagents are not available, execute agents sequentially:
 

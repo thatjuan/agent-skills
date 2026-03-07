@@ -1,6 +1,6 @@
 ---
 name: team-executor
-description: Orchestrates a team of AI expert agents to plan and execute any goal, task, project, or feature from a braindump description. Use this skill whenever the user describes something they want built, accomplished, or executed — especially multi-step projects, feature requests, software development tasks, creative projects, research goals, or any ambiguous braindump of ideas that needs to be organized and acted upon. Triggers on phrases like "build this", "execute this", "make this happen", "here's what I need", "plan and build", or any substantial description of desired outcomes. Also use when the user pastes a braindump of ideas, goals, or requirements and wants them turned into reality. This skill assembles expert teams, creates detailed plans, and then executes them to completion autonomously.
+description: Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery. Use when the user describes goals, features, projects, or pastes scattered ideas needing organization and execution. Triggers on "build this", "execute this", "make this happen", "plan and build", or any substantial task description.
 ---
 
 # Team Executor
@@ -16,6 +16,15 @@ This skill operates in two distinct phases:
 **Phase 2 — Execution**: A fresh team of agents autonomously executes the plan to completion with no human intervention required.
 
 The key philosophy: experts plan, experts execute, and the output is production-ready.
+
+## Bundled Resources
+
+| File | Purpose |
+|------|---------|
+| [agent-templates.md](agent-templates.md) | Persona construction framework and ready-to-use agent templates |
+| [orchestration-workflow.md](orchestration-workflow.md) | Agent spawning, output collection, conflict resolution, phase transitions |
+| [scan-project.sh](scan-project.sh) | Gathers project context (directory structure, configs, technologies) for agent prompts |
+| [init-plan-dirs.sh](init-plan-dirs.sh) | Initializes `docs/plans/` directory structure for agent outputs |
 
 ---
 
@@ -37,11 +46,18 @@ Write this organized version to `docs/plans/goal-analysis.md`. This becomes the 
 
 ### Step 2: Scan Available Skills
 
-Before assembling the team, scan all available skills to understand what specialized capabilities exist:
+Before assembling the team, scan all available skills to understand what specialized capabilities exist. Check these locations for SKILL.md files:
+
+- **Claude Code user skills**: `~/.claude/skills/`
+- **Claude Code project skills**: `.claude/skills/` in the project root
+- **System skills**: `/mnt/skills/` (Codex and similar platforms)
+- **Installed skills**: Check `skills-lock.json` in the project root if present
 
 ```bash
-# List all available skills
-find /mnt/skills -name "SKILL.md" -type f 2>/dev/null
+# Discover skills across all known locations
+for dir in ~/.claude/skills .claude/skills /mnt/skills; do
+  find "$dir" -name "SKILL.md" -type f 2>/dev/null
+done
 ```
 
 Read each SKILL.md's frontmatter (name + description) to build a capability inventory. These skills may be assigned to team agents who can benefit from them. Not every agent needs a skill — only assign one when it genuinely matches the agent's role.
@@ -55,7 +71,7 @@ Some goals require research before planning can begin. Look for:
 - Integration points with external systems
 - Unfamiliar domains or specialized knowledge areas
 
-If R&D is needed, spawn R&D agents first (see `references/agent-templates.md` for the R&D agent template). R&D agents should:
+If R&D is needed, spawn R&D agents first (see [agent-templates.md](agent-templates.md) for the R&D agent template). R&D agents:
 
 - Search the codebase and project docs for existing patterns and conventions
 - Read relevant documentation and source files
@@ -68,7 +84,7 @@ Wait for R&D to complete before assembling the planning team, since R&D findings
 
 Based on the organized goals and any R&D findings, create a team of 3–7 expert agents. Each agent needs:
 
-1. **A specific persona** — not just a job title, but a complete expert identity with deep domain knowledge, opinions, and a point of view. See `references/agent-templates.md` for persona construction guidelines.
+1. **A specific persona** — not just a job title, but a complete expert identity with deep domain knowledge, opinions, and a point of view. See [agent-templates.md](agent-templates.md) for persona construction guidelines.
 
 2. **A clear analysis mandate** — what aspect of the goal they're responsible for evaluating
 
@@ -76,7 +92,7 @@ Based on the organized goals and any R&D findings, create a team of 3–7 expert
 
 4. **Access to project context** — point them at relevant files, docs, and the organized goal analysis
 
-The team composition should cover all necessary perspectives. Common patterns:
+The team composition covers all necessary perspectives. Common patterns:
 
 - **Software projects**: architect, backend engineer, frontend engineer, devops/infra, QA/testing strategist
 - **Data projects**: data engineer, analyst, ML engineer, domain expert
@@ -84,7 +100,7 @@ The team composition should cover all necessary perspectives. Common patterns:
 - **Infrastructure**: systems architect, security engineer, SRE, networking specialist
 - **Mixed projects**: pull from multiple patterns as needed
 
-Every team MUST include a **Project Lead** agent whose job is to synthesize all other agents' input into the final plan.
+Every team includes a **Project Lead** agent whose job is to synthesize all other agents' input into the final plan.
 
 ### Step 5: Run the Planning Team
 
@@ -214,7 +230,7 @@ Write the finalized plan to `docs/plans/execution-plan.md` using this structure:
 [Expected project structure after execution]
 ```
 
-The plan must be:
+The plan has these properties:
 - **Self-contained** — an agent with no prior context can execute it
 - **Specific** — exact file paths, code patterns, command sequences
 - **Ordered** — steps are sequenced by dependency
@@ -233,7 +249,7 @@ Phase 2 uses a completely fresh team of agents. They receive only the execution 
 Read `docs/plans/execution-plan.md` and create execution agents based on the plan's phases and steps. Each execution agent:
 
 1. **Has a focused scope** — responsible for a specific phase or group of related steps
-2. **Has a complete persona** — expert identity matching the work they'll do (see `references/agent-templates.md`)
+2. **Has a complete persona** — expert identity matching the work they'll do (see [agent-templates.md](agent-templates.md))
 3. **Has the right skills** — assign available skills that match their work
 4. **Operates autonomously** — makes all decisions independently based on project context
 
@@ -277,7 +293,7 @@ Spawn all execution agents. Key principles:
 1. **Parallel where possible** — agents working on independent steps can run simultaneously
 2. **Sequential where necessary** — respect dependency ordering from the plan
 3. **No human input** — agents make all decisions autonomously using project context
-4. **Verify as you go** — each agent should validate their work (run tests, lint, verify output)
+4. **Verify as you go** — each agent validates their work (run tests, lint, verify output)
 
 ### Step 11: Integration & Verification
 
@@ -320,18 +336,24 @@ Write a completion report to `docs/plans/execution-report.md`:
 
 ---
 
+## Agent Spawning
+
+The orchestrator spawns agents using the platform's agent/subagent capabilities. See [orchestration-workflow.md](orchestration-workflow.md) for platform-specific spawning patterns (Claude Code Agent tool, Codex subagents, sequential fallback).
+
+Key spawning principles:
+- **Planning agents** run in parallel — they analyze independently
+- **R&D agents** run before planning agents — their findings inform team composition
+- **Execution agents** respect the dependency graph — independent steps run in parallel, dependent steps run sequentially
+- **Integration agents** run after all execution agents complete
+
 ## Guidance for the Orchestrator
 
-You (the agent reading this skill) are the orchestrator. Here's how to think about your role:
+The orchestrator's role is that of a CTO assembling and directing a world-class team — identifying what expertise is needed, assembling the right people, giving them clear mandates, and synthesizing their output.
 
-**You are a CTO assembling and directing a world-class team.** You don't do the detailed work yourself — you identify what expertise is needed, assemble the right people, give them clear mandates, and synthesize their output.
-
-**Be opinionated about team composition.** Don't just create generic "developer" agents. Create "Senior React Engineer who has migrated 3 large apps from class components to hooks and has strong opinions about state management" or "Security Engineer who previously worked on OWASP tooling and thinks about threat models before writing any code."
-
-**Rich personas produce better output.** The more specific and opinionated your agent personas are, the better their analysis and execution will be. A "backend developer" gives generic advice. A "distributed systems engineer who has debugged production outages at scale and insists on idempotent operations and circuit breakers" gives battle-tested advice.
+**Rich personas produce better output.** The more specific and opinionated the agent personas, the better their analysis and execution. A "backend developer" gives generic advice. A "distributed systems engineer who has debugged production outages at scale and insists on idempotent operations and circuit breakers" gives battle-tested advice.
 
 **Read the project first.** Before assembling any team, understand what already exists. Read the project structure, key source files, existing docs, and configuration. This context is essential for creating relevant agents and realistic plans.
 
-**Don't over-team.** 3-5 agents is often enough for planning. More agents means more synthesis work and more potential for conflicts. Only add agents when they bring a genuinely distinct perspective.
+**3-5 agents is the sweet spot for planning.** More agents means more synthesis work and more potential for conflicts. Only add agents when they bring a genuinely distinct perspective.
 
-**Phase 2 gets fresh context.** This is intentional. Execution agents should follow the plan, not the messy deliberation that produced it. The plan is the interface between Phase 1 and Phase 2.
+**Phase 2 gets fresh context.** This is intentional. Execution agents follow the plan, not the messy deliberation that produced it. The plan is the interface between Phase 1 and Phase 2.

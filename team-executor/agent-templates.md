@@ -1,5 +1,26 @@
 # Agent Templates & Persona Construction
 
+## Table of Contents
+
+- [Building Effective Personas](#building-effective-personas)
+  - [Persona Construction Framework](#persona-construction-framework)
+  - [Example: Weak vs Strong Persona](#example-weak-vs-strong-persona)
+- [Planning Agent Templates](#planning-agent-templates)
+  - [R&D / Research Agent](#rd--research-agent)
+  - [Software Architect](#software-architect)
+  - [Frontend Engineer](#frontend-engineer)
+  - [Backend Engineer](#backend-engineer)
+  - [DevOps / Infrastructure Engineer](#devops--infrastructure-engineer)
+  - [QA / Testing Strategist](#qa--testing-strategist)
+  - [Security Engineer](#security-engineer)
+  - [Data Engineer](#data-engineer)
+  - [Project Lead / Synthesizer](#project-lead--synthesizer)
+- [Execution Agent Templates](#execution-agent-templates)
+  - [General Execution Agent Wrapper](#general-execution-agent-wrapper)
+- [Dynamic Team Assembly](#dynamic-team-assembly)
+
+---
+
 ## Building Effective Personas
 
 A great agent persona is not a job title — it's a complete expert identity that shapes how the agent thinks, what it prioritizes, and what it catches that a generalist would miss.
