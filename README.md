@@ -21,7 +21,29 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 
 | Skill | Description |
 |-------|-------------|
+| [creative-director](./creative-director/) | World-class creative director for branding, web design, and UI concepts. Use when the user asks for a new design concept, brand identity, website creative direction, UI experience concept, visual identity, or creative strategy for a business, product, or project. Produces detailed, richly described creative concepts — not code or implementations. |
 | [team-executor](./team-executor/) | Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery |
+| [temporal](./temporal/) | Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
+
+### creative-director
+
+World-class creative director that produces detailed, richly described design concepts for branding, websites, and UI experiences. Output is purely creative and conceptual — visual language descriptions, brand identity systems, mood definitions, and design rationale — not code, mockups, or implementation specs.
+
+**Workflow**: Discovery (extract creative brief) → Strategic Positioning (brand personality spectrums) → Concept Development (3 distinct directions with complete visual language systems) → Industry-Aware Refinement → Psychology-Informed Design → Concept Presentation.
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with the full 6-phase concept generation workflow and output format |
+| `references/discovery-framework.md` | Creative brief extraction, discovery questions, competitive analysis, audience definition |
+| `references/visual-design-system.md` | Color systems, typography scales, composition, spacing, motion, current design trends, timeless principles |
+| `references/industry-approaches.md` | Design conventions and differentiation opportunities for 11 industries (tech, e-commerce, finance, healthcare, food, luxury, education, non-profit, entertainment, real estate, professional services) |
+| `references/design-psychology.md` | Gestalt principles, color psychology, scanning patterns, attention/memory laws, emotional design (Norman's three levels) |
+| `references/concept-articulation.md` | Design vocabulary, presentation structure, rationale framework, visual metaphors, sensory description language |
+
+> [!TIP]
+> The creative-director skill works best when given rich context about the business, audience, and goals. The more detail in your brief, the more tailored and strategic the concepts.
 
 ### team-executor
 
@@ -43,6 +65,20 @@ Included resources:
 
 > [!TIP]
 > The team-executor skill works best when your project has existing code and documentation — the agents use that context to make informed, convention-consistent decisions.
+
+### temporal
+
+Expert-level Temporal.io workflow orchestration covering the Python SDK (`temporalio`), TypeScript SDK (`@temporalio/*`), core platform concepts, and AI/LLM orchestration patterns. Provides durable execution knowledge for building reliable distributed systems.
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with platform overview, SDK quick reference, pattern selection guide, and AI orchestration overview |
+| `references/core-concepts.md` | Architecture, durable execution model, determinism constraints, timeouts, retry policies, advanced features |
+| `references/python-sdk.md` | Python decorators, async patterns, testing, client/worker setup, sandbox configuration |
+| `references/typescript-sdk.md` | TypeScript packages, proxyActivities, sandboxing, bundling, interceptors, testing |
+| `references/ai-patterns.md` | AI agent loops, multi-agent architectures, human-in-the-loop, LLM pipelines, framework integrations |
 
 ## Getting Started
 
