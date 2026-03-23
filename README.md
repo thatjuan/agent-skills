@@ -25,6 +25,7 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 | [team-executor](./team-executor/) | Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery |
 | [temporal](./temporal/) | Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
 | [heroui](./heroui/) | HeroUI v3 component library expertise for React (web) and React Native (mobile). Use when code imports @heroui/react, @heroui/styles, or heroui-native, user asks to build UI with HeroUI, or references HeroUI components, theming, or migration from NextUI/HeroUI v2 |
+| [drizzle-orm](./drizzle-orm/) | Type-safe SQL ORM for TypeScript with zero runtime overhead. Use when code imports drizzle-orm, drizzle-kit, or drizzle-orm/pg-core, user asks about Drizzle schema design, queries, relations, migrations, or database management with Drizzle ORM |
 
 ### creative-director
 
@@ -95,6 +96,21 @@ Included resources:
 | `references/react-components.md` | Complete React component reference — anatomy, props, and usage patterns for all 75+ components |
 | `references/native-components.md` | Complete React Native component reference for all 40+ native components |
 | `references/theming-and-styling.md` | CSS variables, dark mode, custom themes, semantic colors, BEM classes, variant functions, data attributes |
+
+### drizzle-orm
+
+Type-safe SQL ORM for TypeScript with zero runtime overhead, focused on PostgreSQL. Covers schema definition with pgTable/pgEnum/pgSchema, relational queries, CRUD operations, joins, transactions, and complete migration management with drizzle-kit.
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with setup, schema definition, column types, relations, CRUD queries, transactions, migration basics, views, and CTEs |
+| `references/pg-migrations.md` | drizzle.config.ts reference, migration strategies (generate/migrate/push/pull), programmatic migrations, custom migrations, production patterns, team workflows |
+| `references/advanced-schemas.md` | Branded types, PostgreSQL enums, arrays, JSONB patterns, composite keys, foreign key actions, self-referencing tables, multi-schema architecture, views, materialized views |
+| `references/query-patterns.md` | Subqueries, CTEs, raw SQL, prepared statements, dynamic queries, aggregations, batch operations, cursor pagination, streaming, lateral joins |
+| `references/performance.md` | Connection pooling, prepared statements, N+1 prevention, query optimization, index strategy, edge runtime/serverless integration, bundle size |
+| `references/vs-prisma.md` | Feature comparison, performance benchmarks, schema/query syntax comparison, migration system differences, migration guide from Prisma to Drizzle |
 
 ## Getting Started
 
