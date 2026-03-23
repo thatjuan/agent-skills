@@ -24,6 +24,7 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 | [creative-director](./creative-director/) | World-class creative director for branding, web design, and UI concepts. Use when the user asks for a new design concept, brand identity, website creative direction, UI experience concept, visual identity, or creative strategy for a business, product, or project. Produces detailed, richly described creative concepts — not code or implementations. |
 | [team-executor](./team-executor/) | Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery |
 | [temporal](./temporal/) | Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
+| [heroui](./heroui/) | HeroUI v3 component library expertise for React (web) and React Native (mobile). Use when code imports @heroui/react, @heroui/styles, or heroui-native, user asks to build UI with HeroUI, or references HeroUI components, theming, or migration from NextUI/HeroUI v2 |
 
 ### creative-director
 
@@ -79,6 +80,21 @@ Included resources:
 | `references/python-sdk.md` | Python decorators, async patterns, testing, client/worker setup, sandbox configuration |
 | `references/typescript-sdk.md` | TypeScript packages, proxyActivities, sandboxing, bundling, interceptors, testing |
 | `references/ai-patterns.md` | AI agent loops, multi-agent architectures, human-in-the-loop, LLM pipelines, framework integrations |
+
+### heroui
+
+HeroUI v3 component library expertise for React (web) and React Native (mobile). Covers 75+ web components and 40+ native components built on Tailwind CSS v4 and React Aria Components. Provides setup, compound component composition patterns, theming, styling, and complete component API references.
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with quick setup, component architecture, component index, styling system, and common patterns |
+| `references/react-setup.md` | React web installation, CSS configuration, selective imports, framework integration (Next.js, React Router, Vue, Svelte) |
+| `references/native-setup.md` | React Native installation, peer dependencies, Uniwind setup, provider configuration, granular imports |
+| `references/react-components.md` | Complete React component reference — anatomy, props, and usage patterns for all 75+ components |
+| `references/native-components.md` | Complete React Native component reference for all 40+ native components |
+| `references/theming-and-styling.md` | CSS variables, dark mode, custom themes, semantic colors, BEM classes, variant functions, data attributes |
 
 ## Getting Started
 
