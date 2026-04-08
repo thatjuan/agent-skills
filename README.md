@@ -21,11 +21,28 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 
 | Skill | Description |
 |-------|-------------|
+| [commitpush](./commitpush/) | Safe commit-and-push workflow with secrets detection, sensitive file screening, and submodule-aware prompting. Use when committing and pushing changes to git, especially in repos with submodules or when security-conscious commits are needed. |
 | [creative-director](./creative-director/) | World-class creative director for branding, web design, and UI concepts. Use when the user asks for a new design concept, brand identity, website creative direction, UI experience concept, visual identity, or creative strategy for a business, product, or project. Produces detailed, richly described creative concepts — not code or implementations. |
 | [team-executor](./team-executor/) | Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery |
 | [temporal](./temporal/) | Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
 | [heroui](./heroui/) | HeroUI v3 component library expertise for React (web) and React Native (mobile). Use when code imports @heroui/react, @heroui/styles, or heroui-native, user asks to build UI with HeroUI, or references HeroUI components, theming, or migration from NextUI/HeroUI v2 |
 | [drizzle-orm](./drizzle-orm/) | Type-safe SQL ORM for TypeScript with zero runtime overhead. Use when code imports drizzle-orm, drizzle-kit, or drizzle-orm/pg-core, user asks about Drizzle schema design, queries, relations, migrations, or database management with Drizzle ORM |
+
+### commitpush
+
+Safe commit-and-push workflow that screens for secrets and sensitive files before staging, detects submodules for targeted commits, and handles the full commit-push cycle including push failure recovery.
+
+**Workflow**: Security Screening (flag secrets, sensitive files, credentials) → Submodule Detection (prompt user for scope in bridge repos) → Change Analysis (generate conventional commit message) → Stage, Commit, Push → Push Failure Recovery.
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with the full 5-phase workflow |
+| `references/sensitive-patterns.md` | Comprehensive list of sensitive file patterns, API key prefixes, inline secret indicators, cloud provider files, and false positive guidance |
+
+> [!TIP]
+> In repos with submodules, commitpush surfaces changed submodules and asks which to include before committing — preventing accidental submodule reference updates.
 
 ### creative-director
 
