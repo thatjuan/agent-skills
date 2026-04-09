@@ -60,6 +60,7 @@ Included resources:
 | `references/industry-approaches.md` | Design conventions and differentiation opportunities for 11 industries (tech, e-commerce, finance, healthcare, food, luxury, education, non-profit, entertainment, real estate, professional services) |
 | `references/design-psychology.md` | Gestalt principles, color psychology, scanning patterns, attention/memory laws, emotional design (Norman's three levels) |
 | `references/concept-articulation.md` | Design vocabulary, presentation structure, rationale framework, visual metaphors, sensory description language |
+| `references/design-inspirations.md` | Catalog of 76 real-world design systems (via [awesome-design-md](https://github.com/VoltAgent/awesome-design-md)) fetchable as DESIGN.md specs for creative inspiration, organized by industry and design quality |
 
 > [!TIP]
 > The creative-director skill works best when given rich context about the business, audience, and goals. The more detail in your brief, the more tailored and strategic the concepts.

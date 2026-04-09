@@ -48,6 +48,8 @@ These coordinates become the compass for every visual decision.
 
 Generate **3 distinct concept directions** from the brief. Each concept is a genuinely different creative territory — not variations on a theme. Each represents a different strategic bet.
 
+**Real-World Design Inspiration** — A catalog of 76 real-world design systems is available for reference during concept development. Fetching 2-4 relevant DESIGN.md specs — from the client's industry and from unexpected adjacent industries — provides concrete grounding for abstract visual ideas. These are absorbed as creative vocabulary, not replicated. See [Design Inspirations Catalog](references/design-inspirations.md) for the full index organized by category and design quality.
+
 Per concept, define:
 
 1. **Concept Name & Narrative** — A evocative name and 2-3 sentence story that captures the central idea. The narrative is the "big idea" — a strategic umbrella under which all visual decisions sit.
@@ -172,6 +174,7 @@ Current design landscape context informs concepts without dictating them. See [V
 | [Industry Approaches](references/industry-approaches.md) | During Phase 4 — tailoring concepts to industry-specific visual conventions and opportunities |
 | [Design Psychology](references/design-psychology.md) | During Phase 5 — applying perceptual and cognitive principles to strengthen concepts |
 | [Concept Articulation](references/concept-articulation.md) | During Phase 6 — describing concepts with precise, evocative language and structured rationale |
+| [Design Inspirations Catalog](references/design-inspirations.md) | During Phase 3 — 76 real-world design systems fetchable as DESIGN.md specs for creative inspiration |
 
 ## Agency Frameworks
 
