@@ -27,6 +27,7 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 | [temporal](./temporal/) | Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
 | [heroui](./heroui/) | HeroUI v3 component library expertise for React (web) and React Native (mobile). Use when code imports @heroui/react, @heroui/styles, or heroui-native, user asks to build UI with HeroUI, or references HeroUI components, theming, or migration from NextUI/HeroUI v2 |
 | [drizzle-orm](./drizzle-orm/) | Type-safe SQL ORM for TypeScript with zero runtime overhead. Use when code imports drizzle-orm, drizzle-kit, or drizzle-orm/pg-core, user asks about Drizzle schema design, queries, relations, migrations, or database management with Drizzle ORM |
+| [logo-studio](./logo-studio/) | Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement. Use when the user asks for a logo, brand mark, icon, wordmark, or visual identity for a business, product, or project. |
 
 ### commitpush
 
@@ -129,6 +130,26 @@ Included resources:
 | `references/query-patterns.md` | Subqueries, CTEs, raw SQL, prepared statements, dynamic queries, aggregations, batch operations, cursor pagination, streaming, lateral joins |
 | `references/performance.md` | Connection pooling, prepared statements, N+1 prevention, query optimization, index strategy, edge runtime/serverless integration, bundle size |
 | `references/vs-prisma.md` | Feature comparison, performance benchmarks, schema/query syntax comparison, migration system differences, migration guide from Prisma to Drizzle |
+
+### logo-studio
+
+Professional logo design studio combining three industry-standard methodologies — Rand's Reductive Rationalism, Pentagram's Strategy-to-Craft, and Neumeier's Brand Gap — to produce distinctive, memorable brand marks as clean, hand-coded SVG. Generates 9+ concepts across 3 strategic directions and presents them in an interactive HTML gallery.
+
+**Workflow**: Brand Discovery (extract brand essence, audience, values) → Strategic Positioning (archetype mapping, competitive landscape analysis) → Concept Generation (3 directions × 3 logo types = 9+ concepts) → SVG Construction (geometric, font-independent markup) → Studio Presentation (self-contained HTML gallery) → Iteration (refine, combine, redirect, or expand based on user selection).
+
+Included resources:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core skill definition with the full 6-phase workflow, concept matrix, and SVG construction standards |
+| `references/methodologies.md` | Three logo design methodologies: Rand's Reductive Rationalism, Pentagram's Strategy-to-Craft, Neumeier's Brand Gap — with synthesis showing how each contributes to the workflow |
+| `references/brand-psychology.md` | 12 Jungian brand archetypes with visual characteristics, color psychology, shape psychology, typography psychology, and market positioning frameworks |
+| `references/svg-techniques.md` | SVG construction fundamentals, geometric methods (golden ratio, grid-based, circle-based), logo style patterns (wordmark, lettermark, pictorial, abstract, emblem), typography-as-paths, and compatibility rules |
+| `references/evaluation-criteria.md` | Six quality gate tests (napkin, thumbnail, silhouette, B&W, swap, context), memorability drivers, scalability assessment, and iteration decision framework |
+| `assets/gallery-template.html` | Self-contained HTML template for the logo studio gallery — 3×3 grid with light/dark backgrounds, variant strips, zoom overlay, and responsive layout |
+
+> [!TIP]
+> The logo-studio skill works best when given rich context about the business, audience, and competitive landscape. Use `/logo-studio` followed by a description of your brand to kick off the discovery process.
 
 ## Getting Started
 
