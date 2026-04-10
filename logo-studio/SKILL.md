@@ -23,7 +23,7 @@ A professional logo design studio combining three industry-standard methodologie
 | 1 | Brand Discovery | [methodologies.md](references/methodologies.md) |
 | 2 | Strategic Positioning | [brand-psychology.md](references/brand-psychology.md) |
 | 3 | Concept Generation | [methodologies.md](references/methodologies.md) |
-| 4 | SVG Construction | [svg-techniques.md](references/svg-techniques.md) |
+| 4 | SVG Construction | [svg-techniques.md](references/svg-techniques.md) + [typography.md](references/typography.md) |
 | 5 | Studio Presentation | [gallery-template.html](assets/gallery-template.html) |
 | 6 | Iteration & Evaluation | [evaluation-criteria.md](references/evaluation-criteria.md) |
 
@@ -121,13 +121,29 @@ See [methodologies.md](references/methodologies.md) for the full process from ea
 | Scaling | `viewBox`-based (no fixed width/height) |
 | Namespace | `xmlns="http://www.w3.org/2000/svg"` on every `<svg>` |
 | Shapes | Geometric primitives: `circle`, `rect`, `polygon`, `path` |
-| Typography | `<path>` elements — no `<text>` or font dependencies |
+| Typography | `<text>` with real fonts by default; paths for custom lettering |
 | Reusables | Gradients, clipPaths, masks inside `<defs>` |
 | Negative space | `fill-rule="evenodd"` for counter shapes |
 | File size | Under 5KB per logo |
 | ViewBox | 200×200 for symbols, 400×120 for combination/wordmarks |
 
-### SVG Skeleton
+### Typography Strategy
+
+Logo wordmarks use **real typography** by default. The HTML gallery loads Google Fonts so `<text>` elements render with the intended typeface during preview and iteration.
+
+| Approach | When |
+|----------|------|
+| **`<text>` + font-family** | Set-type wordmarks (most modern tech brands). Default for iteration. |
+| **Embedded `@font-face`** | Portable SVG delivery (email, PDFs, third-party viewers). Font subset to used glyphs. |
+| **Outlined `<path>`** | Custom lettering (Coca-Cola, Disney style), modified glyphs, or final print/merch delivery. |
+
+**Every `font-family` cascades to a system fallback** — e.g. `'Inter', -apple-system, sans-serif` — so the logo never renders in Times New Roman.
+
+See [typography.md](references/typography.md) for the curated font catalog (Inter, Work Sans, Fraunces, Playfair Display, Space Grotesk, Manrope, Archivo, and more), classic pairings, licensing, and the text-vs-path decision tree.
+
+### SVG Skeletons
+
+**Symbol / Icon:**
 
 ```svg
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -135,6 +151,32 @@ See [methodologies.md](references/methodologies.md) for the full process from ea
     <!-- Gradients, clipPaths, reusable elements -->
   </defs>
   <!-- Logo construction from geometric primitives -->
+</svg>
+```
+
+**Wordmark with real typography:**
+
+```svg
+<svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <text x="200" y="65" text-anchor="middle"
+        font-family="Inter, -apple-system, system-ui, sans-serif"
+        font-size="48" font-weight="800" letter-spacing="-1"
+        fill="#0A0A0A">Acme</text>
+</svg>
+```
+
+**Combination mark (symbol + typographic wordmark):**
+
+```svg
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(20, 30)">
+    <!-- Symbol from primitives -->
+    <circle cx="30" cy="30" r="28" fill="#0071e3"/>
+  </g>
+  <text x="90" y="72"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="42" font-weight="700"
+        fill="#0A0A0A">Acme</text>
 </svg>
 ```
 
@@ -222,7 +264,10 @@ The final selected logo is exported as:
 
 | File | Contents |
 |------|----------|
-| `logo-{name}.svg` | Full-color SVG |
+| `logo-{name}.svg` | Full-color SVG (working file with `<text>` elements) |
 | `logo-{name}-mono.svg` | Monochrome SVG |
 | `logo-{name}-reversed.svg` | Reversed/knockout SVG |
 | `logo-{name}-icon.svg` | Symbol-only variant (if combination mark) |
+| `logo-{name}-outlined.svg` | Delivery version with text converted to paths (font-independent) |
+
+The working file (`logo-{name}.svg`) remains editable. The outlined version is the delivery asset for print, merch, and environments where the font may not load.

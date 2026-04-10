@@ -7,10 +7,12 @@ Technical reference for building professional logo SVGs programmatically.
 - [Fundamentals](#fundamentals)
 - [Geometric Construction](#geometric-construction)
 - [Logo Styles](#logo-styles)
-- [Typography as Paths](#typography-as-paths)
+- [Typography in SVG](#typography-in-svg)
 - [Advanced Techniques](#advanced-techniques)
 - [Compatibility Rules](#compatibility-rules)
 - [Optimization](#optimization)
+
+> For the full typography strategy — font catalog, pairings, licensing, and the text-vs-path decision — see [typography.md](typography.md).
 
 ---
 
@@ -220,18 +222,90 @@ Enclosed badge/crest with border and internal elements:
 
 ---
 
-## Typography as Paths
+## Typography in SVG
 
-Logo SVGs do not use `<text>` elements — fonts are not portable. Letters are constructed geometrically.
+Logo wordmarks use real typography by default — real fonts via `<text>` elements. Paths are reserved for custom lettering, modified glyphs, or final brand asset delivery.
 
-### Letter Construction Methods
+See [typography.md](typography.md) for the full font catalog, pairings, licensing, and the text-vs-path decision framework.
 
-**Geometric letters** — Built from primitives:
+### Approach 1: `<text>` with Font Family (default)
+
+Fast to generate, editable, accessible. The HTML gallery loads Google Fonts in `<head>` so `<text>` elements render with the real typeface during preview.
+
+```svg
+<svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <text x="200" y="65" text-anchor="middle"
+        font-family="Inter, -apple-system, system-ui, sans-serif"
+        font-size="48" font-weight="800" letter-spacing="-1"
+        fill="#0A0A0A">Acme</text>
+</svg>
+```
+
+**Key attributes:**
+
+| Attribute | Purpose |
+|-----------|---------|
+| `font-family` | Primary font + system fallback cascade (never bare font name) |
+| `font-size` | Integer pixels, matched to viewBox coordinates |
+| `font-weight` | 100-900 (logo weights typically 700-900 for bold, 300-400 for light) |
+| `letter-spacing` | Negative values for tight display tracking, positive for all-caps elegance |
+| `text-anchor` | `start`, `middle`, or `end` — positioning origin |
+| `dominant-baseline` | `middle`, `central`, `hanging` — vertical alignment |
+
+**Font family must cascade to a system fallback** so the logo never renders in Times New Roman:
+
+```
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+```
+
+### Approach 2: Embedded `@font-face` (portable delivery)
+
+For a self-contained SVG that renders identically anywhere — email, PDFs, third-party viewers:
+
+```svg
+<svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: 'BrandFont';
+        font-weight: 800;
+        src: url('data:font/woff2;base64,d09GMgABAAAA...') format('woff2');
+      }
+    </style>
+  </defs>
+  <text x="200" y="65" text-anchor="middle"
+        font-family="'BrandFont', Inter, sans-serif"
+        font-size="48" font-weight="800" fill="#0A0A0A">Acme</text>
+</svg>
+```
+
+The font is subset to only the glyphs used (typically 1–3 KB for a wordmark):
+
+```bash
+pyftsubset Inter-Bold.ttf --text="Acme" --flavor=woff2 \
+  --layout-features=liga,kern --output-file=inter-acme.woff2
+base64 -i inter-acme.woff2
+```
+
+### Approach 3: Outlined Paths (custom lettering or final asset)
+
+Letters constructed from `<path>` elements. Used when:
+
+- The wordmark is custom lettering (Coca-Cola, Disney, Instagram) — not from any font
+- Glyphs are modified (stretched S, custom ligature, proprietary curve)
+- Delivering the final brand asset for print, merch, or packaging
+- Licensing restricts font embedding
+- Guaranteed identical rendering in Inkscape, Illustrator, and PDF readers
+
+**Letter construction methods:**
+
+Geometric letters — built from primitives:
 - Straight letters (A, E, F, H, I, K, L, M, N, T, V, W, X, Y, Z): lines and angles
 - Curved letters (B, C, D, G, J, O, P, Q, R, S, U): arcs and bezier curves
-- Mixed (a, b, d, g, p, q): combine both
 
-**Stroke-based letters** — Using stroke properties:
+Stroke-based letters — using stroke properties:
 
 ```svg
 <!-- Letter "A" from strokes -->
@@ -240,20 +314,42 @@ Logo SVGs do not use `<text>` elements — fonts are not portable. Letters are c
       stroke-linecap="round" stroke-linejoin="round"/>
 ```
 
-**Fill-based letters** — Using solid paths with counters:
+Fill-based letters — solid paths with `fill-rule="evenodd"` counters:
 
 ```svg
-<!-- Letter "A" as filled shape with evenodd counter -->
+<!-- Letter "A" as filled shape with counter -->
 <path d="M50 80 L75 10 L100 80 L88 80 L75 35 L62 80 Z M65 55 L85 55 L80 65 L70 65 Z"
       fill="#1d1d1f" fill-rule="evenodd"/>
 ```
 
+**Dual-output workflow:** Iterate with `<text>` (editable, fast), then export to paths at finalization:
+
+```bash
+inkscape logo.svg --export-text-to-path \
+  --export-plain-svg --export-filename=logo-outlined.svg
+```
+
 ### Kerning
 
-Calculate letter spacing mathematically:
+For `<text>` elements, kerning is handled by the font's built-in kern table. The `letter-spacing` attribute adds uniform tracking on top.
+
+For path-based letters, calculate spacing mathematically:
 - Base kern: character width × 0.15
-- Adjust pairs that create visual gaps (e.g., AV, To, LT need tighter kern)
-- Adjust pairs that crowd (e.g., HH, NN need standard or wider kern)
+- Pairs with visual gaps (AV, To, LT) need tighter kern
+- Pairs that crowd (HH, NN) need standard or wider kern
+
+### Variable Fonts
+
+Variable fonts expose axes (weight, width, optical size) via `font-variation-settings`:
+
+```svg
+<text style="font-variation-settings: 'wght' 850, 'opsz' 144;"
+      font-family="Fraunces, serif" font-size="64">Acme</text>
+```
+
+Recommended variable fonts for logos: Inter, Fraunces, Bricolage Grotesque, Recursive, Space Grotesk.
+
+Older renderers ignore variation settings — for portable delivery, bake into a static weight.
 
 ---
 
@@ -315,19 +411,22 @@ Visual perception requires size adjustments:
 |------|--------|
 | Include `xmlns="http://www.w3.org/2000/svg"` | Required for `<img src>` rendering |
 | Avoid `<foreignObject>` | No cross-browser support |
-| Avoid CSS `var()` in SVG | Not supported in all contexts |
+| Avoid CSS `var()` in SVG attributes | Not supported in all contexts |
 | Prefer `fill`/`stroke` attributes over CSS classes | Inline styles survive all embedding methods |
 | Use `stroke-linejoin="round"` / `stroke-linecap="round"` | Polished joins and caps |
 | Avoid complex `<filter>` chains | Performance and compatibility issues |
-| No `<text>` with font-family | Font not available = broken rendering |
+| `<text>` always cascades to system fallback | Font not loading = renders in fallback, not Times New Roman |
+| Final brand deliverables outline `<text>` to paths | Guarantees identical rendering in every tool |
 
 ### Embedding Methods
 
-| Method | Styling | Scripting | Best For |
-|--------|---------|-----------|----------|
-| Inline SVG in HTML | Full CSS access | Full JS access | Gallery preview |
-| `<img src="logo.svg">` | No external CSS | No JS | Production use |
-| CSS `background-image` | No styling | No JS | Decorative use |
+| Method | Styling | Scripting | Font Loading | Best For |
+|--------|---------|-----------|--------------|----------|
+| Inline SVG in HTML | Full CSS access | Full JS access | HTML `<head>` fonts available | Gallery preview |
+| `<img src="logo.svg">` | No external CSS | No JS | Only embedded `@font-face` | Production use |
+| CSS `background-image` | No styling | No JS | Only embedded `@font-face` | Decorative use |
+
+**Implication:** Logos used via `<img src>` or CSS backgrounds need either embedded `@font-face` (Approach 2) or outlined paths (Approach 3). Only inline SVG in HTML can rely on external font loading.
 
 ---
 

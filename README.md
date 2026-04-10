@@ -141,12 +141,13 @@ Included resources:
 
 | File | Purpose |
 |------|---------|
-| `SKILL.md` | Core skill definition with the full 6-phase workflow, concept matrix, and SVG construction standards |
+| `SKILL.md` | Core skill definition with the full 6-phase workflow, concept matrix, typography strategy, and SVG construction standards |
 | `references/methodologies.md` | Three logo design methodologies: Rand's Reductive Rationalism, Pentagram's Strategy-to-Craft, Neumeier's Brand Gap — with synthesis showing how each contributes to the workflow |
 | `references/brand-psychology.md` | 12 Jungian brand archetypes with visual characteristics, color psychology, shape psychology, typography psychology, and market positioning frameworks |
-| `references/svg-techniques.md` | SVG construction fundamentals, geometric methods (golden ratio, grid-based, circle-based), logo style patterns (wordmark, lettermark, pictorial, abstract, emblem), typography-as-paths, and compatibility rules |
+| `references/svg-techniques.md` | SVG construction fundamentals, geometric methods (golden ratio, grid-based, circle-based), logo style patterns, three typography approaches (real fonts, embedded fonts, outlined paths), and compatibility rules |
+| `references/typography.md` | Logo typography strategy — text-vs-path decision tree, three implementation tiers, curated catalog of 20+ free commercial-safe fonts (Inter, Fraunces, Playfair Display, Space Grotesk, etc.), classic pairings, licensing guidance |
 | `references/evaluation-criteria.md` | Six quality gate tests (napkin, thumbnail, silhouette, B&W, swap, context), memorability drivers, scalability assessment, and iteration decision framework |
-| `assets/gallery-template.html` | Self-contained HTML template for the logo studio gallery — 3×3 grid with light/dark backgrounds, variant strips, zoom overlay, and responsive layout |
+| `assets/gallery-template.html` | Self-contained HTML template for the logo studio gallery — 3×3 grid with light/dark backgrounds, variant strips, zoom overlay, responsive layout, and preloaded Google Fonts for real-typography wordmarks |
 
 > [!TIP]
 > The logo-studio skill works best when given rich context about the business, audience, and competitive landscape. Use `/logo-studio` followed by a description of your brand to kick off the discovery process.
