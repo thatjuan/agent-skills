@@ -1,6 +1,6 @@
 ---
 name: logo-studio
-description: Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement. Use when the user asks for a logo, brand mark, icon, wordmark, or visual identity for a business, product, or project. Presents concepts in an interactive HTML gallery for review and iteration.
+description: Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement, then generates a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final selection. Use when the user asks for a logo, brand mark, icon, wordmark, app icon, or visual identity for a business, product, or project.
 ---
 
 # Logo Design Studio
@@ -12,9 +12,10 @@ A professional logo design studio combining three industry-standard methodologie
 - Extracts brand essence through structured discovery interviews
 - Maps brands to Jungian archetypes for psychology-informed visual direction
 - Generates 9+ distinct SVG logo concepts across 3 strategic directions
-- Produces clean, compatible SVG markup using geometric construction (no font dependencies)
+- Produces clean, compatible SVG markup with real typography (Google Fonts) or geometric construction
 - Presents all concepts in a self-contained HTML gallery with light/dark backgrounds, zoom, and variant strips
 - Supports iterative refinement cycles based on user selection and feedback
+- Produces a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final logo
 
 ## Workflow
 
@@ -26,6 +27,7 @@ A professional logo design studio combining three industry-standard methodologie
 | 4 | SVG Construction | [svg-techniques.md](references/svg-techniques.md) + [typography.md](references/typography.md) |
 | 5 | Studio Presentation | [gallery-template.html](assets/gallery-template.html) |
 | 6 | Iteration & Evaluation | [evaluation-criteria.md](references/evaluation-criteria.md) |
+| 7 | App Asset Production | [app-assets.md](references/app-assets.md) + [build-assets.mjs](assets/build-assets.mjs) |
 
 ## Phase 1: Brand Discovery
 
@@ -258,7 +260,7 @@ Each iteration produces an updated HTML file: `logo-studio-{brandname}-r{N}.html
 
 The updated gallery contains the refined/new concepts with a header noting the round number.
 
-### Final Deliverables
+### Final Logo Deliverables
 
 The final selected logo is exported as:
 
@@ -271,3 +273,89 @@ The final selected logo is exported as:
 | `logo-{name}-outlined.svg` | Delivery version with text converted to paths (font-independent) |
 
 The working file (`logo-{name}.svg`) remains editable. The outlined version is the delivery asset for print, merch, and environments where the font may not load.
+
+## Phase 7: App Asset Production
+
+After the final logo is selected, Phase 7 generates a complete app asset package for every major platform from a canonical icon master.
+
+### Icon Master
+
+The icon master is a square-format SVG derived from (but distinct from) the final logo:
+
+| Property | Value |
+|----------|-------|
+| Canvas | 1024×1024, square |
+| Background | Deliberate brand color (not transparent, not white) |
+| Content | Usually the symbol only; monograms for wordmark-only brands |
+| Typography | Text outlined to paths (font rendering is unreliable in headless rasterizers) |
+| Corner radius | None — platforms apply their own masks |
+| Safe zone | Central ~61% (matches Android's most restrictive 66/108) |
+
+The icon master is the input to the build pipeline. It is a separate artifact from the logo because icons and logos have different jobs — see [app-assets.md](references/app-assets.md) for the full design rationale.
+
+### Platform Outputs
+
+| Platform | Assets |
+|----------|--------|
+| **iOS** | `AppIcon.appiconset/` with light/dark/tinted 1024 PNGs + Contents.json (iOS 18 format) |
+| **Android** | Adaptive icon (`ic_launcher.xml` + foreground/background/monochrome layers) + legacy densities (mdpi-xxxhdpi) + Play Store 512 |
+| **macOS** | `AppIcon.icns` built via `iconutil` from a 10-size `.iconset` (16 through 1024@2x) |
+| **Windows** | Multi-resolution `.ico` (16/32/48/256) + UWP tile PNGs (44, 71, 150, 310, wide) |
+| **Web / Favicon** | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` (180), PWA manifest icons (192, 512, maskable), `safari-pinned-tab.svg` (monochrome) |
+| **PWA** | `site.webmanifest`, splash screens, maskable icons with safe-zone padding |
+| **Social** | Open Graph (1200×630), Twitter card (1200×628), LinkedIn, profile pictures (400, 512) |
+
+### Tool Stack
+
+| Purpose | Tool | Install |
+|---------|------|---------|
+| Programmatic rasterization | sharp (Node, libvips) | `npm i sharp` |
+| Favicon + iOS + Android + Windows package | favicons (npm) | `npm i favicons` |
+| PWA splash + maskable icons | pwa-asset-generator (npm) | `npm i pwa-asset-generator` |
+| CLI rasterization fallback | resvg or rsvg-convert | `brew install resvg librsvg` |
+| macOS .icns builder | iconutil | Built into macOS |
+| SVG optimization | svgo | `npm i svgo` |
+| PNG optimization | pngquant + oxipng | `brew install pngquant oxipng` |
+
+See [app-assets.md](references/app-assets.md) for the full tool comparison, platform specifications, and gotchas (especially font handling in headless SVG rasterization).
+
+### Build Pipeline
+
+The complete pipeline is scripted in [build-assets.mjs](assets/build-assets.mjs):
+
+```bash
+# Install prerequisites (one time)
+npm i -D sharp favicons pwa-asset-generator svgo png-to-ico
+
+# Run the build
+node build-assets.mjs
+```
+
+Pipeline stages:
+
+1. Optimize source SVGs with svgo
+2. Generate favicon/iOS/Android/Windows package with `favicons`
+3. Build macOS `.iconset` with sharp, then `iconutil` → `.icns`
+4. Build iOS AppIcon.appiconset (light + dark + tinted 1024 PNGs)
+5. Generate social/Open Graph images
+6. Optimize all PNGs with pngquant + oxipng
+
+### Output Structure
+
+```
+dist/assets/
+├── logo.svg                         # Optimized source logo
+├── icon-master.svg                  # 1024×1024 square icon master
+├── AppIcon.appiconset/              # iOS asset catalog
+├── AppIcon.icns                     # macOS compiled icon
+├── android/                         # Adaptive + legacy densities
+├── windows/                         # .ico + UWP tiles
+├── web/                             # favicons, PWA manifest, safari-pinned-tab
+└── social/                          # OG, Twitter, profile images
+```
+
+### Critical Typography Note
+
+SVG rasterizers (sharp, librsvg, resvg) render `<text>` elements using system-installed fonts. In CI or on machines missing the brand font, the output silently substitutes a fallback font. The icon master sidesteps this by using outlined paths — the working SVG keeps live text, the icon master ships outlined.
+
+See [typography.md](references/typography.md) for the dual-output workflow.
