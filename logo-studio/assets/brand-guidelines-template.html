@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{BRAND_NAME}} — Brand Guidelines {{VERSION}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--
+  {{HEADING_FONT_LINK}}  — e.g. <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  {{BODY_FONT_LINK}}     — e.g. <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+-->
+<style>
+  :root {
+    --c-primary-text: {{COLOR_PRIMARY_TEXT}};     /* e.g. #3D3E44 */
+    --c-accent:       {{COLOR_ACCENT}};           /* e.g. #58B9B2 */
+    --c-accent-dark:  {{COLOR_ACCENT_DARK}};      /* e.g. #238D92 */
+    --c-accent-soft:  {{COLOR_ACCENT_SOFT}};      /* e.g. #BAF0E9 */
+    --c-signature:    {{COLOR_SIGNATURE}};        /* e.g. #16CEB7 — logo signature element */
+    --c-gray:         {{COLOR_GRAY}};             /* e.g. #74767D */
+    --c-card:         {{COLOR_CARD_BG}};          /* e.g. #EFF0F6 */
+    --c-divider:      {{COLOR_DIVIDER}};          /* e.g. #C6C9DC */
+    --c-alert:        {{COLOR_ALERT}};            /* e.g. #FF0000 */
+    --ff-heading:     {{FONT_HEADING}}, ui-sans-serif, system-ui, sans-serif;
+    --ff-body:        {{FONT_BODY}}, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  @page { size: letter; margin: 0.75in 0.6in; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--ff-body);
+    font-size: 11pt;
+    line-height: 1.6;
+    color: var(--c-primary-text);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main { max-width: 7.2in; margin: 0 auto; padding: 0.2in 0; }
+
+  /* ---------- Typography ---------- */
+  h1, h2, h3, h4 { font-family: var(--ff-heading); font-weight: 500; line-height: 1.2; margin: 0; }
+  h1 { font-size: 32pt; color: var(--c-primary-text); }
+  h2 { font-size: 22pt; color: var(--c-accent); margin: 0 0 0.18in; letter-spacing: -0.3px; }
+  h3 { font-size: 15pt; color: var(--c-accent); margin: 0.22in 0 0.08in; }
+  h4 { font-size: 12pt; color: var(--c-primary-text); margin: 0.14in 0 0.05in; }
+  p  { margin: 0 0 0.14in; }
+  strong { font-weight: 700; }
+  a { color: var(--c-accent-dark); text-decoration: none; }
+
+  .muted { color: var(--c-gray); }
+  .caption { font-size: 9pt; color: var(--c-gray); text-align: center; font-style: italic; }
+  .footnote { font-size: 9pt; color: var(--c-gray); }
+
+  /* ---------- Page frame ---------- */
+  .page {
+    padding: 0.1in 0 0.4in;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 9pt;
+    color: var(--c-accent);
+    border-bottom: 1px solid var(--c-divider);
+    padding-bottom: 0.08in;
+    margin-bottom: 0.3in;
+  }
+  .page-header .brand { font-weight: 700; }
+  .page-footer {
+    border-top: 2px solid var(--c-accent);
+    padding-top: 0.08in;
+    margin-top: 0.3in;
+    font-size: 9pt;
+    color: var(--c-gray);
+    text-align: center;
+  }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    min-height: 9.5in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .cover .rule {
+    width: 6.2in; height: 4px;
+    background: var(--c-accent);
+    margin-bottom: 0.8in;
+  }
+  .cover .logo-slot { width: 4.5in; margin: 0 auto 0.3in; }
+  .cover .logo-slot svg { width: 100%; height: auto; display: block; }
+  .cover h1 { font-size: 46pt; font-weight: 700; margin: 0.1in 0; }
+  .cover .version { font-size: 12pt; color: var(--c-gray); margin: 0.15in 0; }
+  .cover .audience { font-size: 11pt; color: var(--c-primary-text); font-style: italic; margin-top: 0.3in; }
+  .cover .promise {
+    margin-top: 0.9in; max-width: 5.5in;
+    font-size: 11pt; line-height: 1.5;
+  }
+  .cover .promise .accent { color: var(--c-accent); font-weight: 700; }
+  .cover .cover-footer {
+    margin-top: auto; padding-top: 0.8in;
+    font-size: 9pt; color: var(--c-gray);
+    border-top: 1px solid var(--c-divider);
+    width: 100%; padding-top: 0.2in; text-align: center;
+  }
+
+  /* ---------- Logo showcase ---------- */
+  .logo-frame {
+    padding: 0.4in;
+    border: 1px solid var(--c-divider);
+    margin: 0.15in 0 0.05in;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 2in;
+  }
+  .logo-frame.dark { background: var(--c-primary-text); border-color: var(--c-primary-text); }
+  .logo-frame.accent { background: var(--c-accent); border-color: var(--c-accent); }
+  .logo-frame svg { max-width: 4.2in; max-height: 1.6in; display: block; }
+
+  /* ---------- Colors ---------- */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.14in;
+    margin: 0.15in 0 0.25in;
+  }
+  .color-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .swatch { display: flex; flex-direction: column; }
+  .swatch .chip {
+    height: 1.1in; border-radius: 6px;
+    border: 1px solid var(--c-divider);
+  }
+  .swatch .meta {
+    padding: 0.06in 0 0;
+    font-size: 10pt;
+  }
+  .swatch .name { font-family: var(--ff-heading); font-weight: 700; color: var(--c-primary-text); }
+  .swatch .hex { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 9.5pt; color: var(--c-primary-text); }
+  .swatch .role { color: var(--c-gray); font-size: 9.5pt; }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.1in 0 0.25in;
+    font-size: 10.5pt;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.09in 0.12in;
+    vertical-align: top;
+    border-bottom: 1px solid var(--c-divider);
+  }
+  thead th {
+    background: var(--c-primary-text);
+    color: #ffffff;
+    font-family: var(--ff-heading);
+    font-weight: 500;
+    font-size: 10.5pt;
+  }
+  tbody tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+
+  .usage-rules td:first-child {
+    font-family: var(--ff-heading); font-weight: 500;
+    width: 1.4in;
+    color: #ffffff;
+  }
+  .usage-rules tr td:first-child { background: var(--c-primary-text); }
+  .usage-rules tr.teal td:first-child { background: var(--c-accent); }
+  .usage-rules tr.mint td:first-child { background: var(--c-accent-soft); color: var(--c-primary-text); }
+  .usage-rules tr.alert td:first-child { background: var(--c-alert); }
+
+  .donts-table th:first-child { color: var(--c-alert); }
+  .donts-table th:last-child { color: var(--c-accent-dark); }
+
+  /* ---------- Type ---------- */
+  .type-families {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.2in;
+    margin: 0.15in 0 0.25in;
+  }
+  .type-family {
+    border: 1px solid var(--c-divider);
+    padding: 0.25in;
+  }
+  .type-family .name {
+    font-family: var(--ff-heading);
+    font-size: 34pt; font-weight: 500;
+    color: var(--c-primary-text);
+    margin-bottom: 0.15in;
+  }
+  .type-family .role { font-size: 10pt; color: var(--c-gray); }
+  .type-family .weight { font-size: 10pt; margin-top: 0.05in; }
+  .type-family .link { font-size: 10pt; color: var(--c-accent); display: block; margin-top: 0.05in; }
+
+  /* ---------- Components ---------- */
+  .component {
+    margin: 0 0 0.22in;
+  }
+  .component h4 { color: var(--c-primary-text); }
+
+  /* ---------- Code ---------- */
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 9.5pt;
+    background: var(--c-card);
+    padding: 0.02in 0.06in;
+    border-radius: 3px;
+  }
+  pre.codeblock {
+    background: var(--c-card);
+    padding: 0.14in;
+    border-radius: 6px;
+    font-size: 9.5pt;
+    overflow-x: auto;
+    margin: 0.08in 0 0.2in;
+  }
+
+  /* ---------- Callouts ---------- */
+  .signature-chip {
+    display: inline-block;
+    width: 1.4in; height: 0.8in;
+    background: var(--c-signature);
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-right: 0.15in;
+  }
+  .signature-chip + .signature-chip { background: var(--c-accent); }
+  .signature-row {
+    display: flex; align-items: center; gap: 0.15in;
+    padding: 0.12in; border: 1px solid var(--c-divider); border-radius: 6px;
+    margin: 0.1in 0 0.2in;
+  }
+  .signature-row .info { line-height: 1.35; }
+  .signature-row .info .label { font-weight: 700; }
+  .signature-row .info .note { color: var(--c-gray); font-size: 9.5pt; }
+
+  @media print {
+    main { max-width: 100%; padding: 0; }
+    .page { padding: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<!-- ============================================================ -->
+<!-- PAGE 1 — COVER                                                -->
+<!-- ============================================================ -->
+<section class="page cover">
+  <div class="rule"></div>
+  <div class="logo-slot">{{LOGO_PRIMARY_SVG}}</div>
+  <h1>Brand Guidelines</h1>
+  <div class="version">Version {{VERSION}}  ·  {{DATE}}</div>
+  <div class="audience">{{AUDIENCE}}</div>
+  <div class="promise">
+    <strong>{{BRAND_NAME}} is <span class="accent">{{BRAND_ADJECTIVE}}.</span></strong>
+    Every element of this guide exists to protect and amplify that promise.
+  </div>
+  <div class="cover-footer">{{FOOTER_LINE}}</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 2 — INTRODUCTION + LOGO PRIMARY                          -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>1. Introduction</h2>
+  <p>This document is the single source of truth for {{BRAND_NAME}} visual identity. It establishes the rules that govern how every brand element — color, type, logo, layout, and motion — is applied across all touchpoints.</p>
+  <p>Adherence to these guidelines ensures that every piece of {{BRAND_NAME}} communication, whether a product UI, a sales deck, a social post, or an animated explainer, feels like it came from the same coherent brand.</p>
+
+  <h2 style="margin-top:0.4in;">2. Logo</h2>
+  <h3>2.1 Primary Logo</h3>
+  <p>{{LOGO_DESCRIPTION}}</p>
+
+  <div class="logo-frame">{{LOGO_PRIMARY_SVG}}</div>
+  <div class="caption">Primary (Light Background)</div>
+
+  <div class="logo-frame dark" style="margin-top:0.15in;">{{LOGO_REVERSED_SVG}}</div>
+  <div class="caption">Reversed (Dark Background)</div>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  2</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 3 — LOGO CONTINUED                                       -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <div class="logo-frame accent">{{LOGO_ACCENT_SVG}}</div>
+  <div class="caption">On Accent Background (limited use)</div>
+
+  <h3>2.2 {{SIGNATURE_ELEMENT_TITLE}}</h3>
+  <p>{{SIGNATURE_ELEMENT_DESCRIPTION}}</p>
+
+  <div class="signature-row">
+    <div class="signature-chip"></div>
+    <div class="signature-chip"></div>
+    <div class="info">
+      <div class="label">{{SIGNATURE_COLOR_HEX}}  ({{SIGNATURE_COLOR_ROLE}})</div>
+      <div class="note">{{ACCENT_COLOR_HEX}}  ({{ACCENT_COLOR_ROLE}})</div>
+    </div>
+  </div>
+
+  <h3>2.3 Clear Space &amp; Minimum Size</h3>
+  <p>{{CLEAR_SPACE_RULE}}</p>
+  <p>{{MINIMUM_SIZE_RULE}}</p>
+
+  <h3>2.4 Logo Don'ts</h3>
+  <table class="donts-table">
+    <thead><tr><th>✗ Do Not</th><th>✓ Guidance</th></tr></thead>
+    <tbody>
+      {{LOGO_DONTS_ROWS}}
+    </tbody>
+  </table>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  3</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 4 — COLOR PALETTE                                        -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>3. Color Palette</h2>
+  <p>{{COLOR_INTRO}}</p>
+
+  <h3>3.1 Primary Brand Colors</h3>
+  <div class="color-grid">{{PRIMARY_SWATCHES_HTML}}</div>
+
+  <h3>3.2 Extended Brand Colors</h3>
+  <div class="color-grid">{{EXTENDED_SWATCHES_HTML}}</div>
+
+  <h3>3.3 Semantic &amp; Alert</h3>
+  <div class="color-grid">{{SEMANTIC_SWATCHES_HTML}}</div>
+
+  <h3>3.4 Color Usage Rules</h3>
+  <table class="usage-rules">
+    <tbody>{{COLOR_USAGE_ROWS}}</tbody>
+  </table>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  4</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 5 — GRADIENTS (optional)                                 -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h3>3.5 Approved Gradients</h3>
+  <p>Gradients are used sparingly — only for hero overlays and full-bleed image treatments.</p>
+  <table>
+    <tbody>{{GRADIENTS_ROWS}}</tbody>
+  </table>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  5</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 6 — TYPOGRAPHY                                           -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>4. Typography</h2>
+  <p>{{TYPOGRAPHY_INTRO}}</p>
+
+  <h3>4.1 Type Families</h3>
+  <div class="type-families">{{TYPE_FAMILIES_HTML}}</div>
+
+  <h3>4.2 Type Scale</h3>
+  <table>
+    <thead><tr><th>Role</th><th>Family</th><th>Size</th><th>Weight</th><th>Line Height</th></tr></thead>
+    <tbody>{{TYPE_SCALE_ROWS}}</tbody>
+  </table>
+
+  <h3>4.3 Signature Treatment</h3>
+  <p>{{SIGNATURE_TYPE_TREATMENT}}</p>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  6</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 7 — LAYOUT & GRID  (Standard+)                           -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>5. Layout &amp; Grid</h2>
+  <p>{{LAYOUT_INTRO}}</p>
+
+  <h3>5.1 Canvas &amp; Margins</h3>
+  <table><tbody>{{CANVAS_ROWS}}</tbody></table>
+
+  <h3>5.2 Grid Systems</h3>
+  <table>
+    <thead><tr><th>Grid</th><th>Used For</th><th>CSS</th></tr></thead>
+    <tbody>{{GRID_ROWS}}</tbody>
+  </table>
+
+  <h3>5.3 Border Radius</h3>
+  <table>
+    <thead><tr><th>Context</th><th>Radius</th><th>Notes</th></tr></thead>
+    <tbody>{{RADIUS_ROWS}}</tbody>
+  </table>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  7</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 8 — UI COMPONENTS  (Standard+)                           -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>6. UI Components</h2>
+  <p>{{COMPONENTS_INTRO}}</p>
+
+  {{COMPONENT_SECTIONS}}
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  8</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 9 — MOTION  (Full)                                       -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>7. Motion &amp; Animation Principles</h2>
+  <p>{{MOTION_INTRO}}</p>
+
+  <h3>7.1 Core Motion Values</h3>
+  <table>
+    <tbody>{{MOTION_VALUES_ROWS}}</tbody>
+  </table>
+
+  <h3>7.2 Recommended Timings</h3>
+  <table>
+    <thead><tr><th>Element</th><th>Duration</th><th>Easing</th></tr></thead>
+    <tbody>{{MOTION_TIMINGS_ROWS}}</tbody>
+  </table>
+
+  <h3>7.3 Motion Don'ts</h3>
+  <ul>{{MOTION_DONTS_LIST}}</ul>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  9</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 10 — VOICE & TONE  (Standard+)                           -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>8. Voice &amp; Tone</h2>
+  <p>{{VOICE_INTRO}}</p>
+
+  <table>
+    <thead><tr><th>Attribute</th><th>{{BRAND_NAME}} sounds like…</th><th>{{BRAND_NAME}} never sounds like…</th></tr></thead>
+    <tbody>{{VOICE_ROWS}}</tbody>
+  </table>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  10</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PAGE 11 — ASSET MANAGEMENT                                    -->
+<!-- ============================================================ -->
+<section class="page">
+  <div class="page-header"><span class="brand">{{BRAND_NAME}}</span><span>Brand Guidelines {{VERSION}}</span></div>
+
+  <h2>9. Asset Management</h2>
+
+  <h3>9.1 File Formats</h3>
+  <table>
+    <thead><tr><th>Asset Type</th><th>Preferred Format</th><th>Notes</th></tr></thead>
+    <tbody>{{FILE_FORMAT_ROWS}}</tbody>
+  </table>
+
+  <h3>9.2 Naming Convention</h3>
+  <p>All brand asset files should follow this naming pattern:</p>
+  <pre class="codeblock">{{NAMING_PATTERN}}</pre>
+  <p>Examples: {{NAMING_EXAMPLES}}</p>
+
+  <h2 style="margin-top:0.4in;">10. Brand Questions &amp; Approvals</h2>
+  <p>{{APPROVALS_PARAGRAPH}}</p>
+  <p class="footnote">This document is version {{VERSION}}, last updated {{DATE}}. Always verify you are working from the latest version before starting a new project.</p>
+
+  <div class="page-footer">{{FOOTER_LINE}}  ·  11</div>
+</section>
+
+</main>
+</body>
+</html>

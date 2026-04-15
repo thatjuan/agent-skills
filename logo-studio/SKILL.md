@@ -1,6 +1,6 @@
 ---
 name: logo-studio
-description: Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement, then generates a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final selection. Use when the user asks for a logo, brand mark, icon, wordmark, app icon, or visual identity for a business, product, or project.
+description: Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement, then generates a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final selection and optionally produces a multi-page brand guidelines document (logo, color, typography, layout, UI components, motion, voice, asset management). Use when the user asks for a logo, brand mark, icon, wordmark, app icon, visual identity, or brand guidelines for a business, product, or project.
 ---
 
 # Logo Design Studio
@@ -16,6 +16,7 @@ A professional logo design studio combining three industry-standard methodologie
 - Presents all concepts in a self-contained HTML gallery with light/dark backgrounds, zoom, and variant strips
 - Supports iterative refinement cycles based on user selection and feedback
 - Produces a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final logo
+- Produces a multi-page brand guidelines document (logo rules, color palette, type scale, layout, UI components, motion, voice, asset management) at the end of the session, offered in Essentials / Standard / Full depth modes
 
 ## Workflow
 
@@ -28,6 +29,7 @@ A professional logo design studio combining three industry-standard methodologie
 | 5 | Studio Presentation | [gallery-template.html](assets/gallery-template.html) |
 | 6 | Iteration & Evaluation | [evaluation-criteria.md](references/evaluation-criteria.md) |
 | 7 | App Asset Production | [app-assets.md](references/app-assets.md) + [build-assets.mjs](assets/build-assets.mjs) |
+| 8 | Brand Guidelines Document | [brand-guidelines.md](references/brand-guidelines.md) + [brand-guidelines-template.html](assets/brand-guidelines-template.html) |
 
 ## Phase 1: Brand Discovery
 
@@ -359,3 +361,42 @@ dist/assets/
 SVG rasterizers (sharp, librsvg, resvg) render `<text>` elements using system-installed fonts. In CI or on machines missing the brand font, the output silently substitutes a fallback font. The icon master sidesteps this by using outlined paths — the working SVG keeps live text, the icon master ships outlined.
 
 See [typography.md](references/typography.md) for the dual-output workflow.
+
+## Phase 8: Brand Guidelines Document
+
+After the final logo is selected, Phase 8 offers to produce a multi-page brand guidelines document — the single source of truth for how the identity is applied across every touchpoint. The offer is explicit; the document is not generated automatically.
+
+### Offer Point
+
+The offer is presented after Phase 6 (logo finalization) and is independent of Phase 7 (app assets). Either phase may precede it. A user who declines app assets can still request guidelines; a user who takes app assets is offered guidelines next.
+
+### Depth Modes
+
+| Mode | Pages | Scope |
+|------|-------|-------|
+| **Essentials** | 4–6 | Cover, Intro, Logo, Color, Typography, Asset Management |
+| **Standard** | 8–10 | Essentials + Layout & Grid, UI Components, Voice & Tone |
+| **Full** | 12–14 | Standard + Motion & Animation, Approvals |
+
+Standard is the default when the brand brief mentions digital product, app, web, or deck contexts. Essentials is the default for identity-only engagements. Full is opt-in.
+
+### Input Sources
+
+Most of the document is filled in from Phases 1–6 context without re-prompting — brand name, audience, tone, primary colors, signature element, logo variants, and typography are all already established. A short extension interview captures the remaining inputs (version, clear-space rule, minimum size, naming convention, voice attributes, and — in Full mode — motion timings) with a default proposed for every item.
+
+See [brand-guidelines.md](references/brand-guidelines.md) for the complete section order, per-section input spec, extension-interview checklist, and default content library.
+
+### Guidelines Template
+
+The document is assembled from [brand-guidelines-template.html](assets/brand-guidelines-template.html) — a self-contained HTML scaffold with CSS custom properties for brand colors, `@page` rules for PDF conversion, and `{{TOKEN}}` placeholders for every field (logo SVGs, color swatches, type scale, component entries, voice/motion rows, footer line). Sections omitted by the chosen depth mode have their entire `<section>` block removed at render time.
+
+The document is styled with the brand being documented — its heading font, its primary accent color, its signature element color — so the artifact demonstrates the guidelines it contains.
+
+### Output
+
+| File | Contents |
+|------|----------|
+| `brand-guidelines-{brandname}.html` | Self-contained HTML, ready to print |
+| `brand-guidelines-{brandname}.pdf` | Optional — produced via headless Chrome or Cmd+P Save as PDF |
+
+After writing the HTML, it is opened with `open` / `xdg-open` / `start`. PDF conversion is a separate explicit step; command examples are in [brand-guidelines.md](references/brand-guidelines.md#rendering-and-output).
