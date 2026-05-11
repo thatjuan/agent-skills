@@ -17,6 +17,14 @@ This skill operates in two distinct phases:
 
 The key philosophy: experts plan, experts execute, and the output is production-ready.
 
+## Core Principle: Coding-Agent Execution Model
+
+Plans produced by this skill are executed by coding agents, not humans. This changes the decision calculus at every stage:
+
+> The implementation will be carried out by coding agents. Human time, speed, and effort estimates DO NOT apply — do not shy away from a more robust solution because a human would find it slow. Account for risk, security, maintainability, and consistency with existing project conventions. Prefer the most robust, well-engineered option that uses existing tooling/styles/components. Do not introduce parallel patterns when an existing one fits.
+
+Apply this everywhere the team makes tradeoffs: choosing approaches, resolving conflicts, reviewing the plan, filling in details during execution. Reject solutions only for **risk, security, maintainability, or convention** reasons — never because the work is "a lot" or "would take a human a long time."
+
 ## Bundled Resources
 
 | File | Purpose |
@@ -137,6 +145,9 @@ Read and follow: [SKILL_PATH]
 - Reference existing project code/patterns when relevant
 - Everything you recommend must result in production-ready output
 - Do NOT include timelines, deadlines, or time estimates
+
+## Execution Model
+The implementation will be carried out by coding agents. Human time, speed, and effort estimates DO NOT apply — do not shy away from a more robust solution because a human would find it slow. Account for risk, security, maintainability, and consistency with existing project conventions. Prefer the most robust, well-engineered option that uses existing tooling/styles/components. Do not introduce parallel patterns when an existing one fits.
 ```
 
 ### Step 6: Aggregate Into Execution Plan
@@ -146,7 +157,7 @@ Once all agents have reported back, the **Project Lead** agent synthesizes every
 The aggregation process:
 
 1. **Collect all agent outputs** — read every agent's analysis
-2. **Resolve conflicts** — where agents disagree, choose the approach that best serves the overall goal (document the reasoning)
+2. **Resolve conflicts** — where agents disagree, choose the approach that best serves the overall goal (document the reasoning). Conflict resolution criteria: risk, security, maintainability, and consistency with existing conventions. Do NOT downgrade to a weaker approach because the stronger one is "more work" — coding agents execute the plan, so human effort cost is not a tiebreaker.
 3. **Merge dependencies** — create a unified dependency graph
 4. **Order execution** — sequence steps across all domains into a logical execution order
 5. **Eliminate redundancy** — remove duplicate steps that multiple agents independently suggested
@@ -177,6 +188,9 @@ Review the following execution plan. For each section:
 5. Verify the plan follows existing project patterns (check the codebase)
 
 Be constructive but thorough. The agents executing this plan will follow it literally.
+
+## Execution Model
+This plan will be executed by coding agents, not humans. Do NOT recommend simpler/weaker approaches on the grounds that the robust option is "too much work" or "would take a human too long." Flag issues only on risk, security, maintainability, scalability, or convention grounds. If the plan picks a less-robust approach to save effort, push back and recommend the stronger one.
 
 ## Execution Plan
 [INSERT the draft plan]
@@ -237,6 +251,7 @@ The plan has these properties:
 - **Verifiable** — each step has clear completion criteria
 - **Production-grade** — the output meets professional standards
 - **Timeline-free** — no dates, deadlines, or time estimates anywhere
+- **Effort-agnostic** — superior, robust solutions are chosen over quicker compromises; human effort cost is not a factor in plan decisions (risk, security, maintainability, and convention-fit are)
 
 ---
 
@@ -267,6 +282,7 @@ and make all decisions yourself — do not wait for or request human input.
 - When multiple valid approaches exist, choose the one most consistent with the codebase
 - If you encounter ambiguity, choose the most production-appropriate option
 - Document significant decisions as code comments or in docs/
+- You are a coding agent, not a human — do not cut corners or pick a weaker approach because the robust one would take "a long time." Optimize for risk, security, maintainability, and consistency. Effort cost is not a constraint.
 
 ## Steps to Execute
 [INSERT relevant steps from execution-plan.md]
@@ -357,3 +373,5 @@ The orchestrator's role is that of a CTO assembling and directing a world-class 
 **3-5 agents is the sweet spot for planning.** More agents means more synthesis work and more potential for conflicts. Only add agents when they bring a genuinely distinct perspective.
 
 **Phase 2 gets fresh context.** This is intentional. Execution agents follow the plan, not the messy deliberation that produced it. The plan is the interface between Phase 1 and Phase 2.
+
+**Optimize for robustness, not human effort.** The plan will be executed by coding agents. Reject solutions for risk, security, maintainability, or convention-mismatch reasons — never because they would be "a lot of work" for a human. When the team produces a competent-but-conservative plan, push them toward the stronger option. The whole point of this skill is that coding-agent execution dissolves the effort/scope ceiling that normally constrains software teams.
