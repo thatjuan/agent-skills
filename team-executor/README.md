@@ -10,7 +10,7 @@
 1. Organizes a raw braindump into `docs/plans/goal-analysis.md` (deduplicated, ordered, gaps inferred)
 2. Scans available skills (`~/.claude/skills/`, `.claude/skills/`, `/mnt/skills/`) to build a capability inventory
 3. Determines whether R&D is needed; if so, spawns R&D agents first
-4. Assembles a team of 3-7 expert agents (architect, backend, frontend, DevOps, QA, security, data, PM)
+4. Assembles a team of 3-7 expert agents (architect, backend, frontend, DevOps, QA, security, data, PM). Any code-touching agent is assigned the [`software-engineer`](../software-engineer/) skill — team-executor handles *coordination*, `software-engineer` carries the *engineering* standards
 5. Each agent analyzes the goal from their domain and produces a section of the plan
 6. Consolidates into a single executable plan
 
@@ -18,6 +18,8 @@
 A fresh team of agents autonomously executes the plan to completion — no human intervention required between steps. Each agent is spawned with the specific section of the plan relevant to their role.
 
 The philosophy: **experts plan, experts execute, output is production-ready.**
+
+team-executor is the **coordination layer**: it decides which roles, how many, parallel vs sequential, how conflicts resolve, and when phases transition. It deliberately carries no coding standards. For any coding or review work it pairs with [`software-engineer`](../software-engineer/) — the architect/developer/reviewer SME that supplies the engineering bar (coordination here, coding standards there). team-executor degrades gracefully when `software-engineer` is absent, falling back to a trimmed inline engineering instruction.
 
 Works across Claude Code, Codex, and any platform that supports agent spawning.
 
@@ -93,7 +95,7 @@ npx skills add thatjuan/agent-skills --skill team-executor
 | File | Purpose |
 |------|---------|
 | `SKILL.md` | The full 12-step planning + execution workflow |
-| `agent-templates.md` | Persona construction framework and ready-to-use templates for R&D, architect, frontend, backend, DevOps, QA, security, data, and project lead agents |
+| `agent-templates.md` | Persona construction framework and ready-to-use templates for R&D, project lead, and execution agents; software-domain roles get their engineering standards from the `software-engineer` skill rather than embedded personas |
 | `orchestration-workflow.md` | Agent spawning (Claude Code Agent tool, Codex subagents, sequential fallback), output collection, conflict resolution, phase transitions |
 | `scan-project.sh` | Gathers project context (directory structure, config files, technologies, available skills) for agent prompts |
 | `init-plan-dirs.sh` | Initializes the `docs/plans/` directory structure for agent outputs |
@@ -107,5 +109,6 @@ npx skills add thatjuan/agent-skills --skill team-executor
 
 ## Related skills
 
+- [`software-engineer`](../software-engineer/) — the architect/developer/reviewer engineering SME and base engineering layer; team-executor assigns it to every coding/review agent it spawns (coordination here, coding standards there)
 - [`superpowers:writing-plans`](https://github.com/obra/superpowers) — lighter-weight planning workflow for single-contributor tasks
 - [`superpowers:executing-plans`](https://github.com/obra/superpowers) — manual plan execution with checkpoints (vs. team-executor's autonomous mode)

@@ -74,6 +74,8 @@ The issue states *what*. This skill (with `team-executor`) decides *how* — unl
 - Follow `team-executor` Phase 1 (Planning) — Steps 1–8 — with the issue body + comments as input to "Organize the Input".
 - See [references/team-composition.md](references/team-composition.md) for how to pick agents and skill assignments for this project's stack.
 
+Every architect, coding, and review agent spawned via `team-executor` for this issue is assigned the [`software-engineer`](../software-engineer/) skill — the base engineering layer. That holds the implementation to its architect/developer/reviewer bar (the Three Lenses) and its Eight Standards, regardless of which stack/SDK skill (if any) overlays on top. See [references/team-composition.md](references/team-composition.md) for the exact skill-to-agent mapping.
+
 Constraints to pass into every planning agent prompt:
 
 > The implementation will be carried out by other coding agents. Human time, speed, and effort estimates DO NOT apply — do not shy away from a more robust solution because a human would find it slow. Account for risk, security, maintainability, and consistency with existing project conventions. Prefer the most robust, well-engineered option that uses existing tooling/styles/components in this repo. Do not introduce parallel patterns when an existing one fits.
@@ -136,6 +138,7 @@ Execution agents run autonomously, in parallel where steps are independent, sequ
 
 ## Related Skills
 
+- [software-engineer](../software-engineer/) — the engineering SME (architect/developer/reviewer lenses, the base engineering layer) that every coding/architect/review agent is assigned. Stack/SDK skills overlay on top of it.
 - [team-executor](../team-executor/) — the planning + execution engine this skill drives.
 - [commitpush](../commitpush/) — for the commit step if the user prefers its safety checks.
 - [git-github-cli](https://github.com/anthropics/claude-code) — Git/GitHub CLI reference for branch and PR operations.

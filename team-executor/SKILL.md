@@ -23,7 +23,18 @@ Plans produced by this skill are executed by coding agents, not humans. This cha
 
 > The implementation will be carried out by coding agents. Human time, speed, and effort estimates DO NOT apply — do not shy away from a more robust solution because a human would find it slow. Account for risk, security, maintainability, and consistency with existing project conventions. Prefer the most robust, well-engineered option that uses existing tooling/styles/components. Do not introduce parallel patterns when an existing one fits.
 
-Apply this everywhere the team makes tradeoffs: choosing approaches, resolving conflicts, reviewing the plan, filling in details during execution. Reject solutions only for **risk, security, maintainability, or convention** reasons — never because the work is "a lot" or "would take a human a long time."
+Apply this everywhere the team makes tradeoffs: choosing approaches, resolving conflicts, reviewing the plan, filling in details during execution. Reject solutions only for **risk, security, maintainability, or convention** reasons — never because the work is "a lot" or "would take a human a long time." This is the planning *economics*: human effort cost is not a tiebreaker. What "robust" actually means *in code* — the engineering bar a diff must clear — is defined by the `software-engineer` skill, not here.
+
+## Engineering Is Delegated, Not Embedded
+
+team-executor coordinates; it does not hold coding standards, architecture patterns, or software-engineering personas. It keeps the *coordination* judgment — which roles, how many, parallel vs sequential, conflict resolution, phase transitions. The *engineering* judgment lives in the [`software-engineer`](../software-engineer/) skill: the architect/developer/reviewer subject-matter expert and **base engineering layer** for any coding agent.
+
+The rule: **any agent that writes, updates, or reviews code is assigned the `software-engineer` skill.** That agent reads it and embodies its standards (the Three Lenses, the Eight Standards, per-domain practice, the review gate). team-executor no longer inlines those standards anywhere.
+
+**Graceful degradation (prefer-when-present).** team-executor is independently installable and `software-engineer` may not be present. Use the same prefer-when-present shape `implement-issue` uses for team-executor:
+
+- **If `software-engineer` is installed** (surfaced by the Step 2 skill scan at `~/.claude/skills/software-engineer/`, `.claude/skills/software-engineer/`, `../software-engineer/`, `/mnt/skills/software-engineer/`, or a `skills-lock.json` entry): attach it to every coding, architect, and review agent.
+- **If it is not installed**: fall back to a trimmed generic inline instruction (review/build for production-readiness, security, maintainability, and consistency with existing conventions). Never hard-depend on `software-engineer` or break when it is absent.
 
 ## Bundled Resources
 
@@ -70,6 +81,8 @@ done
 
 Read each SKILL.md's frontmatter (name + description) to build a capability inventory. These skills may be assigned to team agents who can benefit from them. Not every agent needs a skill — only assign one when it genuinely matches the agent's role.
 
+**Note the engineering base layer.** If the scan surfaces [`software-engineer`](../software-engineer/), it is special: it is the **base engineering layer** to attach to any coding, architect, or review agent (not a role-specific match — the engineering bar every code-touching agent must clear). When it is present, assign it to those agents; when it is absent, fall back to the trimmed inline instruction described under "Engineering Is Delegated, Not Embedded." Stack/SDK skills (`heroui`, `drizzle-orm`, `temporal`, etc.) remain role-specific overlays assigned on top.
+
 ### Step 3: Determine If R&D Is Needed
 
 Some goals require research before planning can begin. Look for:
@@ -96,7 +109,7 @@ Based on the organized goals and any R&D findings, create a team of 3–7 expert
 
 2. **A clear analysis mandate** — what aspect of the goal they're responsible for evaluating
 
-3. **An optional skill assignment** — if one of the available skills matches their role, include the skill path in their prompt so they can read and use it
+3. **A skill assignment** — any software-domain agent (architect, backend, frontend, devops, QA, security, data) is assigned [`software-engineer`](../software-engineer/) as its engineering skill: the agent reads it and embodies its standards, and team-executor no longer inlines those standards. Optionally add **one** stack/SDK overlay skill that matches the role (`heroui`, `drizzle-orm`, etc.) — base engineering layer plus one overlay (see the skill-assignment exception in [agent-templates.md](agent-templates.md)). Non-software agents get a role-matching skill only when one genuinely fits. If `software-engineer` is not installed, fall back to the trimmed inline instruction (see "Engineering Is Delegated, Not Embedded").
 
 4. **Access to project context** — point them at relevant files, docs, and the organized goal analysis
 
@@ -135,8 +148,15 @@ Analyze the following project goals from your area of expertise. Provide:
 ## Project Context
 [INSERT relevant file paths, existing code structure, docs, etc.]
 
+## Engineering Skill (software-domain agents)
+Read and follow the `software-engineer` skill before starting — it is your
+engineering base layer (architect/developer/reviewer SME): [SOFTWARE_ENGINEER_PATH]
+(If `software-engineer` is not installed, this slot is replaced by a short inline
+instruction: build/recommend for production-readiness, security, maintainability,
+and consistency with existing project conventions.)
+
 ## Available Skill (if assigned)
-Read and follow: [SKILL_PATH]
+Read and follow: [STACK_OVERLAY_SKILL_PATH]
 
 ## Important
 - Your output must be actionable by a coding agent — no vague advice
@@ -165,38 +185,47 @@ The aggregation process:
 
 ### Step 7: Software Development Review Gate
 
-**If the project involves software development** (code, APIs, infrastructure, etc.), spawn one additional agent before finalizing:
+**If the project involves software development** (code, APIs, infrastructure, etc.), spawn one additional review-gate agent before finalizing. team-executor does not carry the reviewer's standards — they live in `software-engineer`.
+
+**Preferred (when `software-engineer` is installed).** Spawn a review-gate agent, assign it the [`software-engineer`](../software-engineer/) skill, and instruct it to apply the **Reviewer Lens** (`../software-engineer/references/review-gate.md`) to the draft plan as if the plan were a diff awaiting review:
 
 ```
-You are a Principal Software Engineer with 20+ years of experience across
-startups and large-scale systems. You've seen every architecture pattern
-succeed and fail. You review with an eye for:
-
-- Production readiness (error handling, logging, monitoring, graceful degradation)
-- Security (input validation, auth, secrets management, OWASP top 10)
-- Maintainability (clear abstractions, documentation, test coverage expectations)
-- Scalability (will this approach survive 10x growth?)
-- Developer experience (is this plan clear enough for an agent to execute without ambiguity?)
-- Consistency with existing codebase patterns and conventions
+You are a review-gate agent. Read and follow the `software-engineer` skill,
+and apply its Reviewer Lens to the draft execution plan below:
+[SOFTWARE_ENGINEER_PATH] — specifically references/review-gate.md.
 
 ## Your Task
-Review the following execution plan. For each section:
-1. Flag anything that would NOT pass a production code review
-2. Add missing steps that experienced engineers would expect
+Treat the draft plan as a diff awaiting review. For each section:
+1. Flag anything that would not survive the review gate / would not pass a
+   production code review
+2. Add missing steps an experienced engineer would expect
 3. Strengthen vague instructions with specific implementation details
-4. Ensure error handling and edge cases are addressed
-5. Verify the plan follows existing project patterns (check the codebase)
+4. Verify the plan follows existing project patterns (check the codebase)
 
-Be constructive but thorough. The agents executing this plan will follow it literally.
+The agents executing this plan will follow it literally. Be constructive but thorough.
 
 ## Execution Model
-This plan will be executed by coding agents, not humans. Do NOT recommend simpler/weaker approaches on the grounds that the robust option is "too much work" or "would take a human too long." Flag issues only on risk, security, maintainability, scalability, or convention grounds. If the plan picks a less-robust approach to save effort, push back and recommend the stronger one.
+This plan will be executed by coding agents, not humans. Do NOT recommend
+simpler/weaker approaches on the grounds that the robust option is "too much
+work" or "would take a human too long." Flag issues only on risk, security,
+maintainability, scalability, or convention grounds. If the plan picks a
+less-robust approach to save effort, push back and recommend the stronger one.
 
 ## Execution Plan
 [INSERT the draft plan]
 
 ## Project Codebase
 [INSERT relevant file tree and key files]
+```
+
+**Fallback (when `software-engineer` is not installed).** Spawn the same review-gate agent with this short inline mandate in place of the skill assignment, keeping the Execution Model paragraph above:
+
+```
+Review the draft execution plan as if it were a diff awaiting a demanding
+production review. Flag anything that would not ship: gaps in
+production-readiness, security, maintainability, or consistency with existing
+project conventions. Add missing steps, make vague instructions specific, and
+verify the plan follows existing project patterns (check the codebase).
 ```
 
 Incorporate this reviewer's feedback into the final plan.
@@ -265,7 +294,7 @@ Read `docs/plans/execution-plan.md` and create execution agents based on the pla
 
 1. **Has a focused scope** — responsible for a specific phase or group of related steps
 2. **Has a complete persona** — expert identity matching the work they'll do (see [agent-templates.md](agent-templates.md))
-3. **Has the right skills** — assign available skills that match their work
+3. **Has the right skills** — assign skills that match their work. Any agent that writes, updates, or reviews code is assigned [`software-engineer`](../software-engineer/) as its **base engineering layer** (plus optionally one stack/SDK overlay), exactly as in planning. Execution agents are the ones that actually build, so this is where the engineering bar lands. If `software-engineer` is not installed, fall back to the trimmed inline instruction (see "Engineering Is Delegated, Not Embedded").
 4. **Operates autonomously** — makes all decisions independently based on project context
 
 The execution team prompt structure:
@@ -290,14 +319,20 @@ and make all decisions yourself — do not wait for or request human input.
 ## Project Context
 [INSERT relevant file paths, existing patterns, dependencies]
 
+## Engineering Skill (if this agent writes/updates/reviews code)
+Read and follow the `software-engineer` skill before starting — it is your
+engineering base layer (architect/developer/reviewer SME): [SOFTWARE_ENGINEER_PATH]
+(If `software-engineer` is not installed, this slot is replaced by a short inline
+instruction: build for production-readiness, security, maintainability, and
+consistency with existing project conventions.)
+
 ## Available Skill (if assigned)
-Read and follow: [SKILL_PATH]
+Read and follow: [STACK_OVERLAY_SKILL_PATH]
 
 ## Critical Requirements
 - All output must be production-ready — no TODOs, no placeholders, no stubs
 - Follow existing project conventions and patterns
-- Include proper error handling, logging, and documentation
-- Write clean, maintainable, well-commented code
+- Meet the engineering bar defined by the `software-engineer` skill (or the inline fallback above) for code quality — error handling, clarity, and maintainability are defined there, not here
 - Run and verify your work before considering a step complete
 - If a step depends on another agent's output, check for it and adapt as needed
 ```

@@ -6,6 +6,8 @@
 
 `implement-issue` is the upper layer that drives `team-executor` for the specific case of "ship this GitHub issue." It owns the GitHub-side workflow — issue resolution, branch creation, approach negotiation, comment-as-execution-brief, and PR creation — and delegates the heavy thinking and building to two `team-executor` teams.
 
+The pipeline reads **`implement-issue` → `team-executor` → `software-engineer`**: implement-issue supplies the GitHub-issue directives, team-executor orchestrates the planning/execution teams, and every coding/architect/review agent it spawns is assigned `software-engineer` — the base engineering layer (architect/developer/reviewer lenses) that any stack/SDK skill overlays on top of.
+
 The core philosophy: **robust over fast**. Execution agents have no human time/speed/estimate constraints, so the planning team is told explicitly to pick the most robust, convention-consistent option rather than the quickest one. Risk, maintainability, and consistency are still in scope; "this would take a human too long" is not.
 
 ## When to use it
@@ -39,6 +41,7 @@ Invoke this skill when the user provides a GitHub issue and wants it shipped:
      If the issue body has explicit directions  → use it as the plan
      Otherwise → dispatch team-executor Phase 1 (Planning)
                  stack-specialized agents (see references/team-composition.md)
+                 coding/architect/review agents carry software-engineer (base layer)
                  every agent is told: robust > fast, no human-time constraints
 
 4. Confirm
@@ -80,9 +83,9 @@ Step 2: Branch
 
 Step 3: Path
   Stack detected: Next.js, drizzle-orm, heroui, vitest
-  Planning team (5 agents + Project Lead + Principal reviewer):
-    • Frontend engineer  (with heroui skill)
-    • Backend engineer   (with drizzle-orm skill)
+  Planning team (5 agents + Project Lead + software-engineer Reviewer-Lens gate):
+    • Frontend engineer  (software-engineer + heroui skill)
+    • Backend engineer   (software-engineer + drizzle-orm skill)
     • Data modeler       (export query semantics)
     • QA/testing         (vitest patterns in repo)
     • Security           (PII review for export contents)
@@ -131,7 +134,7 @@ npx skills add thatjuan/agent-skills --skill team-executor
 |------|---------|
 | `SKILL.md` | Workflow shape — 8 steps from "got an issue number" to "PR opened" |
 | `references/workflow.md` | Step-by-step specifics, edge cases, exact `gh` / `git` commands, recovery from partial state |
-| `references/team-composition.md` | Stack detection, agent picks per issue type, skill-to-agent mapping, the Principal-Engineer review gate |
+| `references/team-composition.md` | Stack detection, agent picks per issue type, skill-to-agent mapping, the `software-engineer` Reviewer-Lens review gate |
 
 ## Tips
 
@@ -144,5 +147,6 @@ npx skills add thatjuan/agent-skills --skill team-executor
 
 ## Related skills
 
+- [`software-engineer`](../software-engineer/) — the engineering SME (architect/developer/reviewer lenses, the base engineering layer) that every coding/architect/review agent is assigned. Stack/SDK skills overlay on top of it.
 - [`team-executor`](../team-executor/) — the planning + execution engine this skill drives.
 - [`commitpush`](../commitpush/) — used at commit time for secrets/sensitive-file screening.

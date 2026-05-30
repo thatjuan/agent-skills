@@ -103,7 +103,7 @@ When planning agents disagree:
 Common conflicts and resolutions:
 - **Architecture style**: favor what's already in the codebase
 - **Technology choice**: favor what the project already uses unless there's a compelling reason to change
-- **Testing strategy**: favor more coverage over less, but be practical about test pyramid
+- **Engineering-standard disputes** (testing strategy, error handling, layering, etc.): defer to the `software-engineer` skill's standards rather than adjudicating them here — that is the engineering bar code-touching agents carry
 - **Security vs convenience**: security wins, but find the least inconvenient secure approach
 
 ## Prompt Assembly Checklist

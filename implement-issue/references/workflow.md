@@ -154,7 +154,7 @@ Trigger phrases in the user's invocation: "decide", "decide for me", "make all d
 Behavior:
 
 - Skip the TL;DR gate.
-- After the planning team and the Principal-Engineer review gate produce the consolidated plan, accept it as-is.
+- After the planning team and the `software-engineer` Reviewer-Lens review gate (run via team-executor) produce the consolidated plan, accept it as-is.
 - Tie-breaking rule: choose the option that (a) follows existing repo patterns, (b) uses already-installed dependencies over new ones, (c) has the smallest blast radius for failure, and (d) is the most testable.
 
 ## TL;DR confirmation gate

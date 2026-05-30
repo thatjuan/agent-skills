@@ -9,7 +9,7 @@ How to pick planning + execution agents and assign skills for the `implement-iss
 3. [Agent picks by stack](#agent-picks-by-stack)
 4. [Skill-to-agent mapping](#skill-to-agent-mapping)
 5. [Issue-type adjustments](#issue-type-adjustments)
-6. [The Principal-Engineer review gate](#the-principal-engineer-review-gate)
+6. [The software-engineer Reviewer-Lens review gate](#the-software-engineer-reviewer-lens-review-gate)
 
 ## Stack detection
 
@@ -70,6 +70,7 @@ Skills available in this repo (`agent-skills/`) and when to attach them:
 
 | Skill | Attach to | When |
 |-------|-----------|------|
+| `software-engineer` | Every architect, coding, and review agent | Always, for any agent that writes/updates/reviews code — it is the base engineering layer. Stack/SDK skills below overlay on top of it. |
 | `team-executor` | Orchestrator (this skill drives it) | Always — this skill *is* the consumer |
 | `heroui` | Frontend agents | Repo uses `@heroui/*` |
 | `drizzle-orm` | Backend / data agents | Repo uses `drizzle-orm` |
@@ -92,6 +93,8 @@ Skills available in this repo (`agent-skills/`) and when to attach them:
 
 Only attach a skill when it genuinely matches the agent's mandate. Over-assigning skills bloats agent context and dilutes focus.
 
+**Skill stacking.** A coding agent carries `software-engineer` (the base) *plus* optionally **one** stack/SDK skill from the rows above (`heroui`, `drizzle-orm`, `temporal`, etc.). This is the one sanctioned exception to one-skill-per-agent: `software-engineer` defines *how* to engineer (the Three Lenses, the Eight Standards); the stack skill supplies the specific library/API. Never stack two stack/SDK skills on the same agent.
+
 ## Issue-type adjustments
 
 Tune the team by issue type:
@@ -112,7 +115,7 @@ Tune the team by issue type:
 **Security**
 - Security engineer leads.
 - Add a threat-modeler.
-- The Principal-Engineer gate explicitly checks for OWASP-class issues.
+- The `software-engineer` Reviewer-Lens gate explicitly checks for OWASP-class issues.
 
 **Performance**
 - R&D agent first to profile and quantify.
@@ -120,11 +123,11 @@ Tune the team by issue type:
 
 **Documentation-only**
 - Smaller team: technical writer + domain expert + DX reviewer.
-- Skip the Principal-Engineer gate (or make it a docs-quality gate instead).
+- Skip the `software-engineer` Reviewer-Lens gate (or make it a docs-quality gate instead).
 
-## The Principal-Engineer review gate
+## The software-engineer Reviewer-Lens review gate
 
-Per `team-executor` Step 7, run a Principal-Engineer reviewer agent on the draft plan before finalizing. For this skill's purposes, that reviewer's mandate emphasizes:
+Per `team-executor` Step 7, run a review gate on the draft plan before finalizing. That gate is performed by an agent assigned the [`software-engineer`](../../software-engineer/) skill, applying its Reviewer Lens via [`../../software-engineer/references/review-gate.md`](../../software-engineer/references/review-gate.md). For this skill's purposes, that reviewer's mandate emphasizes the following — all of which align with, and are covered by, `software-engineer`'s review gate:
 
 - **Convention consistency** — does this plan match existing patterns in the repo, or does it introduce a parallel pattern?
 - **Existing-tooling reuse** — does the plan reach for an installed library/component when one fits, instead of inventing or pulling a new dep?
