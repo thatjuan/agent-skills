@@ -52,13 +52,13 @@ When not fired: skip straight to Gate 2. Most tasks do not need a design doc; ov
 
 ## Gate 2 — Issues
 
-Ask: **should this work survive as GitHub issue(s)?** Cut issues when:
+Ask: **should this work survive as GitHub issue(s)?** For software work in a GitHub repo the answer defaults to **yes**: if the project has a GitHub remote (`gh repo view` resolves) and the task changes code, cut issue(s) before dispatch — the paper trail is the default, not the exception. Independently of that default, also cut issues when:
 
 - The work decomposes into more than one bounded PR, or
 - Work will be delegated to agents that start fresh (no session context), or
-- The user wants a paper trail, parallelization, or to review scope before build.
+- The user wants parallelization or to review scope before build.
 
-Otherwise (single PR, doing it now, in-session) skip to Gate 3 with an inline spec of the same rigor.
+Skip to Gate 3 with an inline spec of the same rigor only when there is no GitHub remote, the work isn't a code change (pure research/analysis), or the user explicitly declines the paper trail. (Trivial tasks never reach this gate — Gate 0 already routed them.)
 
 **The bar**: every issue must be implementable by a junior developer — or a mid-tier model — **without guesswork**. Exact standard and template in [references/issue-standard.md](references/issue-standard.md). Decompose so each issue is one bounded PR; declare dependencies between issues explicitly (`Blocked by #N`). Create with `gh issue create` (see `gh-cli` skill for syntax edge cases).
 
