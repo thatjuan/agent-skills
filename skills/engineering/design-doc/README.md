@@ -25,7 +25,7 @@ Invoke this skill when the user wants a design doc **written, scoped, or reviewe
 - *"Help me scope this — what sections do I actually need for a multi-year platform that handles PII?"*
 - *"Turn this braindump of architecture decisions into a structured design doc."*
 
-**Not the right skill if** the user wants a *creative/visual/brand* design spec (→ [`creative-director`](../creative-director/) for brand and UI concepts, [`logo-studio`](../logo-studio/) for logo and asset systems), or wants the code itself written (→ [`software-engineer`](../software-engineer/)). This skill produces the upstream *thinking-and-deciding* document those build on.
+**Not the right skill if** the user wants a *creative/visual/brand* design spec (→ [`creative-director`](../../creative/creative-director/) for brand and UI concepts, [`logo-studio`](../../creative/logo-studio/) for logo and asset systems), or wants the code itself written (→ [`software-engineer`](../software-engineer/)). This skill produces the upstream *thinking-and-deciding* document those build on.
 
 ## Example walkthrough
 
@@ -70,4 +70,4 @@ npx skills add thatjuan/agent-skills --skill design-doc
 
 - [`software-engineer`](../software-engineer/) — the engineering layer that implements against an agreed design doc.
 - [`implement-issue`](../implement-issue/) and [`team-executor`](../team-executor/) — orchestration that can take a design doc into planning and execution.
-- [`creative-director`](../creative-director/) / [`logo-studio`](../logo-studio/) — the *creative/visual* design counterparts, for when "design" means brand and UI rather than systems and architecture.
+- [`creative-director`](../../creative/creative-director/) / [`logo-studio`](../../creative/logo-studio/) — the *creative/visual* design counterparts, for when "design" means brand and UI rather than systems and architecture.

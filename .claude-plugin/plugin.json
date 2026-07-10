@@ -1,0 +1,28 @@
+{
+  "name": "thatjuan-agent-skills",
+  "skills": [
+    "./skills/engineering/ship",
+    "./skills/engineering/implement-issue",
+    "./skills/engineering/team-executor",
+    "./skills/engineering/software-engineer",
+    "./skills/engineering/design-doc",
+    "./skills/engineering/commitpush",
+    "./skills/engineering/codex-implementation",
+    "./skills/engineering/codex-review",
+    "./skills/engineering/codex-computer-use",
+    "./skills/integrations/atlassian-cli",
+    "./skills/integrations/browserbase-sdk",
+    "./skills/integrations/camofox-browser",
+    "./skills/integrations/cloudbeds-api",
+    "./skills/integrations/drizzle-orm",
+    "./skills/integrations/grok-imagine-api",
+    "./skills/integrations/heroui",
+    "./skills/integrations/openrouter-api",
+    "./skills/integrations/openwa",
+    "./skills/integrations/temporal",
+    "./skills/integrations/unifi-operator",
+    "./skills/creative/creative-director",
+    "./skills/creative/logo-studio",
+    "./skills/creative/video-storyboard"
+  ]
+}

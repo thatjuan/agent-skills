@@ -1,122 +1,65 @@
-<div align="center">
-
 # Agent Skills
 
-**A curated collection of AI agent skills for Claude Code and compatible agents.**
+A collection of agent skills (slash commands and behaviors) for Claude Code and compatible coding agents. They fall into three buckets: an **engineering** delivery pipeline that plans, delegates, implements, reviews, and commits work; **integration** skills that carry deep API/SDK/tool expertise and trigger off your code; and **creative** skills that produce brand, design, and storytelling deliverables.
 
-[![Skills CLI](https://img.shields.io/badge/npx-skills-blue?style=flat-square)](https://www.npmjs.com/package/skills)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+Every skill here is model-invoked — the agent can reach for one automatically when the task fits, and you can invoke any of them by name.
 
-[Overview](#overview) • [Skills Catalog](#skills-catalog) • [Getting Started](#getting-started) • [Skill Anatomy](#skill-anatomy) • [Creating Skills](#creating-skills)
+## Quickstart
 
-</div>
-
-## Overview
-
-Agent Skills are self-contained instruction sets that give AI coding agents specialized capabilities. Each skill defines a complete workflow — from persona construction to execution strategy — that an agent can follow to accomplish complex, multi-step tasks autonomously.
-
-This repository is designed for use with the [`skills` CLI](https://www.npmjs.com/package/skills). Install individual skills or the entire collection into your project, and your AI agent gains new abilities instantly.
-
-## Skills Catalog
-
-| Skill | Description |
-|-------|-------------|
-| [commitpush](./commitpush/) | `npx skills add thatjuan/agent-skills --skill commitpush`<br><br>Safe commit-and-push workflow with secrets detection, sensitive file screening, and submodule-aware prompting. Use when committing and pushing changes to git, especially in repos with submodules or when security-conscious commits are needed. |
-| [creative-director](./creative-director/) | `npx skills add thatjuan/agent-skills --skill creative-director`<br><br>World-class creative director for branding, web design, and UI concepts. Use when the user asks for a new design concept, brand identity, website creative direction, UI experience concept, visual identity, or creative strategy for a business, product, or project. Produces detailed, richly described creative concepts — not code or implementations. |
-| [team-executor](./team-executor/) | `npx skills add thatjuan/agent-skills --skill team-executor`<br><br>Multi-agent orchestration that transforms braindumps into executed results. Assembles expert planning teams (3-7 agents), produces comprehensive execution plans, then deploys fresh execution teams for autonomous delivery |
-| [temporal](./temporal/) | `npx skills add thatjuan/agent-skills --skill temporal`<br><br>Expert Temporal.io workflow orchestration for Python and TypeScript. Use when code imports temporalio/sdk-python or @temporalio/* packages, user asks about durable execution, workflow orchestration, AI agent orchestration with Temporal, or building reliable distributed systems with Temporal |
-| [heroui](./heroui/) | `npx skills add thatjuan/agent-skills --skill heroui`<br><br>HeroUI v3 component library expertise for React (web) and React Native (mobile). Use when code imports @heroui/react, @heroui/styles, or heroui-native, user asks to build UI with HeroUI, or references HeroUI components, theming, or migration from NextUI/HeroUI v2 |
-| [drizzle-orm](./drizzle-orm/) | `npx skills add thatjuan/agent-skills --skill drizzle-orm`<br><br>Type-safe SQL ORM for TypeScript with zero runtime overhead. Use when code imports drizzle-orm, drizzle-kit, or drizzle-orm/pg-core, user asks about Drizzle schema design, queries, relations, migrations, or database management with Drizzle ORM |
-| [logo-studio](./logo-studio/) | `npx skills add thatjuan/agent-skills --skill logo-studio`<br><br>Professional logo design studio that produces 9+ SVG logo concepts through brand discovery, archetype mapping, and iterative refinement, then generates a complete app asset package (iOS, Android, macOS, Windows, favicons, PWA, social) from the final selection and optionally produces a multi-page brand guidelines document (logo, color, typography, layout, UI components, motion, voice, asset management). Use when the user asks for a logo, brand mark, icon, wordmark, app icon, visual identity, or brand guidelines for a business, product, or project. |
-| [atlassian-cli](./atlassian-cli/) | `npx skills add thatjuan/agent-skills --skill atlassian-cli`<br><br>Atlassian CLI (acli) expertise for interacting with Jira Cloud and Atlassian organization admin from the terminal. Use when scripts invoke `acli`, user asks about Atlassian CLI, Jira CLI, JQL-driven automation, bulk Jira operations, or managing Jira work items, projects, boards, sprints, filters, fields, dashboards, Atlassian org admin users, or Rovo Dev authentication. |
-| [cloudbeds-api](./cloudbeds-api/) | `npx skills add thatjuan/agent-skills --skill cloudbeds-api`<br><br>Cloudbeds hospitality API expertise for building property-management, booking, payments, accounting, and channel integrations. Use when code calls `api.cloudbeds.com`, `hotels.cloudbeds.com`, `api.payments.cloudbeds.com`, or imports a Cloudbeds SDK; when the user asks about Cloudbeds PMS, reservations, rate plans, webhooks, Pay-By-Link, Payments Vault, Accounting API, Data Insights, Fiscal Documents, or Group Profile APIs; when authenticating with `cbat_`-prefixed API keys or OAuth 2.0 against Cloudbeds; when subscribing to Cloudbeds webhooks or working with `postReservation`, `getAvailableRoomTypes`, `postCharge`, `patchRate`, or similar operations. |
-| [camofox-browser](./camofox-browser/) | `npx skills add thatjuan/agent-skills --skill camofox-browser`<br><br>Deploy, configure, and use camofox-browser — the Camoufox-engine anti-detection browser server (REST API on port 9377) for AI agents. Use when code hits the `/tabs`, `/sessions/:userId/cookies`, or `/youtube/transcript` endpoints; when scripts install `@askjo/camofox-browser`, run `npm start` in the `camofox-browser` repo, or call `make up`/`make fetch`; when agents invoke OpenClaw `camofox_*` tools; when the user asks about Camoufox fingerprint spoofing, bypassing Cloudflare/Google bot detection, element refs (`e1`, `e2`), accessibility snapshots, search macros, Netscape cookie import, per-user session isolation, backconnect proxy rotation with GeoIP, VNC/noVNC login, writing plugins with `register(app, ctx)`, `CAMOFOX_*`/`PROXY_*` env vars, or deploying to Docker/Fly.io/Railway. |
-| [browserbase-sdk](./browserbase-sdk/) | `npx skills add thatjuan/agent-skills --skill browserbase-sdk`<br><br>Browserbase cloud-headless-browser SDK expertise for TypeScript/Node. Use when code imports `@browserbasehq/sdk`, `@browserbasehq/stagehand`, `playwright-core`, or `puppeteer-core` and connects to Browserbase; when code POSTs to `api.browserbase.com/v1/sessions`, `/v1/contexts`, `/v1/extensions`, or `/v1/projects`; when sending the `x-bb-api-key` header or using `BROWSERBASE_API_KEY`/`BROWSERBASE_PROJECT_ID`; when the user asks about Browserbase sessions, contexts, proxies, downloads, uploads, recordings, live debugger URL, captcha solving, advanced stealth, verified browsers, fingerprinting, BYOS S3 storage, regions (`us-west-2`/`us-east-1`/`eu-central-1`/`ap-southeast-1`), keepAlive, the `connectUrl` CDP WebSocket, `chromium.connectOverCDP`, `puppeteer.connect({browserWSEndpoint})`, the `browser.contexts()[0]` default-context pattern, Stagehand `act`/`extract`/`observe`/`agent` primitives, the Model Gateway, or deploying serverless via Browserbase Functions. |
-| [video-storyboard](./video-storyboard/) | `npx skills add thatjuan/agent-skills --skill video-storyboard`<br><br>World-class video storyboard writer for marketing, advertising, brand films, social spots, and product videos. Use when the user asks for a storyboard, video script, ad concept, commercial treatment, video pitch, or shot-by-shot breakdown for any film, ad, social video, explainer, or brand content. Produces an all-text markdown storyboard with richly described visuals (no images, no sketches) — every frame includes shot, action, on-screen text, voiceover, dialogue, sound, and timing. Grounded in the canonical literature on marketing storytelling and ad video production (Donald Miller's StoryBrand, Joseph Campbell / Christopher Vogler's Hero's Journey, Blake Snyder's Save the Cat, Pixar's 22 Rules of Storytelling, Chip & Dan Heath's Made to Stick, Luke Sullivan's Hey Whipple Squeeze This, David Ogilvy's Ogilvy on Advertising, Giuseppe Cristiano's The Storyboard Artist). |
-| [openrouter-api](./openrouter-api/) | `npx skills add thatjuan/agent-skills --skill openrouter-api`<br><br>OpenRouter unified-LLM-API expertise. Use when code POSTs to `openrouter.ai/api/v1`, imports `@openrouter/sdk`, `openrouter` (Python), or `@openrouter/agent`; when the OpenAI SDK is pointed at `https://openrouter.ai/api/v1`; when the user asks about routing across hundreds of LLMs (OpenAI, Anthropic, Google, DeepSeek, Meta, xAI, Mistral, etc.) through one endpoint; when working with provider routing, model fallbacks (`models` array), the Auto Router (`openrouter/auto`), `:nitro`/`:floor`/`:online` model suffixes, presets (`@preset/...`), prompt caching with `cache_control`, structured outputs, tool calling, the `openrouter:web_search` server tool, reasoning tokens, multimodal (image/PDF/audio/video) inputs, BYOK provider keys, OAuth PKCE, the `openrouter:` plugins (`web`, `file-parser`, `response-healing`, `context-compression`), or generation/usage accounting via `/api/v1/generation` and `/api/v1/key`. |
-| [grok-imagine-api](./grok-imagine-api/) | `npx skills add thatjuan/agent-skills --skill grok-imagine-api`<br><br>xAI Grok Imagine API expertise for generating, editing, and refining images through xAI REST, xai_sdk, OpenAI-compatible SDKs, and Vercel AI SDK. Use when code calls `api.x.ai/v1/images/generations` or `api.x.ai/v1/images/edits`, imports `xai_sdk` or `@ai-sdk/xai`, points an OpenAI SDK at `https://api.x.ai/v1`, or mentions Grok Imagine, `grok-imagine-image`, `grok-imagine-image-quality`, `aspect_ratio`, image editing, image variations, base64 image output, or `sample_batch()`. |
-| [implement-issue](./implement-issue/) | `npx skills add thatjuan/agent-skills --skill implement-issue`<br><br>End-to-end GitHub issue delivery via `team-executor`. Given an issue number (or URL), opens a feature branch, dispatches a stack-specialized planning team to decide the implementation path (unless the issue dictates it), confirms a TL;DR with the user (or decides autonomously when asked), posts the agreed approach as an issue comment, launches a fresh execution team to build it, and opens a pull request. Use when the user provides only a GitHub issue number, an issue URL, or asks to "implement issue #N", "work on issue N", "ship issue N", or similar. |
-| [software-engineer](./software-engineer/) | `npx skills add thatjuan/agent-skills --skill software-engineer`<br><br>The architect, developer, and reviewer engineering subject-matter expert and base engineering layer for coding agents. Stage 3 of the `implement-issue → team-executor → software-engineer` pipeline: `team-executor` assigns it to any agent that writes, updates, or reviews code (it can also be invoked explicitly), holding the work to a strict engineering bar across its Three Lenses and Eight Standards. Applies equally to new code and changes to existing code. Carries standards for structural simplicity, clean architecture, typed boundaries, decomposition, reuse, per-domain practice (backend, frontend, data, devops, security, testing), and a self-review gate run as definition-of-done. Stack-specific skills (heroui, drizzle-orm, temporal) overlay on top of this one. |
-| [openwa](./openwa/) | `npx skills add thatjuan/agent-skills --skill openwa`<br><br>OpenWA WhatsApp API Gateway expertise — deployment, sessions, REST API, webhooks, real-time events, SDKs, plugin architecture. Use when working in an OpenWA repo or with a self-hosted gateway based on it; when code hits port `2785`, builds the `openwa-api` Docker service, or fronts the dashboard on `2886`; when scripts send `X-API-Key: owa_k1_…` headers; when configuring `whatsapp-web.js` sessions via `POST /api/sessions/:id/start`, sending messages via `POST /api/sessions/:sessionId/messages/send-text`, or subscribing to `message.received`/`message.sent`/`message.ack`/`session.status` webhooks with `X-OpenWA-Signature` HMAC; when working with the `/events` Socket.IO namespace, the `@openwa/sdk` JS client, the `openwa` Python package, plugin hooks (`message:sending`, `message:sent`), or n8n integration. |
-| [unifi-operator](./unifi-operator/) | `npx skills add thatjuan/agent-skills --skill unifi-operator`<br><br>Operate UniFi Network and UniFi Protect through their local APIs on a UDM, UDM-Pro, Cloud Key, or self-hosted console. Use when managing UniFi gateways, switches, access points, clients, firewall, VLANs/WLANs, port-forwards, or hotspot vouchers; when controlling Protect cameras, recordings, snapshots, smart-detection events, lights, sensors, chimes, or alarms; when building curl calls to `/proxy/network` or `/proxy/protect`; or when the user mentions UniFi, Ubiquiti, UDM, Cloud Key, UniFi OS, controller API keys, or `X-API-KEY`. Covers both the official API-key integration APIs and the reverse-engineered private controller/Protect APIs plus the realtime WebSocket. |
-| [design-doc](./design-doc/) | `npx skills add thatjuan/agent-skills --skill design-doc`<br><br>Expert author and reviewer of software design documents (technical design docs, engineering design proposals, architecture decision docs, internal RFCs). Use when the user asks to write, draft, outline, scope, right-size, or review a design doc, tech spec, RFC, or architecture proposal for a software system, feature, service, or migration — or asks whether a project even needs one. Produces a decision-forcing, audience-ready document grounded in "Write an Effective Design Doc" from Refactoring English by Michael Lynch — when to write one, what belongs (judged by the penalty for being wrong), the section-by-section template, the writing craft that makes the doc stand on its own, and how to drive it through review. This is the engineering/technical design document, not a creative, visual, or brand design spec. |
-| [codex-implementation](./codex-implementation/) | `npx skills add thatjuan/agent-skills --skill codex-implementation`<br><br>Delegate code implementation to the OpenAI Codex CLI (gpt-5.5) via non-interactive `codex exec`. Use when handing bulk, mechanical, or clear-spec implementation work to Codex, when the user asks to have Codex implement, build, refactor, or fix something, or when a model-routing workflow assigns implementation to gpt-5.5. Covers command anatomy, sandbox modes, the implementation prompt contract, structured output, session resume, and verifying the resulting diff. |
-| [codex-review](./codex-review/) | `npx skills add thatjuan/agent-skills --skill codex-review`<br><br>Run code reviews through the OpenAI Codex CLI via `codex exec review` and read-only `codex exec`. Use when asking Codex/gpt-5.5 to review uncommitted changes, a branch diff, a commit, a commit range, or a GitHub PR, or when a workflow wants an independent second-opinion review from an OpenAI model. Covers review targets, read-only sandboxing, severity-scoped prompts, machine-parseable JSON findings, and the duty to verify findings before relaying them. |
-| [codex-computer-use](./codex-computer-use/) | `npx skills add thatjuan/agent-skills --skill codex-computer-use`<br><br>Use the OpenAI Codex CLI for browser, GUI, and visual verification work — driving a browser through a Playwright MCP server and analyzing screenshots passed with `-i`. Use when work needs computer use to complete or verify, when the user asks Codex/gpt-5.5 to look at a UI, or when a workflow shells out visual verification to Codex. Covers what the CLI actually offers vs what needs MCP wiring, Playwright MCP setup, macOS screenshot capture recipes, and sandbox/network implications. |
-| [ship](./ship/) | `npx skills add thatjuan/agent-skills --skill ship`<br><br>Task entrypoint and delivery orchestrator for a coordinator-class model (Fable). Takes a raw task, feature, bug cluster, or goal and routes it through three gates — decide whether design/architecture work must happen before code (delegating to `design-doc`), decide whether to cut GitHub issues detailed enough for a junior dev to implement without guesswork, then assemble agent teams that route implementation to the right models (Codex/GPT-5.5 and Opus do the heavy lifting while the coordinator plans, reviews, and merges). Sits above the `implement-issue → team-executor → software-engineer` pipeline. Use when handing over a nontrivial task end to end, or starting any substantive piece of work whose path has not yet been decided. |
-
-Click a skill above for full details, example prompts, and bundled resources.
-
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) >= 18
-- An AI agent that supports skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code))
-
-### Install a specific skill
+Install a single skill:
 
 ```bash
-npx skills add thatjuan/agent-skills --skill team-executor
+npx skills add thatjuan/agent-skills --skill ship
 ```
 
-### Install all skills
+Install everything:
 
 ```bash
 npx skills add thatjuan/agent-skills --all
 ```
 
-Once installed, skills are available to your AI agent automatically. Invoke them by describing a task that matches the skill's trigger — for example, pasting a braindump of project ideas will activate the `team-executor` skill.
+Maintaining a clone? `scripts/link-skills.sh` symlinks every skill into `~/.claude/skills` and `~/.agents/skills` (a `git pull` then keeps them current), and `scripts/list-skills.sh` lists what is installed.
 
-### Verify installation
+## Reference
 
-After installation, you should see the skill files in your project's skills directory and a `skills-lock.json` tracking installed skills:
+### Engineering
 
-```json
-{
-  "version": 1,
-  "skills": {
-    "team-executor": {
-      "source": "github/thatjuan/agent-skills",
-      "sourceType": "github"
-    }
-  }
-}
-```
+Orchestration and delivery-workflow skills — how work gets planned, delegated, implemented, reviewed, and committed. They compose into a pipeline: [ship](./skills/engineering/ship/SKILL.md) is the entrypoint and coordinator; it opens a [design-doc](./skills/engineering/design-doc/SKILL.md) when the design gate fires, cuts GitHub issues, then routes each issue through [implement-issue](./skills/engineering/implement-issue/SKILL.md) → [team-executor](./skills/engineering/team-executor/SKILL.md) → [software-engineer](./skills/engineering/software-engineer/SKILL.md), with the `codex-*` skills as the lanes for delegating work to the OpenAI Codex CLI (gpt-5.5), and [commitpush](./skills/engineering/commitpush/SKILL.md) closing out the change.
 
-## Skill Anatomy
+- **[ship](./skills/engineering/ship/SKILL.md)** — Task entrypoint and delivery orchestrator: triage a raw task, decide whether it needs a design doc and GitHub issues, then assemble agent teams that route each job to the right model.
+- **[design-doc](./skills/engineering/design-doc/SKILL.md)** — Author or review a right-sized software design doc (tech spec, RFC, architecture proposal), grounded in the "Write an Effective Design Doc" practices from Refactoring English.
+- **[implement-issue](./skills/engineering/implement-issue/SKILL.md)** — Take a GitHub issue from number to pull request: branch, plan with a stack-specialized team, confirm the approach, build via team-executor, and open the PR.
+- **[team-executor](./skills/engineering/team-executor/SKILL.md)** — Turn a braindump into executed results: assemble an expert planning team, produce an execution plan, then deploy a fresh execution team for autonomous delivery.
+- **[software-engineer](./skills/engineering/software-engineer/SKILL.md)** — The architect/developer/reviewer engineering SME and base layer for any agent that writes or reviews code, holding the work to the Three Lenses and Eight Standards.
+- **[codex-implementation](./skills/engineering/codex-implementation/SKILL.md)** — Delegate bulk, mechanical, or clear-spec implementation to the OpenAI Codex CLI (gpt-5.5) via non-interactive `codex exec`.
+- **[codex-review](./skills/engineering/codex-review/SKILL.md)** — Run an independent code review through the Codex CLI over uncommitted changes, a branch diff, a commit range, or a GitHub PR.
+- **[codex-computer-use](./skills/engineering/codex-computer-use/SKILL.md)** — Drive browser, GUI, and visual-verification work through Codex — a Playwright MCP browser and screenshot analysis.
+- **[commitpush](./skills/engineering/commitpush/SKILL.md)** — Safe commit-and-push workflow with secrets detection, sensitive-file screening, and submodule-aware prompting.
 
-Each skill follows a consistent structure:
+### Integrations
 
-```
-skill-name/
-  SKILL.md          # Skill definition (required) — YAML frontmatter + instructions
-  *.md              # Bundled reference docs (optional)
-  *.sh              # Helper scripts (optional)
-```
+API, SDK, and tool domain expertise that fires off your code context — an import, an endpoint, an auth header, or a direct question about the service. Each one packs the surface, idioms, and gotchas of a specific platform so the agent works it correctly without guessing.
 
-The `SKILL.md` file is the entry point. Its YAML frontmatter defines the skill's `name` and `description` (used for trigger matching), followed by the full instructions the agent will follow.
+- **[atlassian-cli](./skills/integrations/atlassian-cli/SKILL.md)** — Atlassian CLI (`acli`) for Jira Cloud and org admin from the terminal — JQL automation, bulk operations, work items, boards, sprints, and filters.
+- **[browserbase-sdk](./skills/integrations/browserbase-sdk/SKILL.md)** — Browserbase cloud-headless-browser SDK for TypeScript/Node — sessions, contexts, proxies, stealth, and Stagehand act/extract/observe primitives over CDP.
+- **[camofox-browser](./skills/integrations/camofox-browser/SKILL.md)** — Deploy and drive camofox-browser, the Camoufox-engine anti-detection browser server (REST API on port 9377) for AI agents.
+- **[cloudbeds-api](./skills/integrations/cloudbeds-api/SKILL.md)** — Cloudbeds hospitality API for property-management, booking, payments, accounting, and channel integrations.
+- **[drizzle-orm](./skills/integrations/drizzle-orm/SKILL.md)** — Type-safe SQL ORM for TypeScript with zero runtime overhead — schema design, queries, relations, and migrations, PostgreSQL-focused.
+- **[grok-imagine-api](./skills/integrations/grok-imagine-api/SKILL.md)** — xAI Grok Imagine API for generating, editing, and refining images through REST, `xai_sdk`, OpenAI-compatible SDKs, and the Vercel AI SDK.
+- **[heroui](./skills/integrations/heroui/SKILL.md)** — HeroUI v3 component library for React (web) and React Native (mobile) — components, theming, and migration from NextUI/HeroUI v2.
+- **[openrouter-api](./skills/integrations/openrouter-api/SKILL.md)** — OpenRouter unified LLM API — one endpoint across hundreds of models with provider routing, fallbacks, caching, tool calling, and multimodal inputs.
+- **[openwa](./skills/integrations/openwa/SKILL.md)** — OpenWA self-hosted WhatsApp API gateway — deployment, sessions, REST API, webhooks, real-time events, SDKs, and plugins.
+- **[temporal](./skills/integrations/temporal/SKILL.md)** — Temporal.io durable-execution and workflow orchestration for Python and TypeScript — activities, workers, signals, queries, and reliable distributed systems.
+- **[unifi-operator](./skills/integrations/unifi-operator/SKILL.md)** — Operate UniFi Network and Protect through their local APIs on a UDM/Cloud Key/self-hosted console — gateways, switches, APs, firewall, cameras, and events.
 
-> [!NOTE]
-> Reference files like `agent-templates.md` and `orchestration-workflow.md` are loaded by the agent at runtime — they keep the main `SKILL.md` focused while providing depth on demand.
+### Creative
 
-## Creating Skills
+Brand, design, and storytelling skills that produce richly described creative deliverables — concepts, identities, and scripts — rather than code.
 
-Want to add a new skill to this collection? Each skill should:
+- **[creative-director](./skills/creative/creative-director/SKILL.md)** — World-class creative direction for branding, web design, and UI concepts — detailed creative concepts and visual strategy, not implementations.
+- **[logo-studio](./skills/creative/logo-studio/SKILL.md)** — Logo design studio producing 9+ SVG concepts through brand discovery, then a full app-asset package and an optional brand-guidelines document.
+- **[video-storyboard](./skills/creative/video-storyboard/SKILL.md)** — World-class all-text video storyboards for ads, brand films, and social spots — shot-by-shot with action, on-screen text, voiceover, sound, and timing.
 
-1. **Solve a specific, repeatable problem** — skills work best when they encode a well-defined workflow
-2. **Be self-contained** — include all instructions, templates, and scripts the agent needs
-3. **Use rich frontmatter** — write a descriptive `description` field with trigger phrases so agents know when to activate the skill
-4. **Include bundled resources** — break complex workflows into reference docs rather than stuffing everything into `SKILL.md`
-5. **Be production-oriented** — skills should produce real, working output — not drafts or placeholders
+## Creating skills
 
-```yaml
----
-name: my-skill
-description: Short description of what this skill does and when to use it.
----
-
-# My Skill
-
-Instructions the agent follows...
-```
+See [CLAUDE.md](./CLAUDE.md) for the repo conventions: which bucket a skill belongs in, the invariant that every skill appears in this README, its bucket README, and `.claude-plugin/plugin.json`, the per-skill `README.md` each folder ships, and the frontmatter validation step required before every commit. [CONTEXT.md](./CONTEXT.md) defines the shared vocabulary (skill, bucket, promoted, the delivery pipeline).
