@@ -33,7 +33,7 @@ Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
 | Computer use — browser flows, simulators, Xcode, screenshots, runtime verification | GPT-5.5 (codex computer-use) |
 | User-facing code — public API, SDK surface, UI, copy (taste ≥ 7 needed) | Opus, coordinator reviews |
 | Moderate-complexity in-repo implementation with conventions to follow | Opus (with `software-engineer` skill attached) |
-| Independent second review of a plan or PR | Codex for Claude-written code; Opus/coordinator for Codex-written code |
+| Independent second review of a plan or PR | Opus or coordinator; add Codex as an extra independent perspective (strongest on Claude-written code) |
 | Plan review, architecture calls, contested decisions | Coordinator |
 
 ## Invocation Mechanics
@@ -83,6 +83,9 @@ The single most common failure: prompting Codex as if it were Claude. The famili
 - **Tell it to report the empty case**: "If you find nothing, say that clearly and name what you inspected." Without this, empty results confuse the parent agent into wasteful re-runs.
 - Point it at concrete inputs (paths, PR numbers, log files), not abstractions.
 - **UI design tasks**: tell it to "use imagegen to imagine the design and implement that" — it renders a target before coding toward it.
+- **Embed the engineering bar.** Codex can't carry the `software-engineer` skill, so paste this digest into every code-writing prompt:
+
+  > Engineering bar: prefer the reframing that deletes complexity over adding branches. No new conditionals bolted into existing flows — extract a helper/abstraction instead. Reuse existing helpers and patterns; never near-duplicate one. Explicit typed contracts — no `any`, casts, or silent fallbacks; give domain concepts their own types. Keep logic in the module that owns the concept. Don't push a file past ~1000 lines — split first. Honest names. No TODOs, stubs, or placeholders. Match the project's existing conventions.
 
 **Relaying Codex results**: before passing a Codex finding to the user or acting on it, inspect the cited code/diff enough to decide whether it's real. Separate confirmed issues from unverified Codex suggestions in any report. If `codex` is not installed or the command fails, report the error and do the work directly instead.
 

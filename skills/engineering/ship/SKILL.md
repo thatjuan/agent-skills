@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Task entrypoint and delivery orchestrator for a Fable-class coordinator model. Takes a raw task, feature, bug cluster, or goal and routes it through three gates — first decide whether design/architecture work must happen before code (delegating to design-doc), then decide whether to cut GitHub issues detailed enough for a junior dev to implement without guesswork, then assemble agent teams that route implementation to the right models (Codex/GPT-5.5 and Opus do the heavy lifting while the coordinator plans, reviews, and merges). Use when the user hands over a nontrivial task or project and expects it taken from idea to shipped code — "take this on", "get this done end to end", "handle this" — or when starting any substantive piece of work whose path (design? issues? which models?) has not yet been decided.
+description: 'Task entrypoint and delivery orchestrator for a Fable-class coordinator. Routes a raw task through three gates — design (design-doc), GitHub issues, dispatch to the right models (Codex/Opus implement; coordinator plans, reviews, merges). Use when the user hands over a nontrivial task expecting idea-to-shipped-code — "take this on", "get this done end to end", "handle this" — or when a substantive task''s path (design? issues? which models?) is undecided.'
 ---
 
 # Ship
@@ -66,24 +66,11 @@ Otherwise (single PR, doing it now, in-session) skip to Gate 3 with an inline sp
 
 ### Division of labor
 
-| Role | Model | Why |
-|------|-------|-----|
-| Planning, architecture, conflict resolution, final review, merge judgment | Coordinator (Fable) | Highest intelligence + taste; too expensive for bulk code |
-| Taste-sensitive code — public APIs, SDK surfaces, UI, copy | Opus | Best taste-per-dollar for code that ships to humans |
-| Bulk implementation from a clear spec, migrations, mechanical refactors, log/data digging, huge-context reads, computer-use verification | Codex (GPT-5.5) | Near-free via codex sub, high intelligence, weak taste — needs a spec, not judgment |
-| Cheap wrappers (spawning codex inside workflows), mechanical checks | Sonnet (low effort) | Cheapest usable tier |
-| — | Haiku | Never. Not for anything real. |
-
-Full traits table, glossary (intelligence = how hard a problem the model handles unsupervised; taste = UI/UX, code quality, API design, copy), invocation mechanics, and per-model prompting techniques: [references/model-routing.md](references/model-routing.md). If the user's global or project CLAUDE.md carries its own model rankings, those override the bundled defaults.
-
-**Standing rules:**
-- These are defaults, not limits. If a cheaper model's output misses the bar, rerun with a smarter model without asking. Judge the output, not the price tag — escalating costs less than shipping mediocre work.
-- Cost is a tiebreaker only. Use cheap models to gather information and try things before committing an expensive model; never let cost pick the wrong model for work that ships.
-- Reasoning effort **high at most**, for every model including the coordinator's own subagents. xhigh/max overthink per-step and produce overdone diffs at absurd cost; effort does not extend how long an agent can work, only how much it thinks per step.
+In one line: **Codex (GPT-5.5, near-free)** takes bulk implementation from a clear spec plus computer-use verification; **Opus** takes taste-sensitive code (public APIs, UI, copy); the **coordinator** plans, resolves conflicts, reviews, and merges; **Sonnet** only as a cheap wrapper; **Haiku** never. The full traits table, routing quick-reference, standing rules (escalate without asking when output misses the bar; cost is a tiebreaker only; reasoning effort high at most, never xhigh/max), invocation mechanics, and per-model prompting are in [references/model-routing.md](references/model-routing.md) — already read before first dispatch. User global/project CLAUDE.md rankings override the bundled defaults.
 
 ### Orchestration shape
 
-- **One issue, bounded** → invoke `implement-issue` (it opens the branch, plans, executes via `team-executor`, opens the PR). Overlay model routing: tell the executor which model each role gets, per the table above. Any agent that writes or reviews code also gets the `software-engineer` skill (prefer-when-present).
+- **One issue, bounded** → invoke `implement-issue` (it opens the branch, plans, executes via `team-executor`, opens the PR). Overlay model routing: tell the executor which model each role gets, per the table above. Any Claude agent that writes or reviews code also gets the `software-engineer` skill (prefer-when-present); Codex can't carry skills, so code-writing codex prompts embed the engineering-bar digest from `model-routing.md` instead.
 - **Several independent issues** → parallel worktrees, one delivery stream per issue. Keep disjoint file surfaces in parallel; serialize streams that touch the same code.
 - **Checkpoint-driven programs** (each PR needs CI + review + merge before the next rebase) → orchestrate from this session, step by step. Do NOT wrap the umbrella in one giant workflow — workflows are for deterministic fan-out/verify (triage passes, multi-agent review panels), not for programs with human checkpoints or mid-stream product calls.
 - **Reviews before merge**: every PR gets at least one independent review pass by a model that didn't write it. Codex is a good independent second perspective on Claude-written code and vice versa. Merge only what passes the project's configured automated reviewers, if any.
