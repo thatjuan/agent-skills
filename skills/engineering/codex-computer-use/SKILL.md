@@ -1,6 +1,6 @@
 ---
 name: codex-computer-use
-description: Use the OpenAI Codex CLI for browser, GUI, and visual verification work — driving a browser through a Playwright MCP server and analyzing screenshots passed with `-i`. Use when work needs computer use to complete or verify (checking a rendered page, inspecting a simulator or desktop screenshot, driving a local web app), when the user asks Codex/gpt-5.5 to look at a UI, or when a workflow shells out visual verification to Codex. Covers what the CLI actually offers vs what needs MCP wiring, Playwright MCP setup, macOS screenshot capture recipes, and sandbox/network implications.
+description: Use the OpenAI Codex CLI for browser, GUI, and visual verification work — driving a browser through a Playwright MCP server and analyzing screenshots passed with `-i`. Use when work needs computer use to complete or verify (checking a rendered page, inspecting a simulator or desktop screenshot, driving a local web app), when the user asks Codex/gpt-5.6 to look at a UI, or when a workflow shells out visual verification to Codex. Covers what the CLI actually offers vs what needs MCP wiring, Playwright MCP setup, macOS screenshot capture recipes, and sandbox/network implications.
 ---
 
 # Codex Computer Use
@@ -54,7 +54,7 @@ Do the `npx` package download during setup (network-enabled shell) — a sandbox
 
 ```bash
 codex -a never exec \
-  -m gpt-5.5 \
+  -m gpt-5.6-sol \
   -s workspace-write \
   -c model_reasoning_effort='"medium"' \
   "Use the Playwright MCP server to open http://127.0.0.1:3000, exercise the signup flow, check the console for errors, and report only reproducible UI defects with selectors or routes." \

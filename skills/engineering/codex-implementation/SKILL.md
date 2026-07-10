@@ -1,6 +1,6 @@
 ---
 name: codex-implementation
-description: Delegate code implementation to the OpenAI Codex CLI (gpt-5.5) via non-interactive `codex exec`. Use when handing bulk, mechanical, or clear-spec implementation work to Codex, when the user asks to have Codex implement, build, refactor, or fix something, or when a model-routing workflow assigns implementation to gpt-5.5. Covers command anatomy, sandbox modes, the implementation prompt contract, structured output, session resume, and verifying the resulting diff.
+description: Delegate code implementation to the OpenAI Codex CLI (gpt-5.6) via non-interactive `codex exec`. Use when handing bulk, mechanical, or clear-spec implementation work to Codex, when the user asks to have Codex implement, build, refactor, or fix something, or when a model-routing workflow assigns implementation to gpt-5.6. Covers command anatomy, sandbox modes, the implementation prompt contract, structured output, session resume, and verifying the resulting diff.
 ---
 
 # Codex Implementation
@@ -12,7 +12,7 @@ Drive the OpenAI Codex CLI as a code-changing agent from scripts or an agent har
 ## When to use
 
 - Bulk or mechanical implementation with a clear spec (migrations, refactors, well-defined features)
-- Work explicitly routed to gpt-5.5 / Codex by the user or a model-routing policy
+- Work explicitly routed to gpt-5.6 / Codex by the user or a model-routing policy
 - Parallel implementation lanes where Codex handles one branch of work
 
 Not for: tasks needing your own conversation context Codex can't see (write a self-contained prompt instead), or taste-critical UI/copy work unless the routing policy sends it there.
@@ -31,7 +31,7 @@ git switch -c codex/<task-slug> # work on a branch when the change is nontrivial
 codex \
   -a never \
   exec \
-  -m gpt-5.5 \
+  -m gpt-5.6-sol \
   -c model_reasoning_effort='"high"' \
   -s workspace-write \
   -C "$PWD" \
@@ -52,7 +52,7 @@ Key mechanics:
 
 | Need | Form | Notes |
 |------|------|-------|
-| Model | `-m gpt-5.5` | `codex debug models` lists the catalog |
+| Model | `-m gpt-5.6-sol` | `codex debug models` lists the catalog. Plain `gpt-5.6` is invalid; variants: `-sol` (frontier, default), `-terra` (balanced), `-luna` (fast/cheap) |
 | Reasoning effort | `-c model_reasoning_effort='"low\|medium\|high\|xhigh"'` | quote the TOML string |
 | Sandbox | `-s read-only` / `-s workspace-write` / `-s danger-full-access` | workspace-write for implementation |
 | Approvals off | `codex -a never exec …` | global flag, before `exec` |

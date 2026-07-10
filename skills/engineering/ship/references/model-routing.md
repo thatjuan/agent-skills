@@ -8,7 +8,7 @@ The coordinator assigns an explicit model to every delegated agent. This file is
 
 - **Intelligence** — how hard a problem the model can handle unsupervised.
 - **Taste** — UI/UX, code quality, API design, and copy. Whether the output is the code/text you'd *want*, not just code that works.
-- **Cost** — effective cost to the user, accounting for subscription economics (Codex sub usage is extremely generous — treat GPT-5.5 as near-free; coordinator tokens are the most expensive thing in the system).
+- **Cost** — effective cost to the user, accounting for subscription economics (Codex sub usage is extremely generous — treat GPT-5.6 as near-free; coordinator tokens are the most expensive thing in the system).
 
 ## Traits (1–10, higher = better; cost 10 = cheapest)
 
@@ -16,9 +16,9 @@ The coordinator assigns an explicit model to every delegated agent. This file is
 |---|---|---|---|---|
 | Fable (coordinator) | 2 | 9 | 9 | Best in class on both axes. Reserve for planning, hard problems, review, merge judgment, taste-critical glue. |
 | Opus | 4 | 7 | 8 | Meaningfully cheaper than the coordinator, high taste. Often cheaper than Sonnet in practice because Sonnet is token-hungry. |
-| GPT-5.5 via Codex CLI | 9 | 8 | 5 | Handles hard problems from a clear spec; writes TypeScript like a Python dev and Rust like a paranoid C++ dev. Also the only computer-use option that actually works (Xcode, simulators, full desktop). |
+| GPT-5.6 via Codex CLI | 9 | 8 | 5 | Handles hard problems from a clear spec; writes TypeScript like a Python dev and Rust like a paranoid C++ dev. Also the only computer-use option that actually works (Xcode, simulators, full desktop). |
 | Sonnet | 5 | 5 | 7 | Wrapper duty (e.g., hosting a codex call inside a workflow), mechanical checks, light user-facing polish when Opus is overkill. |
-| Haiku | 10 | 2 | 2 | Never use. With GPT-5.5 near-free there is no task where Haiku is the right answer. |
+| Haiku | 10 | 2 | 2 | Never use. With GPT-5.6 near-free there is no task where Haiku is the right answer. |
 
 Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
 
@@ -28,9 +28,9 @@ Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
 
 | Work | Route to |
 |---|---|
-| Bulk mechanical work — clear-spec implementation, migrations, codemods, data analysis | GPT-5.5 (codex) |
-| Digging through logs, giant PDFs/specs, anything token-devouring | GPT-5.5 (codex) — burn its tokens, not yours |
-| Computer use — browser flows, simulators, Xcode, screenshots, runtime verification | GPT-5.5 (codex computer-use) |
+| Bulk mechanical work — clear-spec implementation, migrations, codemods, data analysis | GPT-5.6 (codex) |
+| Digging through logs, giant PDFs/specs, anything token-devouring | GPT-5.6 (codex) — burn its tokens, not yours |
+| Computer use — browser flows, simulators, Xcode, screenshots, runtime verification | GPT-5.6 (codex computer-use) |
 | User-facing code — public API, SDK surface, UI, copy (taste ≥ 7 needed) | Opus, coordinator reviews |
 | Moderate-complexity in-repo implementation with conventions to follow | Opus (with `software-engineer` skill attached) |
 | Independent second review of a plan or PR | Opus or coordinator; add Codex as an extra independent perspective (strongest on Claude-written code) |
@@ -42,18 +42,18 @@ Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
 
 Pass `model: "opus"` / `model: "sonnet"` on the Agent call, or specify the model per role when overlaying `team-executor`. Attach `software-engineer` (prefer-when-present) to any agent that writes or reviews code. Reasoning effort: high at most — never xhigh/max (per-step overthinking, bloated diffs, absurd cost; effort does not extend runway, only thought-per-step).
 
-### GPT-5.5 — codex CLI (only path to it)
+### GPT-5.6 — codex CLI (only path to it)
 
 Prefer dedicated codex skills when installed — `codex-implementation`, `codex-review`, `codex-computer-use`, or the `codex` skill from the skill-codex plugin — their command references govern. For work they don't cover (investigation, data analysis), run `codex exec -s read-only` directly with a self-contained prompt. Core shape:
 
 ```bash
 # read-only analysis/review
-codex exec --skip-git-repo-check -m gpt-5.5 \
+codex exec --skip-git-repo-check -m gpt-5.6-sol \
   --config model_reasoning_effort="high" \
   --sandbox read-only "PROMPT" </dev/null 2>/dev/null
 
 # implementation (edits allowed) — run inside the target worktree with -C
-codex exec --skip-git-repo-check -m gpt-5.5 \
+codex exec --skip-git-repo-check -m gpt-5.6-sol \
   --config model_reasoning_effort="high" \
   --sandbox workspace-write --full-auto -C <WORKTREE> "PROMPT" </dev/null 2>/dev/null
 
@@ -62,12 +62,13 @@ echo "FOLLOW-UP" | codex exec --skip-git-repo-check resume --last 2>/dev/null
 ```
 
 Hard-won gotchas:
+- **Model ids**: plain `gpt-5.6` is not a valid slug — the 5.6 family is `gpt-5.6-sol` (frontier, default), `gpt-5.6-terra` (balanced), `gpt-5.6-luna` (fast/cheap sweeps). `codex debug models` lists the catalog; if a slug is rejected, pick from that list and tell the user.
 - **Always `</dev/null`** when stdin isn't a closed TTY — codex reads stdin and hangs forever otherwise (symptom: zero output, zero CPU).
 - **`2>/dev/null`** suppresses thinking tokens on stderr.
 - **No intermediate output** — result appears only at completion. Prefer synchronous runs; if backgrounded, budget timeouts by effort (low 150s / medium 300s / high 600s).
 - Give codex implementation work in an **isolated worktree** so a bad run costs nothing.
 
-### GPT-5.5 inside Workflows
+### GPT-5.6 inside Workflows
 
 Workflow `agent()` calls can only spawn Claude models. To use codex in a workflow stage: spawn a **Sonnet agent on low effort** whose entire job is to shell out to `codex exec`, wait, and report the results back verbatim. Prefix its label `codex:` so runs are attributable in progress views. Account for codex's runtime in the wrapper's expectations.
 
@@ -75,7 +76,7 @@ Workflow `agent()` calls can only spawn Claude models. To use codex in a workflo
 
 The single most common failure: prompting Codex as if it were Claude. The families need opposite treatment.
 
-### Prompting GPT-5.5 / Codex
+### Prompting GPT-5.6 / Codex
 
 - **Simple, literal, self-contained.** It has zero conversation context — include the repo path, the target files, the spec, and nothing else. One task per invocation.
 - **No personas, no motivation, no "you are an expert".** Codex does what's asked and doesn't do what isn't — skip the "do not edit unrelated files" defensive lists that Claude models need.

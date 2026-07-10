@@ -12,7 +12,7 @@ Each skill entry in the top-level `README.md` and in a bucket `README.md` must l
 
 Per-skill human docs live in each skill folder's own `README.md` — every skill folder ships one. There is no separate `docs/` pages tree; the skill folder's `README.md` is the human-facing documentation for that skill.
 
-The `engineering/` skills form a delivery pipeline: `ship` (entrypoint and coordinator) → `design-doc` (design gate) → `implement-issue` → `team-executor` → `software-engineer`, with the `codex-*` skills as the delegation lanes to the OpenAI Codex CLI (gpt-5.5) and `commitpush` closing out the change. Read `ship/SKILL.md` for the authoritative shape before changing how these compose. `ship` defers model routing to the user's global `~/.claude/CLAUDE.md` table when present.
+The `engineering/` skills form a delivery pipeline: `ship` (entrypoint and coordinator) → `design-doc` (design gate) → `implement-issue` → `team-executor` → `software-engineer`, with the `codex-*` skills as the delegation lanes to the OpenAI Codex CLI (gpt-5.6) and `commitpush` closing out the change. Read `ship/SKILL.md` for the authoritative shape before changing how these compose. `ship` defers model routing to the user's global `~/.claude/CLAUDE.md` table when present.
 
 Before every commit, validate the YAML frontmatter of any `SKILL.md` you touched: the skills CLI silently drops a skill whose frontmatter is malformed (for example, an unquoted `description` containing a colon-space, `: `, which YAML parses as a mapping). Quote any description that contains `: `, or the skill disappears without an error.
 

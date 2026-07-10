@@ -13,7 +13,7 @@ The skill also enforces a relaying discipline: every finding gets checked agains
 ## When to use it
 
 - *"Have Codex review this branch before I merge."*
-- *"Get a gpt-5.5 second opinion on PR #123, security only."*
+- *"Get a gpt-5.6 second opinion on PR #123, security only."*
 - Review workflows pairing an OpenAI reviewer with Claude reviewers for independent perspectives
 - Pre-release risk sweeps at `high`/`xhigh` effort
 

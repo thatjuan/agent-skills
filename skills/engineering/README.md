@@ -7,7 +7,7 @@ Orchestration and delivery-workflow skills — how work gets planned, delegated,
 - **[implement-issue](./implement-issue/SKILL.md)** — Take a GitHub issue from number to pull request: branch, plan with a stack-specialized team, confirm the approach, build via team-executor, and open the PR.
 - **[team-executor](./team-executor/SKILL.md)** — Turn a braindump into executed results: assemble an expert planning team, produce an execution plan, then deploy a fresh execution team for autonomous delivery.
 - **[software-engineer](./software-engineer/SKILL.md)** — The architect/developer/reviewer engineering SME and base layer for any agent that writes or reviews code, holding the work to the Three Lenses and Eight Standards.
-- **[codex-implementation](./codex-implementation/SKILL.md)** — Delegate bulk, mechanical, or clear-spec implementation to the OpenAI Codex CLI (gpt-5.5) via non-interactive `codex exec`.
+- **[codex-implementation](./codex-implementation/SKILL.md)** — Delegate bulk, mechanical, or clear-spec implementation to the OpenAI Codex CLI (gpt-5.6) via non-interactive `codex exec`.
 - **[codex-review](./codex-review/SKILL.md)** — Run an independent code review through the Codex CLI over uncommitted changes, a branch diff, a commit range, or a GitHub PR.
 - **[codex-computer-use](./codex-computer-use/SKILL.md)** — Drive browser, GUI, and visual-verification work through Codex — a Playwright MCP browser and screenshot analysis.
 - **[commitpush](./commitpush/SKILL.md)** — Safe commit-and-push workflow with secrets detection, sensitive-file screening, and submodule-aware prompting.

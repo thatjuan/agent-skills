@@ -66,7 +66,7 @@ Otherwise (single PR, doing it now, in-session) skip to Gate 3 with an inline sp
 
 ### Division of labor
 
-In one line: **Codex (GPT-5.5, near-free)** takes bulk implementation from a clear spec plus computer-use verification; **Opus** takes taste-sensitive code (public APIs, UI, copy); the **coordinator** plans, resolves conflicts, reviews, and merges; **Sonnet** only as a cheap wrapper; **Haiku** never. The full traits table, routing quick-reference, standing rules (escalate without asking when output misses the bar; cost is a tiebreaker only; reasoning effort high at most, never xhigh/max), invocation mechanics, and per-model prompting are in [references/model-routing.md](references/model-routing.md) — already read before first dispatch. User global/project CLAUDE.md rankings override the bundled defaults.
+In one line: **Codex (GPT-5.6, near-free)** takes bulk implementation from a clear spec plus computer-use verification; **Opus** takes taste-sensitive code (public APIs, UI, copy); the **coordinator** plans, resolves conflicts, reviews, and merges; **Sonnet** only as a cheap wrapper; **Haiku** never. The full traits table, routing quick-reference, standing rules (escalate without asking when output misses the bar; cost is a tiebreaker only; reasoning effort high at most, never xhigh/max), invocation mechanics, and per-model prompting are in [references/model-routing.md](references/model-routing.md) — already read before first dispatch. User global/project CLAUDE.md rankings override the bundled defaults.
 
 ### Orchestration shape
 

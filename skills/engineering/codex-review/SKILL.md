@@ -1,6 +1,6 @@
 ---
 name: codex-review
-description: Run code reviews through the OpenAI Codex CLI via `codex exec review` and read-only `codex exec`. Use when asking Codex/gpt-5.5 to review uncommitted changes, a branch diff, a commit, a commit range, or a GitHub PR, or when a workflow wants an independent second-opinion review from an OpenAI model. Covers review targets, read-only sandboxing, severity-scoped prompts, machine-parseable JSON findings, and the duty to verify findings before relaying them.
+description: Run code reviews through the OpenAI Codex CLI via `codex exec review` and read-only `codex exec`. Use when asking Codex/gpt-5.6 to review uncommitted changes, a branch diff, a commit, a commit range, or a GitHub PR, or when a workflow wants an independent second-opinion review from an OpenAI model. Covers review targets, read-only sandboxing, severity-scoped prompts, machine-parseable JSON findings, and the duty to verify findings before relaying them.
 ---
 
 # Codex Review
@@ -12,7 +12,7 @@ Use Codex as an independent reviewer. Always read-only, always scoped, always ma
 ## When to use
 
 - Independent second-opinion review of a diff, branch, commit, or PR
-- Review workflows that route to gpt-5.5 alongside Claude reviewers
+- Review workflows that route to gpt-5.6 alongside Claude reviewers
 - Pre-merge risk sweeps (correctness, security, data loss, concurrency, migrations)
 
 ## Preflight
@@ -54,7 +54,7 @@ The review subcommand accepts no `-s`/`--sandbox` flag of its own (verified via 
 # Commit range
 git diff --find-renames origin/main...HEAD \
   | codex -a never -s read-only exec \
-      -m gpt-5.5 -c model_reasoning_effort='"high"' \
+      -m gpt-5.6-sol -c model_reasoning_effort='"high"' \
       "<scope prompt>" \
   > /tmp/range-review.md 2>/dev/null
 
@@ -126,7 +126,7 @@ Parse `/tmp/review-findings.json`, not stdout.
 
 ## Model and effort
 
-Default `-m gpt-5.5`. Effort by stakes: `medium` for routine diffs, `high` for security-sensitive or concurrency-heavy changes, `xhigh` for high-risk pre-release audits. Reviews at `high`/`xhigh` can run 10–60+ minutes with no intermediate output — budget the harness timeout accordingly.
+Default `-m gpt-5.6-sol` (plain `gpt-5.6` is not a valid slug; `-terra`/`-luna` are the balanced/fast variants). Effort by stakes: `medium` for routine diffs, `high` for security-sensitive or concurrency-heavy changes, `xhigh` for high-risk pre-release audits. Reviews at `high`/`xhigh` can run 10–60+ minutes with no intermediate output — budget the harness timeout accordingly.
 
 ## Relaying findings — verification duty
 

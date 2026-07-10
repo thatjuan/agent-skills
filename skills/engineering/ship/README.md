@@ -1,6 +1,6 @@
 # ship
 
-> The task entrypoint for a coordinator-class model (Fable). Routes any substantive ask through three gates — design, issues, dispatch — then delegates implementation to the right models (Codex/GPT-5.5 and Opus do the heavy lifting) while the coordinator plans, reviews, and merges.
+> The task entrypoint for a coordinator-class model (Fable). Routes any substantive ask through three gates — design, issues, dispatch — then delegates implementation to the right models (Codex/GPT-5.6 and Opus do the heavy lifting) while the coordinator plans, reviews, and merges.
 
 ## What it does
 
@@ -9,7 +9,7 @@
 1. **Triages** — trivial work gets done directly with zero ceremony; substantive work enters the gates.
 2. **Gate 1 — Design**: decides whether architecture/design-doc work must happen before code (penalty-for-being-wrong test), delegating to the [`design-doc`](../design-doc/) skill when it fires.
 3. **Gate 2 — Issues**: decides whether to cut GitHub issue(s), and writes them to a strict standard — implementable by a junior dev or mid-tier model **without guesswork** (full context, exact files, agreed approach, out-of-scope list, checkable acceptance criteria).
-4. **Gate 3 — Dispatch**: assembles agent teams and routes every role to an explicit model — bulk/mechanical/token-heavy work and computer-use verification to GPT-5.5 via the Codex CLI, taste-sensitive code to Opus, planning/review/merge judgment kept by the coordinator. Includes per-model prompting techniques, because prompts that work on Claude actively hurt on Codex.
+4. **Gate 3 — Dispatch**: assembles agent teams and routes every role to an explicit model — bulk/mechanical/token-heavy work and computer-use verification to GPT-5.6 via the Codex CLI, taste-sensitive code to Opus, planning/review/merge judgment kept by the coordinator. Includes per-model prompting techniques, because prompts that work on Claude actively hurt on Codex.
 
 It composes with the existing pipeline: `ship → design-doc → issues → implement-issue → team-executor → software-engineer`, all prefer-when-present.
 
