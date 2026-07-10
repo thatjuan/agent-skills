@@ -57,7 +57,8 @@ Apply the principles at authoring time so the diff is *born clean*, not cleaned 
 
 - **Write the boring, direct version.** Be skeptical of generic mechanisms that hide a simple data shape, of thin/identity wrappers, of pass-through helpers that add indirection without clarity.
 - **Push logic into a dedicated abstraction** — a helper, state machine, policy object, dispatcher, or module — instead of bolting one more ad-hoc conditional into an existing flow.
-- **Make contracts explicit and typed.** Prefer shared, typed models over loosely-shaped ad-hoc objects. Question every `any`, `unknown`, needless optional, and cast. Don't paper over an unclear invariant with a silent fallback — make the boundary explicit.
+- **Make contracts explicit and typed.** Prefer shared, typed models over loosely-shaped ad-hoc objects. Question every `any`, `unknown`, needless optional, and cast. Don't paper over an unclear invariant with a silent fallback — make the boundary explicit. Give domain concepts their own type instead of bare primitives; bundle params that always travel together.
+- **Name things honestly.** A name must reveal what the thing does or holds; if no honest name comes, the design is murky — fix the design.
 - **Keep logic in its canonical layer.** Don't let feature logic leak into shared paths or implementation details leak through an API.
 - **No placeholders, TODOs, or stubs.** Every line is complete and production-ready.
 - **Match existing project conventions** — style, structure, naming, error handling, the lot.
