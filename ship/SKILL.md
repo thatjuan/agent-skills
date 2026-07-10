@@ -1,16 +1,16 @@
 ---
-name: tech-lead
+name: ship
 description: Task entrypoint and delivery orchestrator for a Fable-class coordinator model. Takes a raw task, feature, bug cluster, or goal and routes it through three gates — first decide whether design/architecture work must happen before code (delegating to design-doc), then decide whether to cut GitHub issues detailed enough for a junior dev to implement without guesswork, then assemble agent teams that route implementation to the right models (Codex/GPT-5.5 and Opus do the heavy lifting while the coordinator plans, reviews, and merges). Use when the user hands over a nontrivial task or project and expects it taken from idea to shipped code — "take this on", "get this done end to end", "handle this" — or when starting any substantive piece of work whose path (design? issues? which models?) has not yet been decided.
 ---
 
-# Tech Lead
+# Ship
 
 The entrypoint for substantive work. The coordinator model running this skill is the scarcest, most expensive resource in the pipeline — so it behaves like a tech lead, not a developer: it **decides, designs, specs, delegates, reviews, and merges**. Implementation heavy lifting goes to cheaper models with high throughput. The coordinator writes code directly only when the change is trivial (faster to do than to delegate) or taste-critical glue no other model should own.
 
 ## Position in the Pipeline
 
 ```
-tech-lead (THIS skill — triage, design gate, issue gate, dispatch, review/merge)
+ship (THIS skill — triage, design gate, issue gate, dispatch, review/merge)
   ├─ design-doc          — when the design gate fires
   ├─ gh / gh-cli          — issue authoring
   ├─ implement-issue      — per-issue delivery (→ team-executor → software-engineer)

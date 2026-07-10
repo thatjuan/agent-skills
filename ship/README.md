@@ -1,17 +1,17 @@
-# tech-lead
+# ship
 
 > The task entrypoint for a coordinator-class model (Fable). Routes any substantive ask through three gates — design, issues, dispatch — then delegates implementation to the right models (Codex/GPT-5.5 and Opus do the heavy lifting) while the coordinator plans, reviews, and merges.
 
 ## What it does
 
-`tech-lead` turns the most expensive model in your setup into what it should be: a tech lead, not a typist. Given a raw task, feature request, bug cluster, or goal, it:
+`ship` turns the most expensive model in your setup into what it should be: a tech lead, not a typist. Given a raw task, feature request, bug cluster, or goal, it:
 
 1. **Triages** — trivial work gets done directly with zero ceremony; substantive work enters the gates.
 2. **Gate 1 — Design**: decides whether architecture/design-doc work must happen before code (penalty-for-being-wrong test), delegating to the [`design-doc`](../design-doc/) skill when it fires.
 3. **Gate 2 — Issues**: decides whether to cut GitHub issue(s), and writes them to a strict standard — implementable by a junior dev or mid-tier model **without guesswork** (full context, exact files, agreed approach, out-of-scope list, checkable acceptance criteria).
 4. **Gate 3 — Dispatch**: assembles agent teams and routes every role to an explicit model — bulk/mechanical/token-heavy work and computer-use verification to GPT-5.5 via the Codex CLI, taste-sensitive code to Opus, planning/review/merge judgment kept by the coordinator. Includes per-model prompting techniques, because prompts that work on Claude actively hurt on Codex.
 
-It composes with the existing pipeline: `tech-lead → design-doc → issues → implement-issue → team-executor → software-engineer`, all prefer-when-present.
+It composes with the existing pipeline: `ship → design-doc → issues → implement-issue → team-executor → software-engineer`, all prefer-when-present.
 
 ## When to use it
 
@@ -20,7 +20,7 @@ It composes with the existing pipeline: `tech-lead → design-doc → issues →
 - *"Get the notification system from the design discussion actually shipped."*
 - Any substantive task where the path — design first? issues? which models implement? — hasn't been decided yet.
 
-**Not the right skill if** you already have a specific issue number (→ [`implement-issue`](../implement-issue/)) or a fully-formed plan ready for a team (→ [`team-executor`](../team-executor/)). `tech-lead` is the layer that decides those things.
+**Not the right skill if** you already have a specific issue number (→ [`implement-issue`](../implement-issue/)) or a fully-formed plan ready for a team (→ [`team-executor`](../team-executor/)). `ship` is the layer that decides those things.
 
 ## Example walkthrough
 
@@ -39,7 +39,7 @@ It composes with the existing pipeline: `tech-lead → design-doc → issues →
 ## Installation
 
 ```bash
-npx skills add thatjuan/agent-skills --skill tech-lead
+npx skills add thatjuan/agent-skills --skill ship
 ```
 
 ## Bundled resources
