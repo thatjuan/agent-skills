@@ -1,0 +1,12 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia M monogram">
+  <!-- Foxed field -->
+  <rect width="200" height="200" fill="#F4EBDD"/>
+  <!-- Editorial M monogram in the display serif. The inner valley of the
+       M is lowered to the baseline — the serif's high-contrast stroke
+       pattern reads at thumbnail scale. -->
+  <text x="100" y="148" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+        font-weight="700" font-size="168" letter-spacing="-4" fill="#1A1816">M</text>
+  <!-- Stamp-red margin rule — a due-date stamp flourish -->
+  <rect x="34" y="164" width="132" height="3" fill="#B23A3C"/>
+</svg>

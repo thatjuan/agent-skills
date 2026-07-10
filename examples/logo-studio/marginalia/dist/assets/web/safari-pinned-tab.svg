@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- Safari pinned-tab: monochrome silhouette, no fills.
+       Safari applies the user's tint colour to any paths/shapes. -->
+  <g>
+    <rect x="3" y="3.2" width="1.2" height="8"/>
+    <rect x="11.6" y="3.2" width="1.2" height="8"/>
+    <polygon points="4.2,3.2 5.2,3.2 8.3,11.2 7.8,11.7"/>
+    <polygon points="10.4,3.2 11.4,3.2 8.2,11.7 7.7,11.2"/>
+    <rect x="2.5" y="2.5" width="2.2" height="0.7"/>
+    <rect x="11.1" y="2.5" width="2.2" height="0.7"/>
+    <rect x="2.5" y="11.3" width="2.2" height="0.7"/>
+    <rect x="11.1" y="11.3" width="2.2" height="0.7"/>
+  </g>
+</svg>

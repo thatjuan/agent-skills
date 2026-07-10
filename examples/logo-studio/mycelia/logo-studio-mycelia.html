@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Design Studio — Mycelia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600;700&family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #F0EAD9;
+    --bg-card: #FBF6EA;
+    --text-primary: #2B241C;
+    --text-secondary: #6b5f50;
+    --text-muted: #8a7f70;
+    --border: #cfc4ae;
+    --border-light: #e4dcc6;
+    --accent: #7A4A2E;
+    --radius: 4px;
+    --shadow-hover: 0 4px 24px rgba(43,36,28,0.10);
+    --font: 'Work Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace;
+    --font-display: 'Fraunces', 'Libre Caslon Text', Georgia, serif;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --logo-light: #F0EAD9;
+    --logo-dark: #2B241C;
+  }
+
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .studio-header {
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(240,234,217,0.88);
+  }
+
+  .studio-header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .studio-title {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-variation-settings: 'opsz' 144;
+  }
+  .studio-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    letter-spacing: 0.02em;
+  }
+  .studio-meta {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .controls { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+  .control-btn {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+
+  .control-btn:hover, .control-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
+  }
+
+  .control-divider { width: 1px; height: 20px; background: var(--border); margin: 0 0.25rem; }
+
+  .studio-grid {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: 2rem;
+  }
+
+  .logo-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+
+  .logo-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+
+  .logo-display { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
+
+  .logo-pane {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    min-height: 200px;
+    cursor: zoom-in;
+  }
+
+  .logo-pane.light { background: #F0EAD9; }
+  .logo-pane.dark { background: #2B241C; }
+
+  .logo-pane svg { width: 100%; max-width: 220px; height: auto; max-height: 130px; }
+
+  .pane-label {
+    position: absolute; bottom: 8px; right: 10px;
+    font-size: 0.5625rem; font-family: var(--font-mono);
+    text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.45;
+  }
+  .pane-label.on-light { color: #2B241C; }
+  .pane-label.on-dark { color: #F0EAD9; }
+
+  .logo-info { padding: 1.25rem 1.5rem 1.5rem; border-top: 1px solid var(--border-light); }
+
+  .logo-id {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 0.625rem; font-weight: 500; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    padding: 0.15rem 0.5rem; border: 1px solid var(--accent);
+    border-radius: 2px; margin-bottom: 0.625rem;
+  }
+
+  .logo-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 144;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.375rem;
+  }
+  .logo-description { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; }
+
+  .logo-tags { display: flex; gap: 0.4rem; margin-top: 0.875rem; flex-wrap: wrap; }
+  .logo-tag {
+    font-size: 0.625rem; font-family: var(--font-mono);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem; border-radius: 2px;
+    color: var(--text-muted); border: 1px solid var(--border-light);
+  }
+
+  .variant-strip { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border-light); }
+
+  .variant-cell {
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.25rem 1rem 1.5rem; position: relative; min-height: 90px;
+  }
+  .variant-cell svg { width: 100%; max-width: 110px; height: auto; max-height: 54px; }
+  .variant-cell.bg-white { background: #F0EAD9; }
+  .variant-cell.bg-mid { background: #D4C4A1; }
+  .variant-cell.bg-dark { background: #2B241C; }
+
+  .variant-label {
+    position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+    font-size: 0.5rem; font-family: var(--font-mono);
+    text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; white-space: nowrap;
+  }
+  .variant-label.on-light { color: #2B241C; }
+  .variant-label.on-dark { color: #F0EAD9; }
+
+  .section-divider {
+    grid-column: 1 / -1;
+    padding: 1.5rem 0 0.25rem;
+    display: flex; align-items: baseline; gap: 1.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+  .section-divider:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+  .section-divider h2 {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 144;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .section-divider .tag {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+  }
+  .section-divider .line { flex: 1; height: 1px; background: var(--border); }
+
+  .studio-footer {
+    max-width: 1400px; margin: 2rem auto 3rem; padding: 2rem;
+    text-align: center; font-size: 0.75rem; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .zoom-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(43,36,28,0.92); z-index: 1000;
+    align-items: center; justify-content: center;
+    cursor: zoom-out; backdrop-filter: blur(8px);
+  }
+  .zoom-overlay.visible { display: flex; }
+  .zoom-overlay svg { max-width: 60vw; max-height: 60vh; }
+  .zoom-overlay .zoom-info {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    color: rgba(240,234,217,0.7); font-size: 0.75rem; font-family: var(--font-mono);
+    text-transform: uppercase; letter-spacing: 0.12em;
+  }
+
+  body.show-light .logo-pane.dark { display: none; }
+  body.show-light .logo-display { grid-template-columns: 1fr; }
+  body.show-dark .logo-pane.light { display: none; }
+  body.show-dark .logo-display { grid-template-columns: 1fr; }
+
+  @media (max-width: 900px) {
+    .studio-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1rem; padding: 0 1rem 3rem; }
+    .studio-header { padding: 1.5rem 1rem 1rem; }
+    .studio-header-inner { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 500px) {
+    .studio-grid { grid-template-columns: 1fr; }
+    .logo-display { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="studio-header">
+  <div class="studio-header-inner">
+    <div>
+      <h1 class="studio-title">Mycelia — Concept Review</h1>
+      <p class="studio-subtitle">Adaptogenic mushroom coffee. A quiet support for long-attention work.</p>
+      <p class="studio-meta">2026 &middot; Round 1 &middot; Nine concepts across three strategic directions</p>
+    </div>
+    <div class="controls">
+      <button class="control-btn active" onclick="setView('all')">All</button>
+      <button class="control-btn" onclick="setView('light')">Light</button>
+      <button class="control-btn" onclick="setView('dark')">Dark</button>
+    </div>
+  </div>
+</header>
+
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
+  <div id="zoomContent"></div>
+  <div class="zoom-info" id="zoomInfo"></div>
+</div>
+
+<main class="studio-grid" id="studioGrid">
+
+  <!-- ========== DIRECTION A — HERBARIUM MONOGRAPH ========== -->
+  <div class="section-divider">
+    <h2>Direction A</h2>
+    <span class="tag">Herbarium Monograph &middot; Conservative &middot; Canonical</span>
+    <div class="line"></div>
+  </div>
+
+  <!-- A1 COMBINATION -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'A1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1" stroke-linecap="round">
+            <circle r="44"/>
+            <g stroke-width="0.8">
+              <line x1="0" y1="0" x2="44" y2="0"/>
+              <line x1="0" y1="0" x2="38.1" y2="22"/>
+              <line x1="0" y1="0" x2="22" y2="38.1"/>
+              <line x1="0" y1="0" x2="0" y2="44"/>
+              <line x1="0" y1="0" x2="-22" y2="38.1"/>
+              <line x1="0" y1="0" x2="-38.1" y2="22"/>
+              <line x1="0" y1="0" x2="-44" y2="0"/>
+              <line x1="0" y1="0" x2="-38.1" y2="-22"/>
+              <line x1="0" y1="0" x2="-22" y2="-38.1"/>
+              <line x1="0" y1="0" x2="0" y2="-44"/>
+              <line x1="0" y1="0" x2="22" y2="-38.1"/>
+              <line x1="0" y1="0" x2="38.1" y2="-22"/>
+            </g>
+            <circle r="2.8" fill="#2B241C" stroke="none"/>
+            <g fill="#2B241C" stroke="none">
+              <circle cx="44" cy="0" r="1.8"/><circle cx="38.1" cy="22" r="1.4"/>
+              <circle cx="22" cy="38.1" r="1.6"/><circle cx="0" cy="44" r="1.4"/>
+              <circle cx="-22" cy="38.1" r="1.6"/><circle cx="-38.1" cy="22" r="1.3"/>
+              <circle cx="-44" cy="0" r="1.8"/><circle cx="-38.1" cy="-22" r="1.3"/>
+              <circle cx="-22" cy="-38.1" r="1.6"/><circle cx="0" cy="-44" r="1.4"/>
+              <circle cx="22" cy="-38.1" r="1.6"/><circle cx="38.1" cy="-22" r="1.4"/>
+            </g>
+          </g>
+          <text x="150" y="83" font-family="Fraunces, 'Libre Caslon Text', Georgia, serif" font-size="46" font-weight="400" letter-spacing="2" fill="#2B241C" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'A1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1" stroke-linecap="round">
+            <circle r="44"/>
+            <g stroke-width="0.8">
+              <line x1="0" y1="0" x2="44" y2="0"/><line x1="0" y1="0" x2="38.1" y2="22"/>
+              <line x1="0" y1="0" x2="22" y2="38.1"/><line x1="0" y1="0" x2="0" y2="44"/>
+              <line x1="0" y1="0" x2="-22" y2="38.1"/><line x1="0" y1="0" x2="-38.1" y2="22"/>
+              <line x1="0" y1="0" x2="-44" y2="0"/><line x1="0" y1="0" x2="-38.1" y2="-22"/>
+              <line x1="0" y1="0" x2="-22" y2="-38.1"/><line x1="0" y1="0" x2="0" y2="-44"/>
+              <line x1="0" y1="0" x2="22" y2="-38.1"/><line x1="0" y1="0" x2="38.1" y2="-22"/>
+            </g>
+            <circle r="2.8" fill="#F0EAD9" stroke="none"/>
+            <g fill="#F0EAD9" stroke="none">
+              <circle cx="44" cy="0" r="1.8"/><circle cx="38.1" cy="22" r="1.4"/>
+              <circle cx="22" cy="38.1" r="1.6"/><circle cx="0" cy="44" r="1.4"/>
+              <circle cx="-22" cy="38.1" r="1.6"/><circle cx="-38.1" cy="22" r="1.3"/>
+              <circle cx="-44" cy="0" r="1.8"/><circle cx="-38.1" cy="-22" r="1.3"/>
+              <circle cx="-22" cy="-38.1" r="1.6"/><circle cx="0" cy="-44" r="1.4"/>
+              <circle cx="22" cy="-38.1" r="1.6"/><circle cx="38.1" cy="-22" r="1.4"/>
+            </g>
+          </g>
+          <text x="150" y="83" font-family="Fraunces, 'Libre Caslon Text', Georgia, serif" font-size="46" font-weight="400" letter-spacing="2" fill="#F0EAD9" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <line x1="150" y1="100" x2="420" y2="100" stroke="#F0EAD9" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><circle r="44"/><g stroke-width="0.8"><line x1="0" y1="0" x2="44" y2="0"/><line x1="0" y1="0" x2="38.1" y2="22"/><line x1="0" y1="0" x2="22" y2="38.1"/><line x1="0" y1="0" x2="0" y2="44"/><line x1="0" y1="0" x2="-22" y2="38.1"/><line x1="0" y1="0" x2="-38.1" y2="22"/><line x1="0" y1="0" x2="-44" y2="0"/><line x1="0" y1="0" x2="-38.1" y2="-22"/><line x1="0" y1="0" x2="-22" y2="-38.1"/><line x1="0" y1="0" x2="0" y2="-44"/><line x1="0" y1="0" x2="22" y2="-38.1"/><line x1="0" y1="0" x2="38.1" y2="-22"/></g><circle r="2.8" fill="#2B241C" stroke="none"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#2B241C">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><circle r="44"/><g stroke-width="0.8"><line x1="0" y1="0" x2="44" y2="0"/><line x1="0" y1="0" x2="38.1" y2="22"/><line x1="0" y1="0" x2="22" y2="38.1"/><line x1="0" y1="0" x2="0" y2="44"/><line x1="0" y1="0" x2="-22" y2="38.1"/><line x1="0" y1="0" x2="-38.1" y2="22"/><line x1="0" y1="0" x2="-44" y2="0"/><line x1="0" y1="0" x2="-38.1" y2="-22"/><line x1="0" y1="0" x2="-22" y2="-38.1"/><line x1="0" y1="0" x2="0" y2="-44"/><line x1="0" y1="0" x2="22" y2="-38.1"/><line x1="0" y1="0" x2="38.1" y2="-22"/></g><circle r="2.8" fill="#2B241C" stroke="none"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#2B241C">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1"><circle r="44"/><g stroke-width="0.8"><line x1="0" y1="0" x2="44" y2="0"/><line x1="0" y1="0" x2="38.1" y2="22"/><line x1="0" y1="0" x2="22" y2="38.1"/><line x1="0" y1="0" x2="0" y2="44"/><line x1="0" y1="0" x2="-22" y2="38.1"/><line x1="0" y1="0" x2="-38.1" y2="22"/><line x1="0" y1="0" x2="-44" y2="0"/><line x1="0" y1="0" x2="-38.1" y2="-22"/><line x1="0" y1="0" x2="-22" y2="-38.1"/><line x1="0" y1="0" x2="0" y2="-44"/><line x1="0" y1="0" x2="22" y2="-38.1"/><line x1="0" y1="0" x2="38.1" y2="-22"/></g><circle r="2.8" fill="#F0EAD9" stroke="none"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#F0EAD9">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#F0EAD9" stroke-width="0.7"/></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">A1 Combination</span>
+      <h3 class="logo-name">The Understory</h3>
+      <p class="logo-description">The canonical lockup: the mycelial network diagram — hub with twelve radiating filaments at a single hairline weight, each terminating in a spore node — paired with the display-serif wordmark and its quiet rule. Reads like a specimen plate from a 19th-century field guide.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">canonical</span><span class="logo-tag">hairline</span><span class="logo-tag">editorial</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- A2 WORDMARK -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'A2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <text x="200" y="70" text-anchor="middle" font-family="Fraunces, 'Libre Caslon Text', Georgia, serif" font-size="58" font-weight="400" letter-spacing="3" fill="#2B241C" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <line x1="60" y1="90" x2="340" y2="90" stroke="#2B241C" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'A2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <text x="200" y="70" text-anchor="middle" font-family="Fraunces, 'Libre Caslon Text', Georgia, serif" font-size="58" font-weight="400" letter-spacing="3" fill="#F0EAD9" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <line x1="60" y1="90" x2="340" y2="90" stroke="#F0EAD9" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="70" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="58" letter-spacing="3" fill="#2B241C">mycelia</text><line x1="60" y1="90" x2="340" y2="90" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="70" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="58" letter-spacing="3" fill="#2B241C">mycelia</text><line x1="60" y1="90" x2="340" y2="90" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="70" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="58" letter-spacing="3" fill="#F0EAD9">mycelia</text><line x1="60" y1="90" x2="340" y2="90" stroke="#F0EAD9" stroke-width="0.7"/></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">A2 Wordmark</span>
+      <h3 class="logo-name">Specimen Label</h3>
+      <p class="logo-description">The brand's restraint encoded in type alone. "mycelia" lowercase in Fraunces (a contemporary reading of Caslon / Mrs Eaves — sharper terminals, modernist optical size), tracked loose, a single hairline rule beneath. Works as pack foil-stamp, page header, or 8mm print.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">fraunces</span><span class="logo-tag">lowercase</span><span class="logo-tag">foil-ready</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3 SYMBOL -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'A3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4" stroke-linecap="round">
+            <circle r="80"/>
+            <g stroke-width="1">
+              <line x1="0" y1="0" x2="80" y2="0"/><line x1="0" y1="0" x2="69.28" y2="40"/>
+              <line x1="0" y1="0" x2="40" y2="69.28"/><line x1="0" y1="0" x2="0" y2="80"/>
+              <line x1="0" y1="0" x2="-40" y2="69.28"/><line x1="0" y1="0" x2="-69.28" y2="40"/>
+              <line x1="0" y1="0" x2="-80" y2="0"/><line x1="0" y1="0" x2="-69.28" y2="-40"/>
+              <line x1="0" y1="0" x2="-40" y2="-69.28"/><line x1="0" y1="0" x2="0" y2="-80"/>
+              <line x1="0" y1="0" x2="40" y2="-69.28"/><line x1="0" y1="0" x2="69.28" y2="-40"/>
+            </g>
+            <circle r="4.5" fill="#2B241C" stroke="none"/>
+            <g fill="#2B241C" stroke="none">
+              <circle cx="80" cy="0" r="3"/><circle cx="69.28" cy="40" r="2.4"/>
+              <circle cx="40" cy="69.28" r="2.8"/><circle cx="0" cy="80" r="2.4"/>
+              <circle cx="-40" cy="69.28" r="2.8"/><circle cx="-69.28" cy="40" r="2.2"/>
+              <circle cx="-80" cy="0" r="3"/><circle cx="-69.28" cy="-40" r="2.2"/>
+              <circle cx="-40" cy="-69.28" r="2.8"/><circle cx="0" cy="-80" r="2.4"/>
+              <circle cx="40" cy="-69.28" r="2.8"/><circle cx="69.28" cy="-40" r="2.4"/>
+            </g>
+          </g>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'A3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="1.4" stroke-linecap="round">
+            <circle r="80"/>
+            <g stroke-width="1">
+              <line x1="0" y1="0" x2="80" y2="0"/><line x1="0" y1="0" x2="69.28" y2="40"/>
+              <line x1="0" y1="0" x2="40" y2="69.28"/><line x1="0" y1="0" x2="0" y2="80"/>
+              <line x1="0" y1="0" x2="-40" y2="69.28"/><line x1="0" y1="0" x2="-69.28" y2="40"/>
+              <line x1="0" y1="0" x2="-80" y2="0"/><line x1="0" y1="0" x2="-69.28" y2="-40"/>
+              <line x1="0" y1="0" x2="-40" y2="-69.28"/><line x1="0" y1="0" x2="0" y2="-80"/>
+              <line x1="0" y1="0" x2="40" y2="-69.28"/><line x1="0" y1="0" x2="69.28" y2="-40"/>
+            </g>
+            <circle r="4.5" fill="#F0EAD9" stroke="none"/>
+            <g fill="#F0EAD9" stroke="none">
+              <circle cx="80" cy="0" r="3"/><circle cx="69.28" cy="40" r="2.4"/>
+              <circle cx="40" cy="69.28" r="2.8"/><circle cx="0" cy="80" r="2.4"/>
+              <circle cx="-40" cy="69.28" r="2.8"/><circle cx="-69.28" cy="40" r="2.2"/>
+              <circle cx="-80" cy="0" r="3"/><circle cx="-69.28" cy="-40" r="2.2"/>
+              <circle cx="-40" cy="-69.28" r="2.8"/><circle cx="0" cy="-80" r="2.4"/>
+              <circle cx="40" cy="-69.28" r="2.8"/><circle cx="69.28" cy="-40" r="2.4"/>
+            </g>
+          </g>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4"><circle r="80"/><g stroke-width="1"><line x1="0" y1="0" x2="80" y2="0"/><line x1="0" y1="0" x2="69.28" y2="40"/><line x1="0" y1="0" x2="40" y2="69.28"/><line x1="0" y1="0" x2="0" y2="80"/><line x1="0" y1="0" x2="-40" y2="69.28"/><line x1="0" y1="0" x2="-69.28" y2="40"/><line x1="0" y1="0" x2="-80" y2="0"/><line x1="0" y1="0" x2="-69.28" y2="-40"/><line x1="0" y1="0" x2="-40" y2="-69.28"/><line x1="0" y1="0" x2="0" y2="-80"/><line x1="0" y1="0" x2="40" y2="-69.28"/><line x1="0" y1="0" x2="69.28" y2="-40"/></g><circle r="4.5" fill="#2B241C" stroke="none"/></g></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4"><circle r="80"/><g stroke-width="1"><line x1="0" y1="0" x2="80" y2="0"/><line x1="0" y1="0" x2="69.28" y2="40"/><line x1="0" y1="0" x2="40" y2="69.28"/><line x1="0" y1="0" x2="0" y2="80"/><line x1="0" y1="0" x2="-40" y2="69.28"/><line x1="0" y1="0" x2="-69.28" y2="40"/><line x1="0" y1="0" x2="-80" y2="0"/><line x1="0" y1="0" x2="-69.28" y2="-40"/><line x1="0" y1="0" x2="-40" y2="-69.28"/><line x1="0" y1="0" x2="0" y2="-80"/><line x1="0" y1="0" x2="40" y2="-69.28"/><line x1="0" y1="0" x2="69.28" y2="-40"/></g><circle r="4.5" fill="#2B241C" stroke="none"/></g></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="1.4"><circle r="80"/><g stroke-width="1"><line x1="0" y1="0" x2="80" y2="0"/><line x1="0" y1="0" x2="69.28" y2="40"/><line x1="0" y1="0" x2="40" y2="69.28"/><line x1="0" y1="0" x2="0" y2="80"/><line x1="0" y1="0" x2="-40" y2="69.28"/><line x1="0" y1="0" x2="-69.28" y2="40"/><line x1="0" y1="0" x2="-80" y2="0"/><line x1="0" y1="0" x2="-69.28" y2="-40"/><line x1="0" y1="0" x2="-40" y2="-69.28"/><line x1="0" y1="0" x2="0" y2="-80"/><line x1="0" y1="0" x2="40" y2="-69.28"/><line x1="0" y1="0" x2="69.28" y2="-40"/></g><circle r="4.5" fill="#F0EAD9" stroke="none"/></g></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">A3 Symbol</span>
+      <h3 class="logo-name">The Network</h3>
+      <p class="logo-description">The mark in isolation: a hub and twelve filaments contained within a ring, each thread a single hairline, each terminus a graded node. Scales from 8mm foil to full-bleed web. The "only piece of theater" — intended to animate filament-by-filament on load.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">monoline</span><span class="logo-tag">radial</span><span class="logo-tag">app-icon-ready</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DIRECTION B — FIELD GUIDE PLATE ========== -->
+  <div class="section-divider">
+    <h2>Direction B</h2>
+    <span class="tag">Field Guide Plate &middot; Distinctive &middot; Hybrid</span>
+    <div class="line"></div>
+  </div>
+
+  <!-- B1 COMBINATION — cap cross-section + small-caps serif -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'B1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1" stroke-linecap="round">
+            <circle r="44"/><circle r="34"/><circle r="24"/><circle r="14"/>
+            <g stroke-width="0.7">
+              <line x1="14" y1="0" x2="44" y2="0"/><line x1="12.12" y1="7" x2="38.1" y2="22"/>
+              <line x1="7" y1="12.12" x2="22" y2="38.1"/><line x1="0" y1="14" x2="0" y2="44"/>
+              <line x1="-7" y1="12.12" x2="-22" y2="38.1"/><line x1="-12.12" y1="7" x2="-38.1" y2="22"/>
+              <line x1="-14" y1="0" x2="-44" y2="0"/><line x1="-12.12" y1="-7" x2="-38.1" y2="-22"/>
+              <line x1="-7" y1="-12.12" x2="-22" y2="-38.1"/><line x1="0" y1="-14" x2="0" y2="-44"/>
+              <line x1="7" y1="-12.12" x2="22" y2="-38.1"/><line x1="12.12" y1="-7" x2="38.1" y2="-22"/>
+            </g>
+          </g>
+          <text x="150" y="68" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" letter-spacing="6" fill="#2B241C" style="font-variation-settings:'opsz' 144;">MYCELIA</text>
+          <line x1="150" y1="82" x2="420" y2="82" stroke="#2B241C" stroke-width="0.6"/>
+          <text x="150" y="104" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3.5" fill="#7A4A2E">LION'S MANE · CORDYCEPS · CHAGA</text>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'B1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1"><circle r="44"/><circle r="34"/><circle r="24"/><circle r="14"/>
+            <g stroke-width="0.7">
+              <line x1="14" y1="0" x2="44" y2="0"/><line x1="12.12" y1="7" x2="38.1" y2="22"/>
+              <line x1="7" y1="12.12" x2="22" y2="38.1"/><line x1="0" y1="14" x2="0" y2="44"/>
+              <line x1="-7" y1="12.12" x2="-22" y2="38.1"/><line x1="-12.12" y1="7" x2="-38.1" y2="22"/>
+              <line x1="-14" y1="0" x2="-44" y2="0"/><line x1="-12.12" y1="-7" x2="-38.1" y2="-22"/>
+              <line x1="-7" y1="-12.12" x2="-22" y2="-38.1"/><line x1="0" y1="-14" x2="0" y2="-44"/>
+              <line x1="7" y1="-12.12" x2="22" y2="-38.1"/><line x1="12.12" y1="-7" x2="38.1" y2="-22"/>
+            </g>
+          </g>
+          <text x="150" y="68" font-family="Fraunces, Georgia, serif" font-size="22" font-weight="500" letter-spacing="6" fill="#F0EAD9">MYCELIA</text>
+          <line x1="150" y1="82" x2="420" y2="82" stroke="#F0EAD9" stroke-width="0.6"/>
+          <text x="150" y="104" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3.5" fill="#D4C4A1">LION'S MANE · CORDYCEPS · CHAGA</text>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><circle r="44"/><circle r="34"/><circle r="24"/><circle r="14"/></g><text x="150" y="68" font-family="Fraunces, Georgia, serif" font-size="22" letter-spacing="6" fill="#2B241C">MYCELIA</text><line x1="150" y1="82" x2="420" y2="82" stroke="#2B241C" stroke-width="0.6"/><text x="150" y="104" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3.5" fill="#7A4A2E">LION'S MANE · CORDYCEPS · CHAGA</text></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><circle r="44"/><circle r="34"/><circle r="24"/><circle r="14"/></g><text x="150" y="68" font-family="Fraunces, Georgia, serif" font-size="22" letter-spacing="6" fill="#2B241C">MYCELIA</text><line x1="150" y1="82" x2="420" y2="82" stroke="#2B241C" stroke-width="0.6"/><text x="150" y="104" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3.5" fill="#2B241C">LION'S MANE · CORDYCEPS · CHAGA</text></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1"><circle r="44"/><circle r="34"/><circle r="24"/><circle r="14"/></g><text x="150" y="68" font-family="Fraunces, Georgia, serif" font-size="22" letter-spacing="6" fill="#F0EAD9">MYCELIA</text><line x1="150" y1="82" x2="420" y2="82" stroke="#F0EAD9" stroke-width="0.6"/><text x="150" y="104" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3.5" fill="#F0EAD9">LION'S MANE · CORDYCEPS · CHAGA</text></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">B1 Combination</span>
+      <h3 class="logo-name">Cross-Section</h3>
+      <p class="logo-description">A cap in cross-section: three concentric rings (pileus, context, stipe-base) with gill radiation from a central bore. Paired with small-caps serif and a monospaced specimen label naming the three species — the way a natural-history journal labels what's in the jar.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">small-caps</span><span class="logo-tag">specimen-label</span><span class="logo-tag">botanical</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- B2 WORDMARK — plex mono specimen card -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'B2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="30" x2="360" y2="30" stroke="#2B241C" stroke-width="0.5"/>
+          <text x="40" y="46" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2.5" fill="#7A4A2E">SPECIMEN №001 · SPORE-BORNE</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="36" font-weight="400" letter-spacing="8" fill="#2B241C" style="font-variation-settings:'opsz' 144;">MYCELIA</text>
+          <line x1="40" y1="92" x2="360" y2="92" stroke="#2B241C" stroke-width="0.5"/>
+          <text x="200" y="106" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3" fill="#7A4A2E">MMXXVI · EST.</text>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'B2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="30" x2="360" y2="30" stroke="#F0EAD9" stroke-width="0.5"/>
+          <text x="40" y="46" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2.5" fill="#D4C4A1">SPECIMEN №001 · SPORE-BORNE</text>
+          <text x="200" y="78" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="36" letter-spacing="8" fill="#F0EAD9">MYCELIA</text>
+          <line x1="40" y1="92" x2="360" y2="92" stroke="#F0EAD9" stroke-width="0.5"/>
+          <text x="200" y="106" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3" fill="#D4C4A1">MMXXVI · EST.</text>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="30" x2="360" y2="30" stroke="#2B241C" stroke-width="0.5"/><text x="40" y="46" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2.5" fill="#7A4A2E">SPECIMEN №001 · SPORE-BORNE</text><text x="200" y="78" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="36" letter-spacing="8" fill="#2B241C">MYCELIA</text><line x1="40" y1="92" x2="360" y2="92" stroke="#2B241C" stroke-width="0.5"/><text x="200" y="106" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3" fill="#7A4A2E">MMXXVI · EST.</text></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="30" x2="360" y2="30" stroke="#2B241C" stroke-width="0.5"/><text x="40" y="46" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2.5" fill="#2B241C">SPECIMEN №001 · SPORE-BORNE</text><text x="200" y="78" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="36" letter-spacing="8" fill="#2B241C">MYCELIA</text><line x1="40" y1="92" x2="360" y2="92" stroke="#2B241C" stroke-width="0.5"/><text x="200" y="106" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3" fill="#2B241C">MMXXVI · EST.</text></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="30" x2="360" y2="30" stroke="#F0EAD9" stroke-width="0.5"/><text x="40" y="46" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2.5" fill="#F0EAD9">SPECIMEN №001 · SPORE-BORNE</text><text x="200" y="78" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="36" letter-spacing="8" fill="#F0EAD9">MYCELIA</text><line x1="40" y1="92" x2="360" y2="92" stroke="#F0EAD9" stroke-width="0.5"/><text x="200" y="106" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="3" fill="#F0EAD9">MMXXVI · EST.</text></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">B2 Wordmark</span>
+      <h3 class="logo-name">Specimen Card</h3>
+      <p class="logo-description">The wordmark treated as a herbarium label. Hairline rules bracket "MYCELIA" set in small-caps serif, with Plex Mono metadata above and below in the umber rust accent — the brand's voice as a naturalist-editor, compressed into a single stamp.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">small-caps</span><span class="logo-tag">plex-mono</span><span class="logo-tag">labelled</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- B3 SYMBOL — gill radiation -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'B3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4" stroke-linecap="round">
+            <circle r="82"/><circle r="64"/><circle r="46"/><circle r="28"/><circle r="10"/>
+            <g stroke-width="0.9">
+              <line x1="10" y1="0" x2="82" y2="0"/><line x1="8.66" y1="5" x2="71.01" y2="41"/>
+              <line x1="5" y1="8.66" x2="41" y2="71.01"/><line x1="0" y1="10" x2="0" y2="82"/>
+              <line x1="-5" y1="8.66" x2="-41" y2="71.01"/><line x1="-8.66" y1="5" x2="-71.01" y2="41"/>
+              <line x1="-10" y1="0" x2="-82" y2="0"/><line x1="-8.66" y1="-5" x2="-71.01" y2="-41"/>
+              <line x1="-5" y1="-8.66" x2="-41" y2="-71.01"/><line x1="0" y1="-10" x2="0" y2="-82"/>
+              <line x1="5" y1="-8.66" x2="41" y2="-71.01"/><line x1="8.66" y1="-5" x2="71.01" y2="-41"/>
+            </g>
+          </g>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'B3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="1.4" stroke-linecap="round">
+            <circle r="82"/><circle r="64"/><circle r="46"/><circle r="28"/><circle r="10"/>
+            <g stroke-width="0.9">
+              <line x1="10" y1="0" x2="82" y2="0"/><line x1="8.66" y1="5" x2="71.01" y2="41"/>
+              <line x1="5" y1="8.66" x2="41" y2="71.01"/><line x1="0" y1="10" x2="0" y2="82"/>
+              <line x1="-5" y1="8.66" x2="-41" y2="71.01"/><line x1="-8.66" y1="5" x2="-71.01" y2="41"/>
+              <line x1="-10" y1="0" x2="-82" y2="0"/><line x1="-8.66" y1="-5" x2="-71.01" y2="-41"/>
+              <line x1="-5" y1="-8.66" x2="-41" y2="-71.01"/><line x1="0" y1="-10" x2="0" y2="-82"/>
+              <line x1="5" y1="-8.66" x2="41" y2="-71.01"/><line x1="8.66" y1="-5" x2="71.01" y2="-41"/>
+            </g>
+          </g>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4"><circle r="82"/><circle r="64"/><circle r="46"/><circle r="28"/><circle r="10"/></g></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="1.4"><circle r="82"/><circle r="64"/><circle r="46"/><circle r="28"/><circle r="10"/></g></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="1.4"><circle r="82"/><circle r="64"/><circle r="46"/><circle r="28"/><circle r="10"/></g></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">B3 Symbol</span>
+      <h3 class="logo-name">Stipe Rings</h3>
+      <p class="logo-description">The cap read from below: five nested circles with hairline gill radiation. Reads as fruiting body and tree-ring cross-section at once. Quieter than A3 — no terminal nodes — better when the logo needs to recede behind an image.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">concentric</span><span class="logo-tag">monoline</span><span class="logo-tag">subtle</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DIRECTION C — UNDERSTORY NETWORK ========== -->
+  <div class="section-divider">
+    <h2>Direction C</h2>
+    <span class="tag">Understory Network &middot; Disruptive &middot; Category-breaking</span>
+    <div class="line"></div>
+  </div>
+
+  <!-- C1 COMBINATION — asymmetric rhizome cluster -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'C1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1" stroke-linecap="round">
+            <path d="M -36 8 Q -20 -4 -4 2 T 30 -10 Q 40 -14 50 -6"/>
+            <path d="M -30 20 Q -14 14 2 24 T 38 18"/>
+            <path d="M -22 -18 Q -6 -14 6 -24 T 36 -26 Q 44 -22 48 -14"/>
+            <path d="M -10 30 Q 0 20 10 26 T 30 20"/>
+            <path d="M -18 -4 Q -8 2 4 -2 T 22 6"/>
+          </g>
+          <g fill="#2B241C">
+            <circle cx="36" cy="78" r="2.2"/><circle cx="92" cy="42" r="2.4"/>
+            <circle cx="110" cy="52" r="2"/><circle cx="114" cy="88" r="2.2"/>
+            <circle cx="50" cy="58" r="1.8"/><circle cx="80" cy="98" r="1.8"/>
+            <circle cx="120" cy="72" r="1.6"/><circle cx="66" cy="86" r="1.6"/>
+            <circle cx="94" cy="68" r="1.4"/>
+          </g>
+          <text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="400" letter-spacing="2" fill="#2B241C" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'C1')">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1" stroke-linecap="round">
+            <path d="M -36 8 Q -20 -4 -4 2 T 30 -10 Q 40 -14 50 -6"/>
+            <path d="M -30 20 Q -14 14 2 24 T 38 18"/>
+            <path d="M -22 -18 Q -6 -14 6 -24 T 36 -26 Q 44 -22 48 -14"/>
+            <path d="M -10 30 Q 0 20 10 26 T 30 20"/>
+            <path d="M -18 -4 Q -8 2 4 -2 T 22 6"/>
+          </g>
+          <g fill="#F0EAD9">
+            <circle cx="36" cy="78" r="2.2"/><circle cx="92" cy="42" r="2.4"/>
+            <circle cx="110" cy="52" r="2"/><circle cx="114" cy="88" r="2.2"/>
+            <circle cx="50" cy="58" r="1.8"/><circle cx="80" cy="98" r="1.8"/>
+            <circle cx="120" cy="72" r="1.6"/><circle cx="66" cy="86" r="1.6"/>
+            <circle cx="94" cy="68" r="1.4"/>
+          </g>
+          <text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="400" letter-spacing="2" fill="#F0EAD9">mycelia</text>
+          <line x1="150" y1="100" x2="420" y2="100" stroke="#F0EAD9" stroke-width="0.7"/>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><path d="M -36 8 Q -20 -4 -4 2 T 30 -10 Q 40 -14 50 -6"/><path d="M -30 20 Q -14 14 2 24 T 38 18"/><path d="M -22 -18 Q -6 -14 6 -24 T 36 -26 Q 44 -22 48 -14"/><path d="M -10 30 Q 0 20 10 26 T 30 20"/><path d="M -18 -4 Q -8 2 4 -2 T 22 6"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#2B241C">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#2B241C" stroke-width="1.1"><path d="M -36 8 Q -20 -4 -4 2 T 30 -10 Q 40 -14 50 -6"/><path d="M -30 20 Q -14 14 2 24 T 38 18"/><path d="M -22 -18 Q -6 -14 6 -24 T 36 -26 Q 44 -22 48 -14"/><path d="M -10 30 Q 0 20 10 26 T 30 20"/><path d="M -18 -4 Q -8 2 4 -2 T 22 6"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#2B241C">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#2B241C" stroke-width="0.7"/></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg"><g transform="translate(72 70)" fill="none" stroke="#F0EAD9" stroke-width="1.1"><path d="M -36 8 Q -20 -4 -4 2 T 30 -10 Q 40 -14 50 -6"/><path d="M -30 20 Q -14 14 2 24 T 38 18"/><path d="M -22 -18 Q -6 -14 6 -24 T 36 -26 Q 44 -22 48 -14"/><path d="M -10 30 Q 0 20 10 26 T 30 20"/><path d="M -18 -4 Q -8 2 4 -2 T 22 6"/></g><text x="150" y="83" font-family="Fraunces, Georgia, serif" font-size="46" letter-spacing="2" fill="#F0EAD9">mycelia</text><line x1="150" y1="100" x2="420" y2="100" stroke="#F0EAD9" stroke-width="0.7"/></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">C1 Combination</span>
+      <h3 class="logo-name">Rhizomorph</h3>
+      <p class="logo-description">The network without the frame. Five hairline filaments wander horizontally, scattered spore-nodes between them — a literal depiction of hyphae spreading under soil. Wordmark holds steady alongside. Feels less like a logo than a diagram torn from a field journal.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">asymmetric</span><span class="logo-tag">organic</span><span class="logo-tag">diagrammatic</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- C2 WORDMARK — hairline thread through -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'C2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <text x="200" y="72" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="54" font-weight="400" letter-spacing="3" fill="#2B241C" style="font-variation-settings:'opsz' 144;">mycelia</text>
+          <path d="M 50 62 Q 90 58 130 64 T 210 60 T 290 66 T 360 60" fill="none" stroke="#8A9479" stroke-width="0.9" stroke-linecap="round"/>
+          <g fill="#8A9479">
+            <circle cx="50" cy="62" r="1.6"/><circle cx="360" cy="60" r="1.6"/>
+            <circle cx="130" cy="64" r="1.2"/><circle cx="290" cy="66" r="1.2"/>
+          </g>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'C2')">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <text x="200" y="72" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="54" font-weight="400" letter-spacing="3" fill="#F0EAD9">mycelia</text>
+          <path d="M 50 62 Q 90 58 130 64 T 210 60 T 290 66 T 360 60" fill="none" stroke="#8A9479" stroke-width="0.9" stroke-linecap="round"/>
+          <g fill="#8A9479">
+            <circle cx="50" cy="62" r="1.6"/><circle cx="360" cy="60" r="1.6"/>
+            <circle cx="130" cy="64" r="1.2"/><circle cx="290" cy="66" r="1.2"/>
+          </g>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="72" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="54" letter-spacing="3" fill="#2B241C">mycelia</text><path d="M 50 62 Q 90 58 130 64 T 210 60 T 290 66 T 360 60" fill="none" stroke="#8A9479" stroke-width="0.9"/></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="72" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="54" letter-spacing="3" fill="#2B241C">mycelia</text><path d="M 50 62 Q 90 58 130 64 T 210 60 T 290 66 T 360 60" fill="none" stroke="#2B241C" stroke-width="0.9"/></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg"><text x="200" y="72" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="54" letter-spacing="3" fill="#F0EAD9">mycelia</text><path d="M 50 62 Q 90 58 130 64 T 210 60 T 290 66 T 360 60" fill="none" stroke="#8A9479" stroke-width="0.9"/></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">C2 Wordmark</span>
+      <h3 class="logo-name">Running Filament</h3>
+      <p class="logo-description">The hairline rule reinterpreted as a living filament — a single lichen-sage thread with two terminal nodes, drifting beneath the wordmark rather than ruling it. Category-disruptive: the decoration itself is the concept. Riskier at small sizes.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">lichen</span><span class="logo-tag">diagrammatic</span><span class="logo-tag">distinctive</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- C3 SYMBOL — abstract branching rhizomorph -->
+  <div class="logo-card">
+    <div class="logo-display">
+      <div class="logo-pane light" onclick="zoomLogo(this,'C3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 0 -68 Q -4 -40 -12 -20 Q -22 4 -38 22 Q -50 34 -58 48"/>
+            <path d="M -12 -20 Q -2 -18 10 -28 Q 24 -40 38 -44"/>
+            <path d="M -22 4 Q -10 10 2 6 Q 18 -2 28 8 Q 38 20 52 20"/>
+            <path d="M 2 6 Q 10 18 10 32 Q 10 46 20 58"/>
+            <path d="M -38 22 Q -30 28 -18 28"/>
+            <path d="M 10 -28 Q 22 -22 30 -10"/>
+          </g>
+          <g fill="#2B241C">
+            <circle cx="100" cy="32" r="3.4"/>
+            <circle cx="62" cy="148" r="2.4"/>
+            <circle cx="42" cy="148" r="2.2"/>
+            <circle cx="138" cy="56" r="2.6"/>
+            <circle cx="152" cy="120" r="2.4"/>
+            <circle cx="120" cy="158" r="2.2"/>
+            <circle cx="82" cy="128" r="1.8"/>
+            <circle cx="130" cy="90" r="1.8"/>
+          </g>
+        </svg>
+        <span class="pane-label on-light">light</span>
+      </div>
+      <div class="logo-pane dark" onclick="zoomLogo(this,'C3')">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 0 -68 Q -4 -40 -12 -20 Q -22 4 -38 22 Q -50 34 -58 48"/>
+            <path d="M -12 -20 Q -2 -18 10 -28 Q 24 -40 38 -44"/>
+            <path d="M -22 4 Q -10 10 2 6 Q 18 -2 28 8 Q 38 20 52 20"/>
+            <path d="M 2 6 Q 10 18 10 32 Q 10 46 20 58"/>
+            <path d="M -38 22 Q -30 28 -18 28"/>
+            <path d="M 10 -28 Q 22 -22 30 -10"/>
+          </g>
+          <g fill="#F0EAD9">
+            <circle cx="100" cy="32" r="3.4"/><circle cx="62" cy="148" r="2.4"/><circle cx="42" cy="148" r="2.2"/>
+            <circle cx="138" cy="56" r="2.6"/><circle cx="152" cy="120" r="2.4"/><circle cx="120" cy="158" r="2.2"/>
+            <circle cx="82" cy="128" r="1.8"/><circle cx="130" cy="90" r="1.8"/>
+          </g>
+        </svg>
+        <span class="pane-label on-dark">dark</span>
+      </div>
+    </div>
+    <div class="variant-strip">
+      <div class="variant-cell bg-white">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="2" stroke-linecap="round"><path d="M 0 -68 Q -4 -40 -12 -20 Q -22 4 -38 22 Q -50 34 -58 48"/><path d="M -12 -20 Q -2 -18 10 -28 Q 24 -40 38 -44"/><path d="M -22 4 Q -10 10 2 6 Q 18 -2 28 8 Q 38 20 52 20"/><path d="M 2 6 Q 10 18 10 32 Q 10 46 20 58"/><path d="M -38 22 Q -30 28 -18 28"/><path d="M 10 -28 Q 22 -22 30 -10"/></g></svg>
+        <span class="variant-label on-light">color</span>
+      </div>
+      <div class="variant-cell bg-mid">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#2B241C" stroke-width="2" stroke-linecap="round"><path d="M 0 -68 Q -4 -40 -12 -20 Q -22 4 -38 22 Q -50 34 -58 48"/><path d="M -12 -20 Q -2 -18 10 -28 Q 24 -40 38 -44"/><path d="M -22 4 Q -10 10 2 6 Q 18 -2 28 8 Q 38 20 52 20"/><path d="M 2 6 Q 10 18 10 32 Q 10 46 20 58"/><path d="M -38 22 Q -30 28 -18 28"/><path d="M 10 -28 Q 22 -22 30 -10"/></g></svg>
+        <span class="variant-label on-light">mono</span>
+      </div>
+      <div class="variant-cell bg-dark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100 100)" fill="none" stroke="#F0EAD9" stroke-width="2" stroke-linecap="round"><path d="M 0 -68 Q -4 -40 -12 -20 Q -22 4 -38 22 Q -50 34 -58 48"/><path d="M -12 -20 Q -2 -18 10 -28 Q 24 -40 38 -44"/><path d="M -22 4 Q -10 10 2 6 Q 18 -2 28 8 Q 38 20 52 20"/><path d="M 2 6 Q 10 18 10 32 Q 10 46 20 58"/><path d="M -38 22 Q -30 28 -18 28"/><path d="M 10 -28 Q 22 -22 30 -10"/></g></svg>
+        <span class="variant-label on-dark">reversed</span>
+      </div>
+    </div>
+    <div class="logo-info">
+      <span class="logo-id">C3 Symbol</span>
+      <h3 class="logo-name">Root System</h3>
+      <p class="logo-description">An asymmetric branching hypha — no containing circle, no mandala. Six organic strokes fork outward and downward like a rhizome under soil, with a single emergent node at top (the fruiting body). The category-breaking option: wilder, less settled, closer to a Victorian plate than a mark.</p>
+      <div class="logo-tags">
+        <span class="logo-tag">organic</span><span class="logo-tag">asymmetric</span><span class="logo-tag">botanical-plate</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="studio-footer">
+  <p>Logo Design Studio &mdash; Mycelia &middot; 2026</p>
+  <p style="margin-top:0.5rem; text-transform:none; letter-spacing:0; font-family:var(--font); font-size:0.75rem;">Click any logo to enlarge. Reference concepts by ID (A1, B2, etc.). Finalist: <strong>A1 — The Understory</strong>.</p>
+</footer>
+
+<script>
+  function setView(mode) {
+    document.body.classList.remove('show-light', 'show-dark');
+    if (mode === 'light') document.body.classList.add('show-light');
+    if (mode === 'dark') document.body.classList.add('show-dark');
+    document.querySelectorAll('.controls .control-btn').forEach((btn, i) => {
+      btn.classList.toggle('active',
+        (mode === 'all' && i === 0) || (mode === 'light' && i === 1) || (mode === 'dark' && i === 2));
+    });
+  }
+
+  function zoomLogo(pane, id) {
+    const svg = pane.querySelector('svg');
+    if (!svg) return;
+    const overlay = document.getElementById('zoomOverlay');
+    document.getElementById('zoomContent').innerHTML = svg.outerHTML;
+    document.getElementById('zoomInfo').textContent = 'Concept ' + id + '  ·  Press Esc or click to close';
+    overlay.classList.add('visible');
+  }
+
+  function closeZoom() { document.getElementById('zoomOverlay').classList.remove('visible'); }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
+</script>
+
+</body>
+</html>

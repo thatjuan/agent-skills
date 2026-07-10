@@ -1,0 +1,13 @@
+<svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia">
+  <!-- Canonical wordmark. The first lowercase i in "Marginalia" is
+       replaced by a slim upright stroke drawn full x-height — a visible
+       margin rule. The mark, the grid, and the concept resolve into a
+       single letterform. -->
+  <g font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+     font-weight="700" fill="#1A1816">
+    <text x="20" y="96" font-size="90" letter-spacing="-1">Marg</text>
+    <text x="282" y="96" font-size="90" letter-spacing="-1">nalia</text>
+  </g>
+  <!-- Margin-rule "i": full x-height, dotless, slightly taller on purpose -->
+  <rect x="266" y="38" width="6" height="58" fill="#1A1816"/>
+</svg>

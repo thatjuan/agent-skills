@@ -1,0 +1,22 @@
+<svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia broadsheet nameplate">
+  <g font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+     font-size="13" font-weight="500" letter-spacing="3" fill="#F4EBDD">
+    <text x="24" y="36">EST. MMXXVI</text>
+    <text x="400" y="36" text-anchor="middle">A MONTHLY OF INDEPENDENT READING</text>
+    <text x="776" y="36" text-anchor="end">VOLUME I · NO. 047</text>
+  </g>
+  <rect x="24" y="48" width="752" height="2" fill="#F4EBDD"/>
+  <rect x="24" y="54" width="752" height="1" fill="#F4EBDD"/>
+  <g font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+     font-weight="700" fill="#F4EBDD">
+    <text x="24" y="168" font-size="110" letter-spacing="-1">Marg</text>
+    <text x="346" y="168" font-size="110" letter-spacing="-1">nalia</text>
+  </g>
+  <rect x="326" y="96" width="8" height="72" fill="#F4EBDD"/>
+  <rect x="24" y="196" width="752" height="2" fill="#E8C961"/>
+  <g font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+     font-size="13" font-weight="500" letter-spacing="3" fill="#F4EBDD">
+    <text x="24" y="222">THURSDAY · OCTOBER · SIX TITLES</text>
+    <text x="776" y="222" text-anchor="end" fill="#E8C961">TASTE IS A PERSON</text>
+  </g>
+</svg>

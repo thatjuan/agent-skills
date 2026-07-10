@@ -1,0 +1,7 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia M monogram">
+  <rect width="200" height="200" fill="#1A1816"/>
+  <text x="100" y="148" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+        font-weight="700" font-size="168" letter-spacing="-4" fill="#F4EBDD">M</text>
+  <rect x="34" y="164" width="132" height="3" fill="#E8C961"/>
+</svg>

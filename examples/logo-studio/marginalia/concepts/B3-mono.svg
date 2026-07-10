@@ -1,0 +1,11 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dog-eared page">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <path d="M 36 42 L 132 42 L 164 74 L 164 158 L 36 158 Z"
+        fill="none" stroke="#1A1816" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M 132 42 L 164 74 L 132 74 Z"
+        fill="#1A1816"/>
+  <rect x="52" y="58" width="2" height="84" fill="#1A1816"/>
+  <rect x="64" y="88" width="82" height="3" fill="#1A1816"/>
+  <rect x="64" y="104" width="90" height="3" fill="#1A1816"/>
+  <rect x="64" y="120" width="72" height="3" fill="#1A1816"/>
+</svg>

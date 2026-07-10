@@ -1,0 +1,19 @@
+<svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia">
+  <!-- Delivery variant: embeds Fraunces via @font-face so the SVG
+       renders correctly in environments that do not have the brand
+       font installed. For true vector outlines (print, merch), open
+       this file in Inkscape and run:
+         Path > Object to Path
+       on each <text> element, then re-save. -->
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@700&amp;display=swap');
+    </style>
+  </defs>
+  <g font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+     font-weight="700" fill="#1A1816">
+    <text x="20" y="96" font-size="90" letter-spacing="-1">Marg</text>
+    <text x="282" y="96" font-size="90" letter-spacing="-1">nalia</text>
+  </g>
+  <rect x="266" y="38" width="6" height="58" fill="#1A1816"/>
+</svg>

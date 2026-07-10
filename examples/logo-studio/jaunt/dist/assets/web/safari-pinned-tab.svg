@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- Monochrome j + tick — Safari applies fill color automatically -->
+  <circle cx="8" cy="4.2" r="1"/>
+  <path d="M9 6.6 L9 11 Q9 12.6 7.3 12.6 Q6 12.6 5.5 11.8 L6.4 11 Q6.7 11.4 7.2 11.4 Q7.6 11.4 7.6 11 L7.6 6.6 Z"/>
+  <path d="M10 3 L12 2.2" stroke="#000" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+</svg>

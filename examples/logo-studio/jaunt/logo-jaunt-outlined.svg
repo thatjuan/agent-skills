@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- jaunt — geometric lettering, outlined to paths (font-independent delivery) -->
+  <!-- Each glyph hand-constructed in the ExtraBold humanist-geometric style of the Manrope/GT Flexa family -->
+  <g fill="#1F2E3D">
+    <!-- j -->
+    <circle cx="112" cy="34" r="9"/>
+    <path d="M103 54 L121 54 L121 92 Q121 106 107 106 Q97 106 93 99 L102 92 Q104 96 109 96 Q112 96 112 92 L112 54 Z"/>
+    <!-- a -->
+    <path d="M157 54 Q142 54 135 63 L142 70 Q147 64 155 64 Q163 64 163 71 L163 73 L154 73 Q134 73 134 87 Q134 98 146 98 Q156 98 163 92 L163 97 L172 97 L172 72 Q172 54 157 54 Z M156 91 Q144 91 144 86 Q144 80 154 80 L163 80 L163 85 Q160 91 156 91 Z"/>
+    <!-- u -->
+    <path d="M187 54 L187 82 Q187 98 204 98 Q214 98 221 91 L221 97 L230 97 L230 54 L221 54 L221 83 Q216 89 208 89 Q197 89 197 80 L197 54 Z"/>
+    <!-- n -->
+    <path d="M245 54 L245 97 L255 97 L255 68 Q260 62 268 62 Q278 62 278 72 L278 97 L288 97 L288 70 Q288 54 272 54 Q262 54 255 60 L255 54 Z"/>
+    <!-- t -->
+    <path d="M305 42 L305 54 L298 54 L298 62 L305 62 L305 87 Q305 98 317 98 Q321 98 325 96 L323 88 Q321 89 319 89 Q314 89 314 84 L314 62 L324 62 L324 54 L314 54 L314 42 Z"/>
+  </g>
+  <!-- red tick above the "u" -->
+  <path d="M205 38 L222 29" stroke="#E4543C" stroke-width="6" stroke-linecap="round" fill="none"/>
+</svg>

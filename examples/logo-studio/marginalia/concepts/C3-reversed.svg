@@ -1,0 +1,18 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia library stamp">
+  <rect width="200" height="200" fill="#1A1816"/>
+  <g transform="rotate(-4 100 100)">
+    <rect x="32" y="60" width="136" height="80" fill="none"
+          stroke="#E8C961" stroke-width="4"/>
+    <rect x="38" y="66" width="124" height="68" fill="none"
+          stroke="#E8C961" stroke-width="1"/>
+    <text x="100" y="96" text-anchor="middle"
+          font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+          font-size="16" font-weight="700" letter-spacing="3"
+          fill="#E8C961">MARGINALIA</text>
+    <rect x="54" y="104" width="92" height="1" fill="#E8C961"/>
+    <text x="100" y="126" text-anchor="middle"
+          font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+          font-style="italic" font-weight="700" font-size="20"
+          fill="#E8C961">No. 047</text>
+  </g>
+</svg>

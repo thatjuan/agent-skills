@@ -1,0 +1,18 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dog-eared page">
+  <!-- A dog-eared page — the universal "reader has been here" mark.
+       The fold reveals the margin-rule beneath. -->
+  <!-- Shelf blue field -->
+  <rect width="200" height="200" fill="#2E4A5C"/>
+  <!-- Page with folded top-right corner.
+       Page outline: (36,42)->(132,42)->fold->(164,122)->(164,158)->(36,158) -->
+  <path d="M 36 42 L 132 42 L 164 74 L 164 158 L 36 158 Z"
+        fill="#F4EBDD"/>
+  <!-- Folded triangle (showing underside) -->
+  <path d="M 132 42 L 164 74 L 132 74 Z" fill="#E8C961"/>
+  <!-- Margin rule (stamp red) -->
+  <rect x="52" y="58" width="2" height="84" fill="#B23A3C"/>
+  <!-- Text lines -->
+  <rect x="64" y="88" width="82" height="3" fill="#1A1816"/>
+  <rect x="64" y="104" width="90" height="3" fill="#1A1816"/>
+  <rect x="64" y="120" width="72" height="3" fill="#1A1816"/>
+</svg>

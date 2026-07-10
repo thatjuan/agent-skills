@@ -1,0 +1,8 @@
+<svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia (hand-signed)">
+  <text x="280" y="104" text-anchor="middle"
+        font-family="'Caveat', 'Homemade Apple', 'Kalam', 'Bradley Hand', cursive"
+        font-weight="700" font-size="108" letter-spacing="0"
+        fill="#F4EBDD">Marginalia</text>
+  <path d="M 154 124 C 240 130, 340 118, 418 126"
+        stroke="#E8C961" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>

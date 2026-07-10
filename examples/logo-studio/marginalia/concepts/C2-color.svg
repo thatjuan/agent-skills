@@ -1,0 +1,11 @@
+<svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia (hand-signed)">
+  <!-- The editor-in-chief's signature, promoted to wordmark. Taste is
+       a person — so the logo is a person's handwriting. -->
+  <text x="280" y="104" text-anchor="middle"
+        font-family="'Caveat', 'Homemade Apple', 'Kalam', 'Bradley Hand', cursive"
+        font-weight="700" font-size="108" letter-spacing="0"
+        fill="#1A1816">Marginalia</text>
+  <!-- Signature flourish underline -->
+  <path d="M 154 124 C 240 130, 340 118, 418 126"
+        stroke="#1A1816" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>

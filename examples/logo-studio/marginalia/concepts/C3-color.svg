@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia library stamp">
+  <!-- A library due-date stamp. The brand's "No. 047" rubber stamp
+       literalized as its icon. Rotated a few degrees to feel inked
+       by hand. -->
+  <rect width="200" height="200" fill="#F4EBDD"/>
+  <g transform="rotate(-4 100 100)">
+    <!-- Stamp outer frame -->
+    <rect x="32" y="60" width="136" height="80" fill="none"
+          stroke="#B23A3C" stroke-width="4"/>
+    <!-- Stamp inner double rule -->
+    <rect x="38" y="66" width="124" height="68" fill="none"
+          stroke="#B23A3C" stroke-width="1"/>
+    <!-- MARGINALIA -->
+    <text x="100" y="96" text-anchor="middle"
+          font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+          font-size="16" font-weight="700" letter-spacing="3"
+          fill="#B23A3C">MARGINALIA</text>
+    <!-- Divider rule -->
+    <rect x="54" y="104" width="92" height="1" fill="#B23A3C"/>
+    <!-- No. 047 -->
+    <text x="100" y="126" text-anchor="middle"
+          font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+          font-style="italic" font-weight="700" font-size="20"
+          fill="#B23A3C">No. 047</text>
+  </g>
+</svg>

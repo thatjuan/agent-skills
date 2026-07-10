@@ -1,0 +1,14 @@
+<svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia highlighted">
+  <!-- The annotation system made visible: a marginalia-yellow highlight
+       stripe runs behind the wordmark — as if a reader underlined what
+       mattered. -->
+  <!-- Highlighter pass -->
+  <rect x="12" y="78" width="510" height="42" fill="#E8C961"/>
+  <!-- Wordmark on top -->
+  <g font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+     font-weight="700" fill="#1A1816">
+    <text x="20" y="108" font-size="90" letter-spacing="-1">Marg</text>
+    <text x="282" y="108" font-size="90" letter-spacing="-1">nalia</text>
+  </g>
+  <rect x="266" y="50" width="6" height="58" fill="#1A1816"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Jaunt Red background (full bleed — platforms apply corner masks) -->
+  <rect width="1024" height="1024" fill="#E4543C"/>
+  <!-- Lowercase "j" monogram in Signal Cream — sits in the central ~61% safe zone (Android) -->
+  <!-- Dot of the j -->
+  <circle cx="512" cy="310" r="62" fill="#F7F1E6"/>
+  <!-- Stem + hook -->
+  <path d="M574 462 L574 690 Q574 822 450 822 Q362 822 324 748"
+        stroke="#F7F1E6" stroke-width="124" stroke-linecap="round" fill="none"/>
+  <!-- Signature red tick sits in the cream field — drawn in cream to keep contrast against red bg -->
+  <path d="M612 214 L748 146"
+        stroke="#F7F1E6" stroke-width="44" stroke-linecap="round" fill="none"/>
+</svg>

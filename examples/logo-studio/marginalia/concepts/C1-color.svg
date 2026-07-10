@@ -1,0 +1,28 @@
+<svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Marginalia broadsheet nameplate">
+  <!-- Broadsheet nameplate — a full masthead in logo form. Dense,
+       editorial, built like a literary review's flag. -->
+  <!-- Top metadata line -->
+  <g font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+     font-size="13" font-weight="500" letter-spacing="3" fill="#1A1816">
+    <text x="24" y="36">EST. MMXXVI</text>
+    <text x="400" y="36" text-anchor="middle">A MONTHLY OF INDEPENDENT READING</text>
+    <text x="776" y="36" text-anchor="end">VOLUME I · NO. 047</text>
+  </g>
+  <!-- Top double rule -->
+  <rect x="24" y="48" width="752" height="2" fill="#1A1816"/>
+  <rect x="24" y="54" width="752" height="1" fill="#1A1816"/>
+  <!-- Wordmark, extra-wide display -->
+  <g font-family="'Fraunces', 'Playfair Display', 'Libre Caslon Display', Georgia, serif"
+     font-weight="700" fill="#1A1816">
+    <text x="24" y="168" font-size="110" letter-spacing="-1">Marg</text>
+    <text x="346" y="168" font-size="110" letter-spacing="-1">nalia</text>
+  </g>
+  <rect x="326" y="96" width="8" height="72" fill="#1A1816"/>
+  <!-- Bottom metadata and stamp red rule -->
+  <rect x="24" y="196" width="752" height="2" fill="#B23A3C"/>
+  <g font-family="'Work Sans', 'Inter', -apple-system, sans-serif"
+     font-size="13" font-weight="500" letter-spacing="3" fill="#1A1816">
+    <text x="24" y="222">THURSDAY · OCTOBER · SIX TITLES</text>
+    <text x="776" y="222" text-anchor="end" fill="#B23A3C">TASTE IS A PERSON</text>
+  </g>
+</svg>

@@ -1,0 +1,36 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <title>Mycelia — icon master</title>
+  <rect width="1024" height="1024" fill="#2B241C"/>
+  <g transform="translate(512 512)" fill="none" stroke="#F0EAD9" stroke-width="7" stroke-linecap="round">
+    <circle r="300"/>
+    <g stroke-width="5">
+      <line x1="0" y1="0" x2="300" y2="0"/>
+      <line x1="0" y1="0" x2="259.81" y2="150"/>
+      <line x1="0" y1="0" x2="150" y2="259.81"/>
+      <line x1="0" y1="0" x2="0" y2="300"/>
+      <line x1="0" y1="0" x2="-150" y2="259.81"/>
+      <line x1="0" y1="0" x2="-259.81" y2="150"/>
+      <line x1="0" y1="0" x2="-300" y2="0"/>
+      <line x1="0" y1="0" x2="-259.81" y2="-150"/>
+      <line x1="0" y1="0" x2="-150" y2="-259.81"/>
+      <line x1="0" y1="0" x2="0" y2="-300"/>
+      <line x1="0" y1="0" x2="150" y2="-259.81"/>
+      <line x1="0" y1="0" x2="259.81" y2="-150"/>
+    </g>
+    <circle r="17" fill="#F0EAD9" stroke="none"/>
+    <g fill="#F0EAD9" stroke="none">
+      <circle cx="300" cy="0" r="11"/>
+      <circle cx="259.81" cy="150" r="9"/>
+      <circle cx="150" cy="259.81" r="10.5"/>
+      <circle cx="0" cy="300" r="9"/>
+      <circle cx="-150" cy="259.81" r="10.5"/>
+      <circle cx="-259.81" cy="150" r="8"/>
+      <circle cx="-300" cy="0" r="11"/>
+      <circle cx="-259.81" cy="-150" r="8"/>
+      <circle cx="-150" cy="-259.81" r="10.5"/>
+      <circle cx="0" cy="-300" r="9"/>
+      <circle cx="150" cy="-259.81" r="10.5"/>
+      <circle cx="259.81" cy="-150" r="9"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cream background rounded-square (iconic badge form) -->
+  <rect x="0" y="0" width="200" height="200" rx="44" fill="#F7F1E6"/>
+  <!-- Lowercase "j" drawn geometrically in Shade Navy -->
+  <!-- Dot of the j -->
+  <circle cx="100" cy="58" r="11" fill="#1F2E3D"/>
+  <!-- Stem + hook of the j -->
+  <path d="M111 88 L111 132 Q111 158 88 158 Q72 158 66 145"
+        stroke="#1F2E3D" stroke-width="22" stroke-linecap="round" fill="none"/>
+  <!-- Red tick — the brand's signature gesture -->
+  <path d="M118 38 L142 26" stroke="#E4543C" stroke-width="8" stroke-linecap="round" fill="none"/>
+</svg>
