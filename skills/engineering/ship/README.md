@@ -1,6 +1,6 @@
 # ship
 
-> The task entrypoint for a coordinator-class model (Fable). Routes any substantive ask through three gates — design, issues, dispatch — then delegates implementation to the right models (Codex/GPT-5.6 and Opus do the heavy lifting) while the coordinator plans, reviews, and merges.
+> The task entrypoint for a coordinator-class model (Opus 5). Routes any substantive ask through three gates — design, issues, dispatch — then delegates implementation to the right models (Codex/GPT-5.6-Sol and Opus 5 subagents do the heavy lifting) while the coordinator plans, reviews, and merges.
 
 ## What it does
 
@@ -9,7 +9,7 @@
 1. **Triages** — trivial work gets done directly with zero ceremony; substantive work enters the gates.
 2. **Gate 1 — Design**: decides whether architecture/design-doc work must happen before code (penalty-for-being-wrong test), delegating to the [`design-doc`](../design-doc/) skill when it fires.
 3. **Gate 2 — Issues**: cuts GitHub issue(s) by default for code changes in a repo with a GitHub remote (skipped only when there's no remote, the work isn't a code change, or the user declines), and writes them to a strict standard — implementable by a junior dev or mid-tier model **without guesswork** (full context, exact files, agreed approach, out-of-scope list, checkable acceptance criteria).
-4. **Gate 3 — Dispatch**: assembles agent teams and routes every role to an explicit model — bulk/mechanical/token-heavy work and computer-use verification to GPT-5.6 via the Codex CLI, taste-sensitive code to Opus, planning/review/merge judgment kept by the coordinator. Includes per-model prompting techniques, because prompts that work on Claude actively hurt on Codex.
+4. **Gate 3 — Dispatch**: assembles agent teams and routes every role to an explicit model — bulk/mechanical/token-heavy work and computer-use verification to GPT-5.6-Sol via the Codex CLI, taste-sensitive code to Opus 5 subagents, planning/review/merge judgment kept by the coordinator. Includes per-model prompting techniques, because prompts that work on Claude actively hurt on Codex.
 
 It composes with the existing pipeline: `ship → design-doc → issues → implement-issue → team-executor → software-engineer`, all prefer-when-present.
 
@@ -33,7 +33,7 @@ It composes with the existing pipeline: `ship → design-doc → issues → impl
 1. **Triage** — substantive, path unclear → full gates.
 2. **Design gate fires** (public API surface + delivery-guarantee semantics are expensive to reverse). Produces a right-sized design doc via `design-doc`; user signs off on at-least-once delivery with signed payloads.
 3. **Issue gate** — cuts four issues, each one bounded PR: schema + outbox table, delivery worker, signature verification + docs, admin UI. Dependencies declared; issues 2 and 4 flagged parallel-safe.
-4. **Dispatch** — outbox migration and delivery worker go to Codex (clear spec, mechanical); public API surface and docs go to Opus with `software-engineer` attached; coordinator reviews every diff, Codex runs an independent second review of Opus's PRs and drives a computer-use verification of the admin flow. PRs merge as CI and reviewers pass.
+4. **Dispatch** — outbox migration and delivery worker go to Codex (clear spec, mechanical); public API surface and docs go to an Opus 5 subagent with `software-engineer` attached; coordinator reviews every diff, Codex runs an independent second review of Opus's PRs and drives a computer-use verification of the admin flow. PRs merge as CI and reviewers pass.
 5. **Report** — links to merged PRs, gate decisions and why, plus a note that the delivery worker took far longer than its spec suggested — a coupling smell worth a follow-up.
 
 ## Installation

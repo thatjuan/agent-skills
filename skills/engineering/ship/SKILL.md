@@ -1,6 +1,6 @@
 ---
 name: ship
-description: 'Task entrypoint and delivery orchestrator for a Fable-class coordinator. Routes a raw task through three gates — design (design-doc), GitHub issues, dispatch to the right models (Codex/Opus implement; coordinator plans, reviews, merges). Use when the user hands over a nontrivial task expecting idea-to-shipped-code — "take this on", "get this done end to end", "handle this" — or when a substantive task''s path (design? issues? which models?) is undecided.'
+description: 'Task entrypoint and delivery orchestrator for an Opus-class coordinator. Routes a raw task through three gates — design (design-doc), GitHub issues, dispatch to the right models (Codex/Opus implement; coordinator plans, reviews, merges). Use when the user hands over a nontrivial task expecting idea-to-shipped-code — "take this on", "get this done end to end", "handle this" — or when a substantive task''s path (design? issues? which models?) is undecided.'
 ---
 
 # Ship
@@ -66,7 +66,7 @@ Skip to Gate 3 with an inline spec of the same rigor only when there is no GitHu
 
 ### Division of labor
 
-In one line: **Codex (GPT-5.6, near-free)** takes bulk implementation from a clear spec plus computer-use verification; **Opus** takes taste-sensitive code (public APIs, UI, copy); the **coordinator** plans, resolves conflicts, reviews, and merges; **Sonnet** only as a cheap wrapper; **Haiku** never. The full traits table, routing quick-reference, standing rules (escalate without asking when output misses the bar; cost is a tiebreaker only; reasoning effort high at most, never xhigh/max), invocation mechanics, and per-model prompting are in [references/model-routing.md](references/model-routing.md) — already read before first dispatch. User global/project CLAUDE.md rankings override the bundled defaults.
+In one line: **Codex (GPT-5.6-Sol, near-free)** takes bulk implementation from a clear spec plus computer-use verification; **Opus 5 subagents** take taste-sensitive code (public APIs, UI, copy); the **coordinator** (Opus 5, this session) plans, resolves conflicts, reviews, and merges; **Sonnet 5** only as a cheap wrapper; **Haiku** never. The full traits table, routing quick-reference, standing rules (escalate without asking when output misses the bar; cost is a tiebreaker only; reasoning effort high at most, never xhigh/max), invocation mechanics, and per-model prompting are in [references/model-routing.md](references/model-routing.md) — already read before first dispatch. User global/project CLAUDE.md rankings override the bundled defaults.
 
 ### Orchestration shape
 

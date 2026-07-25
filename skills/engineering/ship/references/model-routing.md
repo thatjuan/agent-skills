@@ -14,10 +14,10 @@ The coordinator assigns an explicit model to every delegated agent. This file is
 
 | Model | Cost | Intelligence | Taste | Notes |
 |---|---|---|---|---|
-| Fable (coordinator) | 2 | 9 | 9 | Best in class on both axes. Reserve for planning, hard problems, review, merge judgment, taste-critical glue. |
-| Opus | 4 | 7 | 8 | Meaningfully cheaper than the coordinator, high taste. Often cheaper than Sonnet in practice because Sonnet is token-hungry. |
-| GPT-5.6 via Codex CLI | 9 | 8 | 5 | Handles hard problems from a clear spec; writes TypeScript like a Python dev and Rust like a paranoid C++ dev. Also the only computer-use option that actually works (Xcode, simulators, full desktop). |
-| Sonnet | 5 | 5 | 7 | Wrapper duty (e.g., hosting a codex call inside a workflow), mechanical checks, light user-facing polish when Opus is overkill. |
+| Opus 5 — coordinator (this session) | 2 | 9 | 9 | Best in class on both axes, and the most expensive tokens in the system. Reserve for planning, hard problems, review, merge judgment, taste-critical glue. |
+| Opus 5 — subagent | 3 | 9 | 9 | Same model, delegated: taste-sensitive implementation the coordinator specs but doesn't type. Cheaper than doing it in the coordinator's own context. |
+| GPT-5.6-Sol via Codex CLI | 9 | 8 | 5 | Handles hard problems from a clear spec; writes TypeScript like a Python dev and Rust like a paranoid C++ dev. Also the only computer-use option that actually works (Xcode, simulators, full desktop). |
+| Sonnet 5 | 5 | 6 | 7 | Wrapper duty (e.g., hosting a codex call inside a workflow), mechanical checks, light user-facing polish when Opus is overkill. |
 | Haiku | 10 | 2 | 2 | Never use. With GPT-5.6 near-free there is no task where Haiku is the right answer. |
 
 Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
@@ -31,16 +31,16 @@ Threshold: anything user-facing (UI, copy, API design) needs **taste ≥ 7**.
 | Bulk mechanical work — clear-spec implementation, migrations, codemods, data analysis | GPT-5.6 (codex) |
 | Digging through logs, giant PDFs/specs, anything token-devouring | GPT-5.6 (codex) — burn its tokens, not yours |
 | Computer use — browser flows, simulators, Xcode, screenshots, runtime verification | GPT-5.6 (codex computer-use) |
-| User-facing code — public API, SDK surface, UI, copy (taste ≥ 7 needed) | Opus, coordinator reviews |
-| Moderate-complexity in-repo implementation with conventions to follow | Opus (with `software-engineer` skill attached) |
-| Independent second review of a plan or PR | Opus or coordinator; add Codex as an extra independent perspective (strongest on Claude-written code) |
+| User-facing code — public API, SDK surface, UI, copy (taste ≥ 7 needed) | Opus 5 subagent, coordinator reviews |
+| Moderate-complexity in-repo implementation with conventions to follow | Opus 5 subagent (with `software-engineer` skill attached) |
+| Independent second review of a plan or PR | Opus 5 subagent or coordinator; add Codex as an extra independent perspective (strongest on Claude-written code) |
 | Plan review, architecture calls, contested decisions | Coordinator |
 
 ## Invocation Mechanics
 
 ### Claude models — Agent tool / team-executor
 
-Pass `model: "opus"` / `model: "sonnet"` on the Agent call, or specify the model per role when overlaying `team-executor`. Attach `software-engineer` (prefer-when-present) to any agent that writes or reviews code. Reasoning effort: high at most — never xhigh/max (per-step overthinking, bloated diffs, absurd cost; effort does not extend runway, only thought-per-step).
+Pass `model: "opus"` / `model: "sonnet"` on the Agent call (Opus 5 / Sonnet 5 resolve from those aliases), or specify the model per role when overlaying `team-executor`. Attach `software-engineer` (prefer-when-present) to any agent that writes or reviews code. Reasoning effort: high at most — never xhigh/max (per-step overthinking, bloated diffs, absurd cost; effort does not extend runway, only thought-per-step).
 
 ### GPT-5.6 — codex CLI (only path to it)
 
@@ -63,6 +63,7 @@ echo "FOLLOW-UP" | codex exec --skip-git-repo-check resume --last 2>/dev/null
 
 Hard-won gotchas:
 - **Model ids**: plain `gpt-5.6` is not a valid slug — the 5.6 family is `gpt-5.6-sol` (frontier, default), `gpt-5.6-terra` (balanced), `gpt-5.6-luna` (fast/cheap sweeps). `codex debug models` lists the catalog; if a slug is rejected, pick from that list and tell the user.
+- **Set effort explicitly**: `gpt-5.6-sol` ships with a *low* default reasoning level, so an unset `model_reasoning_effort` silently under-thinks the task.
 - **Always `</dev/null`** when stdin isn't a closed TTY — codex reads stdin and hangs forever otherwise (symptom: zero output, zero CPU).
 - **`2>/dev/null`** suppresses thinking tokens on stderr.
 - **No intermediate output** — result appears only at completion. Prefer synchronous runs; if backgrounded, budget timeouts by effort (low 150s / medium 300s / high 600s).
@@ -90,16 +91,12 @@ The single most common failure: prompting Codex as if it were Claude. The famili
 
 **Relaying Codex results**: before passing a Codex finding to the user or acting on it, inspect the cited code/diff enough to decide whether it's real. Separate confirmed issues from unverified Codex suggestions in any report. If `codex` is not installed or the command fails, report the error and do the work directly instead.
 
-### Prompting Opus
+### Prompting Opus 5 subagents
 
-- Give fuller context: conventions, pointers to exemplar files in the repo ("match the pattern in `src/api/users.ts`"), the issue text, acceptance criteria.
+- State the **goal, constraints, and verification bar**; don't enumerate steps for open-ended work — it decomposes better than a hand-written procedure and will invent the right subagent archetypes itself. Reserve numbered requirements and non-goals for scope-sensitive work where drift is the risk.
+- Give real context: conventions, pointers to exemplar files in the repo ("match the pattern in `src/api/users.ts`"), the issue text, acceptance criteria.
 - Attach `software-engineer` for any code-writing/review role; name the definition of done (tests pass, self-review gate run).
-- It benefits from explicit structure (numbered requirements, non-goals) more than Fable does, and needs guardrails against scope drift ("only touch X; if Y seems needed, stop and report").
-
-### Prompting Fable-class subagents
-
-- State the **goal, constraints, and verification bar**; do not enumerate steps — it decomposes work better than a hand-written procedure and will invent the right subagent archetypes for the task itself.
-- Grant explicit authority up front ("you may create worktrees, rebase, open PRs") so it doesn't stall at permission boundaries.
+- Grant explicit authority up front ("you may create worktrees, rebase, open PRs") so it doesn't stall at permission boundaries; add a scope fence when the surface is narrow ("only touch X; if Y seems needed, stop and report").
 - Keep effort at high. Trust-but-verify: it goes furthest end-to-end, so the checkpoints you set (CI, reviewers, merge gates) are the real control surface, not prompt-level restrictions.
 
 ## Maintenance
