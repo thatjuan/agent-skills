@@ -22,6 +22,7 @@
     "./skills/integrations/temporal",
     "./skills/integrations/unifi-operator",
     "./skills/creative/creative-director",
+    "./skills/creative/fal-studio",
     "./skills/creative/logo-studio",
     "./skills/creative/video-storyboard"
   ]

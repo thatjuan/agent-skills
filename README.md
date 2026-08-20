@@ -1,6 +1,6 @@
 # Agent Skills
 
-A collection of agent skills (slash commands and behaviors) for Claude Code and compatible coding agents. They fall into three buckets: an **engineering** delivery pipeline that plans, delegates, implements, reviews, and commits work; **integration** skills that carry deep API/SDK/tool expertise and trigger off your code; and **creative** skills that produce brand, design, and storytelling deliverables.
+A collection of agent skills (slash commands and behaviors) for Claude Code and compatible coding agents. They fall into three buckets: an **engineering** delivery pipeline that plans, delegates, implements, reviews, and commits work; **integration** skills that carry deep API/SDK/tool expertise and trigger off your code; and **creative** skills that produce brand, design, and storytelling deliverables, up to generated assets and the sites built around them.
 
 Every skill here is model-invoked — the agent can reach for one automatically when the task fits, and you can invoke any of them by name.
 
@@ -54,9 +54,10 @@ API, SDK, and tool domain expertise that fires off your code context — an impo
 
 ### Creative
 
-Brand, design, and storytelling skills that produce richly described creative deliverables — concepts, identities, and scripts — rather than code.
+Brand, design, and storytelling skills that produce creative deliverables — concepts, identities, scripts, and the generated assets and sites built around them.
 
 - **[creative-director](./skills/creative/creative-director/SKILL.md)** — World-class creative direction for branding, web design, and UI concepts — detailed creative concepts and visual strategy, not implementations.
+- **[fal-studio](./skills/creative/fal-studio/SKILL.md)** — Build a site or a generative app on fal.ai — build-time art direction, generated still kits and scroll-scrub film, or a runtime generation app behind a server-proxied queue.
 - **[logo-studio](./skills/creative/logo-studio/SKILL.md)** — Logo design studio producing 9+ SVG concepts through brand discovery, then a full app-asset package and an optional brand-guidelines document.
 - **[video-storyboard](./skills/creative/video-storyboard/SKILL.md)** — World-class all-text video storyboards for ads, brand films, and social spots — shot-by-shot with action, on-screen text, voiceover, sound, and timing.
 
