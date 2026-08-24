@@ -99,6 +99,9 @@ For a project of the user's own, put `AGENTMAIL_API_KEY` in the project's gitign
 
 ## Gotchas
 
+- **The message list includes mail the inbox sent.** Sent copies carry the `sent` label and sit alongside received mail in `GET .../messages`, so a naive "wait for a message" matches the agent's own send within milliseconds. Skip anything labelled `sent` when waiting for something to arrive. `wait-for-email.sh` already does.
+- **An inbox cannot mail itself.** A message addressed from an inbox back to that same inbox is recorded as `sent` and never loops around as a delivery, so a round trip needs a second address.
+- **Message ids are angle-bracketed, like `<...@email.amazonses.com>`.** URL-encode the whole id before putting it in a path, or the fetch 404s.
 - **Bounces and complaints are permanent.** A bounced or spam-reported address is blocked for the whole account. Never loop a send against an address that just bounced, and keep the bounce rate under 4% or the account goes under review.
 - **`message.received` is the only event carrying the full thread and message.** Every other event is metadata, so a handler that needs the body must fetch it.
 - **`403 missing_permission` is a key problem, not a code problem.** The error names the exact permission. An inbox-scoped or whitelisted key cannot be widened from itself; a broader key has to come from the console at https://console.agentmail.to.

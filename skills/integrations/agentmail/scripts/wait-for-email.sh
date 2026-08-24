@@ -73,7 +73,7 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     "$API/v0/inboxes/$INBOX/messages?$QS") || true
 
   msg_id=$(printf '%s' "$body" | python3 -c '
-import json, sys
+import json, sys, urllib.parse
 try:
     data = json.load(sys.stdin)
 except Exception:
@@ -82,7 +82,13 @@ if isinstance(data, dict) and data.get("name", "").endswith("Error"):
     print("ERROR:" + data.get("message", "request failed"), file=sys.stderr)
     sys.exit(0)
 for m in (data.get("messages") or []):
-    print(m["message_id"])
+    # The inbox lists its own outgoing mail too. Waiting means waiting for
+    # something to ARRIVE, so a copy we sent never satisfies the wait.
+    if "sent" in (m.get("labels") or []):
+        continue
+    # Message ids look like <...@email.amazonses.com>, so they must be encoded
+    # before going into a URL path.
+    print(urllib.parse.quote(m["message_id"], safe=""))
     break
 ')
 
