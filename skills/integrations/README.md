@@ -2,6 +2,7 @@
 
 API, SDK, and tool domain expertise that triggers off your code context — an import, an endpoint, an auth header, or a direct question about the service.
 
+- **[agentmail](./agentmail/SKILL.md)** — Give an agent its own real email inbox: send, receive, reply, and wait for mail over REST, the SDKs, or the CLI, for end-to-end testing of signup, OTP, and reset flows.
 - **[atlassian-cli](./atlassian-cli/SKILL.md)** — Atlassian CLI (`acli`) for Jira Cloud and org admin from the terminal — JQL automation, bulk operations, work items, boards, sprints, and filters.
 - **[browserbase-sdk](./browserbase-sdk/SKILL.md)** — Browserbase cloud-headless-browser SDK for TypeScript/Node — sessions, contexts, proxies, stealth, and Stagehand act/extract/observe primitives over CDP.
 - **[camofox-browser](./camofox-browser/SKILL.md)** — Deploy and drive camofox-browser, the Camoufox-engine anti-detection browser server (REST API on port 9377) for AI agents.

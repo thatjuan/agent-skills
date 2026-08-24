@@ -40,6 +40,7 @@ Orchestration and delivery-workflow skills — how work gets planned, delegated,
 
 API, SDK, and tool domain expertise that fires off your code context — an import, an endpoint, an auth header, or a direct question about the service. Each one packs the surface, idioms, and gotchas of a specific platform so the agent works it correctly without guessing.
 
+- **[agentmail](./skills/integrations/agentmail/SKILL.md)** — Give an agent its own real email inbox: send, receive, reply, and wait for mail over REST, the SDKs, or the CLI, for end-to-end testing of signup, OTP, and reset flows.
 - **[atlassian-cli](./skills/integrations/atlassian-cli/SKILL.md)** — Atlassian CLI (`acli`) for Jira Cloud and org admin from the terminal — JQL automation, bulk operations, work items, boards, sprints, and filters.
 - **[browserbase-sdk](./skills/integrations/browserbase-sdk/SKILL.md)** — Browserbase cloud-headless-browser SDK for TypeScript/Node — sessions, contexts, proxies, stealth, and Stagehand act/extract/observe primitives over CDP.
 - **[camofox-browser](./skills/integrations/camofox-browser/SKILL.md)** — Deploy and drive camofox-browser, the Camoufox-engine anti-detection browser server (REST API on port 9377) for AI agents.
