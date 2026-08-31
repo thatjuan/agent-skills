@@ -3,6 +3,7 @@
   "skills": [
     "./skills/engineering/ship",
     "./skills/engineering/implement-issue",
+    "./skills/engineering/batch-implement",
     "./skills/engineering/team-executor",
     "./skills/engineering/software-engineer",
     "./skills/engineering/design-doc",
