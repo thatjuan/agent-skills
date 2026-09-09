@@ -4,6 +4,7 @@ Orchestration and delivery-workflow skills — how work gets planned, delegated,
 
 - **[ship](./ship/SKILL.md)** — Task entrypoint and delivery orchestrator: triage a raw task, decide whether it needs a design doc and GitHub issues, then assemble agent teams that route each job to the right model.
 - **[design-doc](./design-doc/SKILL.md)** — Author or review a right-sized software design doc (tech spec, RFC, architecture proposal), grounded in the "Write an Effective Design Doc" practices from Refactoring English.
+- **[capture-issues](./capture-issues/SKILL.md)** — Turn a braindump, doc, or conversation into a small set of highly detailed GitHub issues, grouped under milestones where appropriate.
 - **[implement-issue](./implement-issue/SKILL.md)** — Take a GitHub issue from number to pull request: branch, plan with a stack-specialized team, confirm the approach, build via team-executor, and open the PR.
 - **[batch-implement](./batch-implement/SKILL.md)**: Implement a batch or milestone sequentially with a fresh subagent per issue and configurable branch and pull request delivery.
 - **[team-executor](./team-executor/SKILL.md)** — Turn a braindump into executed results: assemble an expert planning team, produce an execution plan, then deploy a fresh execution team for autonomous delivery.

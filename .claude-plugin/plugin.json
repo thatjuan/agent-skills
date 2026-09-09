@@ -2,6 +2,7 @@
   "name": "thatjuan-agent-skills",
   "skills": [
     "./skills/engineering/ship",
+    "./skills/engineering/capture-issues",
     "./skills/engineering/implement-issue",
     "./skills/engineering/batch-implement",
     "./skills/engineering/team-executor",
