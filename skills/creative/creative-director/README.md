@@ -22,7 +22,7 @@ Invoke this skill when the user wants **thinking**, not pixels:
 - *"Art-direct the hero experience for our new product landing page."*
 - *"Help me pitch three visual territories to the client for their rebrand."*
 
-**Not the right skill if** the user wants SVG files (→ [`logo-studio`](../logo-studio/)), coded UI (→ `stitch-design` or `heroui`), or implementation-ready mockups. This is the upstream thinking that those skills execute on.
+**Not the right skill if** the user wants SVG files (→ [`logo-studio`](../logo-studio/)), coded UI (→ `stitch-design`), or implementation-ready mockups. This is the upstream thinking that those skills execute on.
 
 ## Example walkthrough
 

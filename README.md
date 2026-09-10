@@ -1,6 +1,6 @@
 # Agent Skills
 
-A collection of agent skills (slash commands and behaviors) for Claude Code and compatible coding agents. They fall into three buckets: an **engineering** delivery pipeline that plans, delegates, implements, reviews, and commits work; **integration** skills that carry deep API/SDK/tool expertise and trigger off your code; and **creative** skills that produce brand, design, and storytelling deliverables, up to generated assets and the sites built around them.
+A small, curated set of agent skills (slash commands and behaviors) for Claude Code and compatible coding agents. They fall into three buckets: **engineering** skills that capture work as GitHub issues, implement them, and commit the result; **integration** skills that carry deep API/tool expertise and trigger off your code; and **creative** skills that produce brand and design deliverables, up to generated assets and the sites built around them.
 
 Every skill here is model-invoked — the agent can reach for one automatically when the task fits, and you can invoke any of them by name.
 
@@ -9,7 +9,7 @@ Every skill here is model-invoked — the agent can reach for one automatically 
 Install a single skill:
 
 ```bash
-npx skills add thatjuan/agent-skills --skill ship
+npx skills add thatjuan/agent-skills --skill capture-issues
 ```
 
 Install everything:
@@ -18,52 +18,37 @@ Install everything:
 npx skills add thatjuan/agent-skills --all
 ```
 
-Maintaining a clone? `scripts/link-skills.sh` symlinks every skill into `~/.claude/skills` and `~/.agents/skills` (a `git pull` then keeps them current), and `scripts/list-skills.sh` lists what is installed.
+Maintaining a clone? `scripts/link-skills.sh` symlinks every promoted skill into `~/.claude/skills` and `~/.agents/skills` (a `git pull` then keeps them current), and `scripts/list-skills.sh` lists what is installed.
 
 ## Reference
 
 ### Engineering
 
-Orchestration and delivery-workflow skills — how work gets planned, delegated, implemented, reviewed, and committed. They compose into a pipeline: [ship](./skills/engineering/ship/SKILL.md) is the entrypoint and coordinator; it opens a [design-doc](./skills/engineering/design-doc/SKILL.md) when the design gate fires, cuts GitHub issues, then routes each issue through [implement-issue](./skills/engineering/implement-issue/SKILL.md) → [team-executor](./skills/engineering/team-executor/SKILL.md) → [software-engineer](./skills/engineering/software-engineer/SKILL.md), with the `codex-*` skills as the lanes for delegating work to the OpenAI Codex CLI (gpt-5.6), and [commitpush](./skills/engineering/commitpush/SKILL.md) closing out the change.
+The issue-driven delivery loop: [capture-issues](./skills/engineering/capture-issues/SKILL.md) turns a braindump into detailed GitHub issues, [batch-implement](./skills/engineering/batch-implement/SKILL.md) works through them one subagent at a time, and [commitpush](./skills/engineering/commitpush/SKILL.md) lands each change safely.
 
-- **[ship](./skills/engineering/ship/SKILL.md)** — Task entrypoint and delivery orchestrator: triage a raw task, decide whether it needs a design doc and GitHub issues, then assemble agent teams that route each job to the right model.
-- **[design-doc](./skills/engineering/design-doc/SKILL.md)** — Author or review a right-sized software design doc (tech spec, RFC, architecture proposal), grounded in the "Write an Effective Design Doc" practices from Refactoring English.
 - **[capture-issues](./skills/engineering/capture-issues/SKILL.md)** — Turn a braindump, doc, or conversation into a small set of highly detailed GitHub issues, grouped under milestones where appropriate.
-- **[implement-issue](./skills/engineering/implement-issue/SKILL.md)** — Take a GitHub issue from number to pull request: branch, plan with a stack-specialized team, confirm the approach, build via team-executor, and open the PR.
-- **[batch-implement](./skills/engineering/batch-implement/SKILL.md)**: Implement a batch or milestone sequentially with a fresh subagent per issue and configurable branch and pull request delivery.
-- **[team-executor](./skills/engineering/team-executor/SKILL.md)** — Turn a braindump into executed results: assemble an expert planning team, produce an execution plan, then deploy a fresh execution team for autonomous delivery.
-- **[software-engineer](./skills/engineering/software-engineer/SKILL.md)** — The architect/developer/reviewer engineering SME and base layer for any agent that writes or reviews code, holding the work to the Three Lenses and Eight Standards.
-- **[codex-implementation](./skills/engineering/codex-implementation/SKILL.md)** — Delegate bulk, mechanical, or clear-spec implementation to the OpenAI Codex CLI (gpt-5.6) via non-interactive `codex exec`.
-- **[codex-review](./skills/engineering/codex-review/SKILL.md)** — Run an independent code review through the Codex CLI over uncommitted changes, a branch diff, a commit range, or a GitHub PR.
-- **[codex-computer-use](./skills/engineering/codex-computer-use/SKILL.md)** — Drive browser, GUI, and visual-verification work through Codex — a Playwright MCP browser and screenshot analysis.
+- **[batch-implement](./skills/engineering/batch-implement/SKILL.md)** — Implement a batch or milestone sequentially with a fresh subagent per issue and configurable branch and pull request delivery.
 - **[commitpush](./skills/engineering/commitpush/SKILL.md)** — Safe commit-and-push workflow with secrets detection, sensitive-file screening, and submodule-aware prompting.
 
 ### Integrations
 
 API, SDK, and tool domain expertise that fires off your code context — an import, an endpoint, an auth header, or a direct question about the service. Each one packs the surface, idioms, and gotchas of a specific platform so the agent works it correctly without guessing.
 
-- **[agentmail](./skills/integrations/agentmail/SKILL.md)** — Give an agent its own real email inbox: send, receive, reply, and wait for mail over REST, the SDKs, or the CLI, for end-to-end testing of signup, OTP, and reset flows.
-- **[atlassian-cli](./skills/integrations/atlassian-cli/SKILL.md)** — Atlassian CLI (`acli`) for Jira Cloud and org admin from the terminal — JQL automation, bulk operations, work items, boards, sprints, and filters.
-- **[browserbase-sdk](./skills/integrations/browserbase-sdk/SKILL.md)** — Browserbase cloud-headless-browser SDK for TypeScript/Node — sessions, contexts, proxies, stealth, and Stagehand act/extract/observe primitives over CDP.
-- **[camofox-browser](./skills/integrations/camofox-browser/SKILL.md)** — Deploy and drive camofox-browser, the Camoufox-engine anti-detection browser server (REST API on port 9377) for AI agents.
 - **[cloudbeds-api](./skills/integrations/cloudbeds-api/SKILL.md)** — Cloudbeds hospitality API for property-management, booking, payments, accounting, and channel integrations.
-- **[drizzle-orm](./skills/integrations/drizzle-orm/SKILL.md)** — Type-safe SQL ORM for TypeScript with zero runtime overhead — schema design, queries, relations, and migrations, PostgreSQL-focused.
-- **[grok-imagine-api](./skills/integrations/grok-imagine-api/SKILL.md)** — xAI Grok Imagine API for generating, editing, and refining images through REST, `xai_sdk`, OpenAI-compatible SDKs, and the Vercel AI SDK.
-- **[heroui](./skills/integrations/heroui/SKILL.md)** — HeroUI v3 component library for React (web) and React Native (mobile) — components, theming, and migration from NextUI/HeroUI v2.
-- **[openrouter-api](./skills/integrations/openrouter-api/SKILL.md)** — OpenRouter unified LLM API — one endpoint across hundreds of models with provider routing, fallbacks, caching, tool calling, and multimodal inputs.
-- **[openwa](./skills/integrations/openwa/SKILL.md)** — OpenWA self-hosted WhatsApp API gateway — deployment, sessions, REST API, webhooks, real-time events, SDKs, and plugins.
-- **[temporal](./skills/integrations/temporal/SKILL.md)** — Temporal.io durable-execution and workflow orchestration for Python and TypeScript — activities, workers, signals, queries, and reliable distributed systems.
 - **[unifi-operator](./skills/integrations/unifi-operator/SKILL.md)** — Operate UniFi Network and Protect through their local APIs on a UDM/Cloud Key/self-hosted console — gateways, switches, APs, firewall, cameras, and events.
 
 ### Creative
 
-Brand, design, and storytelling skills that produce creative deliverables — concepts, identities, scripts, and the generated assets and sites built around them.
+Brand, design, and storytelling skills that produce creative deliverables — concepts, identities, and the generated assets and sites built around them.
 
 - **[creative-director](./skills/creative/creative-director/SKILL.md)** — World-class creative direction for branding, web design, and UI concepts — detailed creative concepts and visual strategy, not implementations.
 - **[fal-studio](./skills/creative/fal-studio/SKILL.md)** — Build a site or a generative app on fal.ai — build-time art direction, generated still kits and scroll-scrub film, or a runtime generation app behind a server-proxied queue.
 - **[logo-studio](./skills/creative/logo-studio/SKILL.md)** — Logo design studio producing 9+ SVG concepts through brand discovery, then a full app-asset package and an optional brand-guidelines document.
-- **[video-storyboard](./skills/creative/video-storyboard/SKILL.md)** — World-class all-text video storyboards for ads, brand films, and social spots — shot-by-shot with action, on-screen text, voiceover, sound, and timing.
+
+## Deprecated skills
+
+Skills that are no longer maintained live in [`skills/deprecated/`](./skills/deprecated/README.md). They are kept for reference, are not part of the plugin, and are not linked by `scripts/link-skills.sh`.
 
 ## Creating skills
 
-See [CLAUDE.md](./CLAUDE.md) for the repo conventions: which bucket a skill belongs in, the invariant that every skill appears in this README, its bucket README, and `.claude-plugin/plugin.json`, the per-skill `README.md` each folder ships, and the frontmatter validation step required before every commit. [CONTEXT.md](./CONTEXT.md) defines the shared vocabulary (skill, bucket, promoted, the delivery pipeline).
+See [CLAUDE.md](./CLAUDE.md) for the repo conventions: which bucket a skill belongs in, the invariant that every promoted skill appears in this README, its bucket README, and `.claude-plugin/plugin.json`, the per-skill `README.md` each folder ships, and the frontmatter validation step required before every commit. [CONTEXT.md](./CONTEXT.md) defines the shared vocabulary (skill, bucket, promoted, deprecated).
