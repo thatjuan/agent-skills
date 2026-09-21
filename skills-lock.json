@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "capture-issues": {
+      "source": "thatjuan/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/capture-issues/SKILL.md",
+      "computedHash": "e503b60a544aac7b4491ded7fb8dd8ce66c1c9bfbf74390906e8e3c1f3ade237"
+    },
     "create-readme": {
       "source": "github/awesome-copilot",
       "sourceType": "github",
