@@ -226,7 +226,8 @@ def verify_webhook(secret, event_id, header, raw_body, tolerance_seconds=300):
 **Known-good test vector** (disable the timestamp check to run it; it must return true, and flipping one byte of the secret, event ID, or body must return false):
 
 ```
-secret   = whsec_AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8
+secret   = "whsec_" + base64(bytes 0x00..0x1f) with the "=" padding stripped
+           python: "whsec_" + base64.b64encode(bytes(range(32))).decode().rstrip("=")
 event_id = wh_0123456789abcdef
 header   = t=1754563200,v1=d35d432699cc9e59eb73da4396b9a3a96003ba6a9ae259256d270ff3c8f24207
 raw_body = {"webhookInfo":{"type":"email_sent"}}
