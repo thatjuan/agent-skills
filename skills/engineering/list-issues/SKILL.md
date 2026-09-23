@@ -5,11 +5,14 @@ description: List every open GitHub issue in the current repo, grouped by catego
 
 # List issues
 
-Fetch every open issue in the current repo:
+Fetch every open issue in the current repo, converting each creation date to the system's local time zone:
 
 ```bash
-gh issue list --state open --limit 1000 --json number,title,createdAt,labels,body
+gh issue list --state open --limit 1000 --json number,title,createdAt,labels,body \
+  --jq 'map(.createdAt |= (fromdateiso8601 | strflocaltime("%Y-%m-%d")))'
 ```
+
+GitHub returns `createdAt` in UTC; `strflocaltime` converts it using the machine's time zone (`TZ` or the OS setting). Use the converted date as is. Do not reformat it from the raw UTC timestamp, or an issue opened late in the evening shows the next day.
 
 ## Categories
 
@@ -30,7 +33,7 @@ A heading per category, then one line per issue, sorted by issue number descendi
 - #40 2026-09-10 Add dark mode to the settings page.
 ```
 
-- Date is the day the issue was opened, `YYYY-MM-DD`.
+- Date is the day the issue was opened in the system's local time zone, `YYYY-MM-DD`.
 - The description is one sentence or less, rewritten from the title and body so it says what the issue is about.
 
 The list is done when every open issue appears exactly once. Print the list and nothing else.

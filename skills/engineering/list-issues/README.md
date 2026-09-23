@@ -4,7 +4,7 @@
 
 ## What it does
 
-Pulls the open issues with `gh issue list`, groups them by label (or by an inferred category when the repo has no labels), and prints one line per issue: number, date opened, and a one-sentence description.
+Pulls the open issues with `gh issue list`, groups them by label (or by an inferred category when the repo has no labels), and prints one line per issue: number, date opened (in the machine's local time zone), and a one-sentence description.
 
 ## When to use it
 
