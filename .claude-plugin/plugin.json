@@ -4,6 +4,7 @@
     "./skills/engineering/capture-issues",
     "./skills/engineering/batch-implement",
     "./skills/engineering/commitpush",
+    "./skills/engineering/list-issues",
     "./skills/integrations/cloudbeds-api",
     "./skills/integrations/forge-suite",
     "./skills/integrations/typesafe-ai",
