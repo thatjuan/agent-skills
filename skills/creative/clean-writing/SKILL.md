@@ -1,40 +1,68 @@
 ---
 name: clean-writing
-description: Write or edit prose for clarity, economy, and a natural voice. Use for drafting reader-facing text, tightening drafts, or removing formulaic AI phrasing from emails, documentation, articles, and product copy.
+description: Write or edit prose that reads as written by a careful person. Use for drafting reader-facing text, tightening drafts, or stripping AI tells (template structure, corrective framing, announced significance, inflated vocabulary) from emails, docs, articles, and product copy.
 ---
 
 # Clean Writing
 
-Make the reader's work easy. Apply Strunk and White's principles of composition, then use Humanizer's pattern checks to remove empty rhetoric. Preserve the author's meaning and voice.
+Make the reader's work easy. Compose with Strunk and White's principles, then revise against the ten **reflexes** below. A reflex is a default that fills the space where a decision belongs: the template stands in for a chosen order, "this matters" for a reason, "robust" for a property. Each repair makes the missing decision. Preserve the author's meaning, facts, and voice throughout.
 
 ## Compose for the reader
 
 - Choose an order that fits the purpose. In practical writing, lead with the answer, action, or result; follow with the evidence and context the reader needs.
-- Give each paragraph one job. Develop its main idea; move digressions elsewhere. Use parallel grammar for parallel ideas.
-- Name the actor and action. Prefer active verbs; retain the passive when the actor is unknown or the recipient deserves focus. Turn noun-heavy phrases into verbs: "conduct an evaluation" becomes "evaluate."
-- State what happens directly. Preserve negation when it expresses a real limit or distinction.
-- Choose concrete nouns and precise verbs. Use familiar words when they carry the meaning; keep technical terms when they improve precision.
-- Cut words that add neither meaning nor useful rhythm. Keep explanations, transitions, and qualifications that the reader needs.
-- Keep subjects near verbs and modifiers near what they modify. Make pronoun references clear. Put the sentence's weight on the important information, often at the end.
+- Give each paragraph one job. Use parallel grammar for parallel ideas.
+- Name the actor and the action. Prefer active verbs; keep the passive when the actor is unknown or the recipient deserves focus. "Conduct an evaluation" becomes "evaluate."
+- Choose concrete nouns and precise verbs. Keep technical terms where they add precision. Repeat the correct term rather than cycling synonyms.
+- Cut words that add neither meaning nor useful rhythm. Keep the explanations, transitions, and qualifications the reader needs.
+- Keep subjects near verbs and modifiers near what they modify. Make the grammatical subject the thing the sentence is about. Put the weight at the end.
+- Let voice come from observation, judgment, and word choice. Match the author's register; keep their warmth, humor, and distinctive phrasing. Respect the requested genre, dialect, and house style.
 
-## Keep the voice credible
+## Revise against the ten reflexes
 
-Let voice emerge from observation, judgment, and word choice. Match the author's register and the audience's needs. Retain useful warmth, humor, and distinctive phrasing; avoid manufacturing personality through slang, forced intimacy, or deliberate errors. Vary sentence length with the thought. Concision need not make every sentence short.
+Read the draft once per reflex. Repair the sentence, not the word: swapping "delve" for "dig into" keeps the reflex alive. The tells listed under each reflex are current examples of a mechanism; new models drop old tells and grow new ones, so hunt the mechanism.
 
-Treat style rules as defaults. Respect the requested genre, dialect, and house style. Prefer natural, current usage over dated prescriptions.
+1. **Template shape.** Intro, three sections, recap, at every length; signposting ("First, we'll look at..."); a closing summary of what was just said. Target: length and order follow the content. A short answer is the answer. Stop when the last point lands.
+   - Before: "Caching can be tricky. Let's walk through three key strategies. ... In summary, choosing the right strategy depends on your needs."
+   - After: "Cache the rendered page at the CDN for five minutes. Your data changes hourly, so nothing finer is worth the invalidation work."
 
-## Remove the slop
+2. **Corrective framing.** Defining a thing by what it isn't: "not X, it's Y," "more than an X, it's a Y," "not simply," "rather than relying on X." Target: state the affirmative claim. Keep a contrast only when the reader actually holds the rejected view.
+   - Before: "This isn't just a bug fix. It's a rethink of how sessions work."
+   - After: "This change moves session state into Redis, so logins survive deploys."
 
-Look for these patterns, then repair the underlying weakness:
+3. **Announced significance.** Telling the reader something is important instead of showing why: "this matters," "why X matters," "a pivotal moment," "a testament to," trailing "-ing" clauses ("highlighting its importance"). Target: give the consequence and let the reader judge its weight. If the source supplies no consequence, cut the claim.
+   - Before: "The team shipped offline mode, marking a pivotal step in the app's evolution."
+   - After: "The team shipped offline mode. Field crews can now log inspections without signal."
 
-- **Inflated significance:** Replace praise, superlatives, and claims of transformation with supported facts. Cut trailing phrases such as "highlighting its importance" when they add no explanation.
-- **Empty authority:** Attribute claims to identifiable sources when available. Preserve necessary uncertainty; flag unsupported material claims. Never invent facts, citations, results, or personal experiences to make prose more vivid.
-- **Stock rhetoric:** Replace ceremonial openings, automatic praise, generic optimistic endings, and "not just X, but Y" flourishes with the actual point. Keep contrasts that explain a real difference.
-- **Mechanical wording:** Prefer "is," "has," and "use" where they fit. Repeat the correct term instead of cycling through synonyms. Remove forced triplets and meaningless "from X to Y" ranges. Suspect words are editing prompts, not a blacklist or proof of AI authorship.
-- **Decorative structure:** Use paragraphs for connected reasoning, lists for parallel items or steps, and headings where they aid navigation. Remove routine bolding and chatty wrappers from finished copy. Use commas, parentheses, or full stops instead of em dashes.
+4. **Inflated register.** Prestige words where plain ones fit: delve, underscore, showcase, pivotal, intricate, robust, seamless, dependable, leverage, streamline, foster, landscape, realm, tapestry; "serves as" or "functions as" where "is" fits. Target: the plainest word that carries the meaning; is, has, uses, shows.
+   - Before: "The platform serves as a robust solution that leverages AI to streamline invoicing."
+   - After: "The platform uses AI to draft invoice replies."
 
-## Revise and deliver
+5. **Reflexive rhythm.** Triplets by default ("fast, reliable, and secure"), sentences all 15 to 25 words, paragraphs of equal size, "from X to Y" ranges that name no real range. Target: list as many items as the facts supply; let sentence and paragraph length follow the thought. Short sentences land a point; long ones carry reasoning.
+   - Before: "It is fast, flexible, and secure."
+   - After: "It returns most queries in under 50 ms."
 
-Read the draft once for sense and once for sound. Repair awkward passages; leave effective ones alone. Compare edits against the source: preserve facts, scope, certainty, commitments, citations, and quoted wording. Flag substantive ambiguity rather than silently resolving it.
+6. **Abstraction.** Truisms, generic nouns, hypotheticals where a real case exists, wisdom that fits any topic. Target: the particular case, number, name, or observation that only this piece could contain. Take particulars from the source or the author; when none exist, say less.
+   - Before: "Clear communication is key to any team's success."
+   - After: "Standups ran 40 minutes because people read tickets aloud. Posting updates beforehand cut them to 12."
 
-Finish when the reader can follow the point without rereading, each paragraph advances it, and no unsupported detail has entered the text. Return the finished prose. Add an editorial note only when requested or needed to explain an unresolved factual issue.
+7. **Hedge stacking and false balance.** Qualifiers piled before the claim ("may potentially help in some cases"), "can provide," "generally speaking," and both-sides summaries that end "the truth lies somewhere in between." Target: make the claim, then put one qualifier on the specific uncertainty. When sources disagree, say which evidence would settle it or take the position the evidence supports.
+   - Before: "This may potentially help improve performance in certain scenarios."
+   - After: "This halves cold-start time on the x86 benchmarks; ARM is untested."
+
+8. **Phantom authority.** "Experts agree," "studies show," "observers have noted," and any invented fact, quote, citation, statistic, or personal experience added for vividness. Target: name the source when one exists; otherwise state the claim as the author's, or flag it as unsupported. Preserve real uncertainty.
+   - Before: "Experts agree that remote teams are more productive."
+   - After: "Stanford's 2015 Ctrip trial found a 13% productivity gain for staff working from home." (Or, with no source in hand: flag the claim.)
+
+9. **Formatting for show.** Bullets for connected reasoning, headings on a short reply, bold on every list stem, "**Label:** sentence" bullets, emoji markers, tables for two facts, title case in body text. Target: paragraphs for reasoning, lists for parallel items or ordered steps, headings where a reader navigates, bold for the one thing a skimmer must not miss. Use commas, parentheses, or full stops instead of em dashes.
+   - Before: "**Speed:** The new parser is faster. **Memory:** It uses less memory."
+   - After: "The new parser is twice as fast and uses a third of the memory."
+
+10. **Chat residue.** Assistant habits leaking into finished copy: praise for the question, "I hope this email finds you well," "Let's explore," offers of further help, and the aphoristic closer ("In the end, the real question is..."). Target: start with content; end on the last substantive sentence. Close a message with the specific next step when one exists.
+    - Before: "Great question! ... Hope this helps, and let me know if you'd like me to go deeper!"
+    - After: "... I'll send the revised contract Thursday."
+
+## Deliver
+
+Compare the result against the source: facts, scope, certainty, commitments, citations, and quoted wording survive unchanged. Flag substantive ambiguity rather than silently resolving it. Leave passages that already work alone; the reflexes are diagnostics, not a quota.
+
+Done when every reflex has had its pass, the reader can follow the point without rereading, each paragraph advances it, and no unsupported detail has entered the text. Return the finished prose. Add an editorial note only when requested or when a factual issue is unresolved.
