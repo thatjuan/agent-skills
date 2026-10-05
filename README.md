@@ -28,7 +28,7 @@ The issue-driven delivery loop: [capture-issues](./skills/engineering/capture-is
 
 - **[capture-issues](./skills/engineering/capture-issues/SKILL.md)** — Turn a braindump, doc, or conversation into a small set of highly detailed GitHub issues, grouped under milestones where appropriate.
 - **[batch-implement](./skills/engineering/batch-implement/SKILL.md)** — Implement a batch or milestone sequentially with a fresh subagent per issue and configurable branch and pull request delivery.
-- **[orca-implement](./skills/engineering/orca-implement/SKILL.md)** — Implement a batch or milestone through supervised Orca workers in Orca worktrees, with one combined pull request or one per issue.
+- **[orca-implement](./skills/engineering/orca-implement/SKILL.md)** — Implement a batch or milestone through supervised Orca workers, one Orca worktree per issue, in parallel waves where dependencies allow, with one combined pull request or one per issue.
 - **[commitpush](./skills/engineering/commitpush/SKILL.md)** — Safe commit-and-push workflow with secrets detection, sensitive-file screening, and submodule-aware prompting.
 - **[list-issues](./skills/engineering/list-issues/SKILL.md)**: List every open GitHub issue in the current repo, grouped by category, newest number first, with the date opened and a one-line description.
 
