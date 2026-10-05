@@ -3,6 +3,7 @@
   "skills": [
     "./skills/engineering/capture-issues",
     "./skills/engineering/batch-implement",
+    "./skills/engineering/orca-implement",
     "./skills/engineering/commitpush",
     "./skills/engineering/list-issues",
     "./skills/integrations/cloudbeds-api",
