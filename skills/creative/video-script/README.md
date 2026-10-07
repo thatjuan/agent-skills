@@ -18,7 +18,7 @@ The craft draws on Robert McKee, Blake Snyder, Pixar's story rules and Andrew St
 - *"Give me three 15s TikTok concepts for this app."*
 - *"I have hours of footage and no idea what the story is."*
 
-Use [`creative-director`](../creative-director/) first when the brand's visual world isn't defined yet.
+Use [`creative-director`](../creative-director/) first when the brand's visual world isn't defined yet. Hand the finished script to [`video-production`](../video-production/) to make the video.
 
 ## Example
 

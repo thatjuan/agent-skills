@@ -50,6 +50,7 @@ Brand, design, and storytelling skills that produce creative deliverables — co
 - **[fal-studio](./skills/creative/fal-studio/SKILL.md)** — Build a site or a generative app on fal.ai — build-time art direction, generated still kits and scroll-scrub film, or a runtime generation app behind a server-proxied queue.
 - **[logo-studio](./skills/creative/logo-studio/SKILL.md)** — Logo design studio producing 9+ SVG concepts through brand discovery, then a full app-asset package and an optional brand-guidelines document.
 - **[video-script](./skills/creative/video-script/SKILL.md)**: Production-ready video scripts for ads, brand films, and creator videos, built on a five-line story spine (situation, desire, conflict, change, result) and written out as shot-by-shot frames a crew can shoot from.
+- **[video-production](./skills/creative/video-production/SKILL.md)**: Turn a script into a finished video: a look bible of characters and locations, keyframes from image models, shots animated on Runway, voice, effects, and music from ElevenLabs, cut and mixed with ffmpeg.
 
 ## Deprecated skills
 
