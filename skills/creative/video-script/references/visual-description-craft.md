@@ -1,6 +1,6 @@
 # Visual Description Craft
 
-How to write rich, specific, filmable prose that replaces a sketched storyboard frame. The reader must be able to *see* the frame in their head, and a director must be able to *shoot* it without asking what was meant.
+How to write rich, specific, filmable prose that replaces a sketched frame. The reader must be able to *see* the frame in their head, and a director must be able to *shoot* it without asking what was meant.
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@ How to write rich, specific, filmable prose that replaces a sketched storyboard 
 
 ## The Core Principle
 
-A storyboard frame, written as text, has one job: **make the image inevitable**. After reading the description, a competent director, DP, casting director, and stylist should converge on roughly the same picture — not identical, but unambiguous in tone, action, and meaning.
+A frame written as text has one job: **make the image inevitable**. After reading the description, a competent director, DP, casting director, and stylist should converge on roughly the same picture — not identical, but unambiguous in tone, action, and meaning.
 
 The Heath brothers' principle from *Made to Stick* applies directly: **be concrete**. *Concrete is what allows people to coordinate.* "A man feels nostalgic" is abstract. "A man stands at the kitchen sink in a faded Pearl Jam t-shirt, holding a chipped mug, watching steam fog the window where his son's stick-figure drawing is still taped from ten years ago" is concrete. Crew can shoot the second one.
 
@@ -38,7 +38,7 @@ Every frame's description should address most of these. Skip a dimension only wh
 | **Time** | Hour, season, weather, light direction |
 | **People** | Who, how many, what they look like, what they're doing |
 | **Action** | What is moving, in what direction, at what speed |
-| **Mood** | What this frame *feels* like — emotional register |
+| **Mood** | What this frame *feels* like, set by the line it serves: the ease of a Situation, the pressure of a Conflict, the release of a Result |
 | **Detail** | The one specific thing that makes this frame *this* and not generic |
 
 The "detail" is the most important and the easiest to skip. Sullivan in *Hey Whipple*: the great spots are great because of *one specific thing*.
@@ -64,7 +64,7 @@ The right rung is the highest one the duration and tone can carry. A 6s bumper r
 
 ## Sensory Layering
 
-Visual frames are predominantly sight — but text storyboards can layer in *implied* sound, smell, texture, and temperature. The implication helps the reader feel the frame, and it informs sound design.
+Visual frames are predominantly sight — but a written frame can layer in *implied* sound, smell, texture, and temperature. The implication helps the reader feel the frame, and it informs sound design.
 
 - **Sight (primary)** — composition, light, color, motion
 - **Implied sound** — *the kettle is whistling, half-acknowledged* / *a fluorescent ballast hums*
@@ -147,10 +147,10 @@ Optional grade reference: *"think* Lost in Translation *Tokyo at night — sodiu
 
 ## Motion in Frame
 
-Storyboards live or die on *what is moving*. Describe motion as a vector.
+Frames live or die on *what is moving*. Describe motion as a vector.
 
 - **Subject motion** — who/what is moving, in what direction, at what speed (a slow turn, a sprint past camera, a hand drifting up to the face)
-- **Camera motion** — see Shot Language reference
+- **Camera motion** — the movement named in the `Shot:` field (push-in, track, handheld, crane, whip pan), with its speed and motivation
 - **Internal motion** — wind in fabric, steam, dust, water, traffic, leaves
 - **Stillness** — when nothing moves, name it. *"Held still — only her chest rises."*
 
@@ -195,6 +195,7 @@ Avoid stacking too many — a frame referenced from four different worlds reads 
 ### Filmable version
 
 > **Frame 3** — `00:06–00:09`
+> **Line:** Situation
 > **Shot:** Static MS, eye-level, 35mm.
 > **Visual:** A galley kitchen, late summer morning. Soft east-window light raking across a butcher-block counter — dust motes catching in the beam. *Maya, 31, half-asleep,* in an oversized Sun Ra concert tee and sleep shorts, hair piled in a topknot held by a pencil. She's standing barefoot on cool tile, holding the [BRAND] box at arm's length like she's not yet decided about it. A cat tail flicks past in the background, out of focus. The room is muted — sage cabinetry, oat-toned walls, a single yellow ceramic mug on the counter as a color pop. Camera holds. She tilts her head. A small private smile begins, then she stops it before it finishes.
 > **SFX:** Coffee machine sputtering quietly off-screen, a bird outside.

@@ -7,6 +7,9 @@ Archived on 2026-09-09 when the repo was narrowed to the issue-driven delivery l
 - `ship`, `design-doc`, `implement-issue`, `team-executor`, `software-engineer` — the old multi-stage delivery pipeline, superseded by `capture-issues` + `batch-implement`.
 - `codex-implementation`, `codex-review`, `codex-computer-use` — delegation lanes to the OpenAI Codex CLI.
 - `agentmail`, `atlassian-cli`, `browserbase-sdk`, `camofox-browser`, `drizzle-orm`, `grok-imagine-api`, `heroui`, `openrouter-api`, `openwa`, `temporal` — integration skills.
-- `video-storyboard` — creative skill.
 
 To revive one, move its folder back into the right bucket and add it to the top-level `README.md`, the bucket `README.md`, and `.claude-plugin/plugin.json`.
+
+Revived:
+
+- `video-storyboard` returned on 2026-10-07 as `skills/creative/video-script`, rebuilt around the five-line story method.
