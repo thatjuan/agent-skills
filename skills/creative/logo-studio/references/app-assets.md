@@ -416,7 +416,7 @@ dist/assets/
 
 **This is the single biggest failure mode.** Sharp, librsvg, and resvg all need the font installed on the system when rasterizing an SVG that contains `<text>` elements. CI containers silently substitute, producing wrong-font output.
 
-**Fix:** Convert `<text>` to paths in the icon master SVG before rasterization. The icon master uses outlined paths specifically to sidestep this issue. See [typography.md](typography.md) for the dual-output workflow — keep a working SVG with live text, ship an outlined version for rasterization.
+**Fix:** Convert `<text>` to paths in the icon master SVG before rasterization. The icon master uses outlined paths specifically to sidestep this issue. Keep a working SVG with live text and ship an outlined version for rasterization.
 
 Conversion commands:
 

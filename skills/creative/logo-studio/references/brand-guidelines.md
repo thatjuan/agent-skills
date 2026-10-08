@@ -1,12 +1,12 @@
 # Brand Guidelines Document
 
-The Phase 8 deliverable is a multi-page brand guidelines document that establishes the rules for applying the finalized visual identity across every touchpoint — product UI, decks, social, print, motion, and voice.
+The brand guidelines deliverable is a multi-page brand guidelines document that establishes the rules for applying the finalized visual identity across every touchpoint — product UI, decks, social, print, motion, and voice.
 
 ## Table of Contents
 
 - [Offer and Depth Modes](#offer-and-depth-modes)
 - [Document Structure](#document-structure)
-- [Inputs Synthesized from Earlier Phases](#inputs-synthesized-from-earlier-phases)
+- [Inputs Already in the Session](#inputs-already-in-the-session)
 - [Extension Interview](#extension-interview)
 - [Section Reference](#section-reference)
 - [Rendering and Output](#rendering-and-output)
@@ -14,7 +14,7 @@ The Phase 8 deliverable is a multi-page brand guidelines document that establish
 
 ## Offer and Depth Modes
 
-Phase 8 activates only after a final logo is selected (end of Phase 6 or Phase 7). The user is offered the deliverable explicitly — it is not produced automatically.
+The guidelines are offered only after a final logo is selected. The user is offered the deliverable explicitly — it is not produced automatically.
 
 Three depth modes are available:
 
@@ -44,19 +44,17 @@ Every guidelines document produced follows this canonical section order. Section
 | 10 | Asset Management | Yes | File formats, naming convention |
 | 11 | Brand Questions & Approvals | Full | Contact, version, approval process |
 
-## Inputs Synthesized from Earlier Phases
+## Inputs Already in the Session
 
-The document draws these inputs from work already completed in Phases 1–6:
+The document draws these inputs from the design work already done:
 
 | Guidelines field | Derived from |
 |------------------|--------------|
-| Brand name, tagline | Phase 1 Discovery |
-| Audience, purpose statement | Phase 1 Discovery, Only Statement |
-| Primary logo, reversed, monochrome | Phase 6 final deliverables |
-| Signature element (dot, mark, counter) | Phase 4 SVG construction notes |
-| Primary brand colors | Phase 2 archetype mapping + Phase 4 color variants |
-| Typography families | Phase 4 typography choice |
-| Tone/personality axes | Phase 1 personality spectrums |
+| Brand name, tagline, audience, purpose | What was learned about the brand |
+| Primary logo, reversed, monochrome | The final files |
+| Signature element (dot, mark, counter) | The idea behind the mark |
+| Primary brand colors, typography | The final logo |
+| Tone and personality | The brand and the presentation |
 
 No re-prompting is needed for these — they already exist in the session context.
 
@@ -82,7 +80,7 @@ For inputs not produced by earlier phases, a short extension interview is conduc
 | Canvas target | "16:9 deck", "product UI", "print A4", "responsive web" |
 | Border radius scale | 0 / 8 / 12 / 50% typical |
 | Component inventory | Which of the 12 canonical components the brand uses |
-| Voice attributes (3–4) | Pulled from personality axes — e.g. Confident, Precise, Human, Earned |
+| Voice attributes (3–4) | Drawn from the brand's personality — e.g. Confident, Precise, Human, Earned |
 | Voice sounds-like / never-like pairs | One example each per attribute |
 
 ### Full mode adds
