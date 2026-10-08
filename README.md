@@ -45,7 +45,7 @@ API, SDK, and tool domain expertise that fires off your code context — an impo
 
 Brand, design, and storytelling skills that produce creative deliverables — concepts, identities, and the generated assets and sites built around them.
 
-- **[clean-writing](./skills/creative/clean-writing/SKILL.md)**: Clear, economical prose: Strunk and White's composition principles plus a revision pass against ten AI-writing reflexes, from template structure and corrective framing to phantom authority, each with a target and a before/after example.
+- **[clean-writing](./skills/creative/clean-writing/SKILL.md)**: Clear, economical prose: Strunk and White's composition principles plus a revision pass against eleven AI-writing reflexes, from template structure and corrective framing to phantom authority, each with a target and a before/after example.
 - **[creative-director](./skills/creative/creative-director/SKILL.md)** — World-class creative direction for branding, web design, and UI concepts — detailed creative concepts and visual strategy, not implementations.
 - **[fal-studio](./skills/creative/fal-studio/SKILL.md)** — Build a site or a generative app on fal.ai — build-time art direction, generated still kits and scroll-scrub film, or a runtime generation app behind a server-proxied queue.
 - **[logo-studio](./skills/creative/logo-studio/SKILL.md)** — Designs an iconic logo with full creative freedom, then a full app-asset package and an optional brand-guidelines document.

@@ -4,7 +4,7 @@ Write prose that reads as written by a careful person. Invoke `clean-writing` to
 
 Example: "Use clean-writing to edit this launch post. Keep the facts and our casual tone."
 
-The [skill](./SKILL.md) combines Strunk and White's composition principles with a revision pass against ten **reflexes**, the defaults that fill the space where a writing decision belongs. Each reflex has a target behavior and a before/after pair. It requires no tools or other skills at runtime.
+The [skill](./SKILL.md) combines Strunk and White's composition principles with a revision pass against eleven **reflexes**, the defaults that fill the space where a writing decision belongs. Each reflex has a target behavior and a before/after pair. It requires no tools or other skills at runtime.
 
 1. Template shape
 2. Corrective framing
@@ -15,7 +15,8 @@ The [skill](./SKILL.md) combines Strunk and White's composition principles with 
 7. Hedge stacking and false balance
 8. Phantom authority
 9. Formatting for show
-10. Chat residue
+10. Slogan headings
+11. Chat residue
 
 ## Sources and editorial choices
 

@@ -5,7 +5,7 @@ description: Write or edit prose that reads as written by a careful person. Use 
 
 # Clean Writing
 
-Make the reader's work easy. Compose with Strunk and White's principles, then revise against the ten **reflexes** below. A reflex is a default that fills the space where a decision belongs: the template stands in for a chosen order, "this matters" for a reason, "robust" for a property. Each repair makes the missing decision. Preserve the author's meaning, facts, and voice throughout.
+Make the reader's work easy. Compose with Strunk and White's principles, then revise against the eleven **reflexes** below. A reflex is a default that fills the space where a decision belongs: the template stands in for a chosen order, "this matters" for a reason, "robust" for a property. Each repair makes the missing decision. Preserve the author's meaning, facts, and voice throughout.
 
 ## Compose for the reader
 
@@ -17,7 +17,7 @@ Make the reader's work easy. Compose with Strunk and White's principles, then re
 - Keep subjects near verbs and modifiers near what they modify. Make the grammatical subject the thing the sentence is about. Put the weight at the end.
 - Let voice come from observation, judgment, and word choice. Match the author's register; keep their warmth, humor, and distinctive phrasing. Respect the requested genre, dialect, and house style.
 
-## Revise against the ten reflexes
+## Revise against the eleven reflexes
 
 Read the draft once per reflex. Repair the sentence, not the word: swapping "delve" for "dig into" keeps the reflex alive. The tells listed under each reflex are current examples of a mechanism; new models drop old tells and grow new ones, so hunt the mechanism.
 
@@ -57,7 +57,11 @@ Read the draft once per reflex. Repair the sentence, not the word: swapping "del
    - Before: "**Speed:** The new parser is faster. **Memory:** It uses less memory."
    - After: "The new parser is twice as fast and uses a third of the memory."
 
-10. **Chat residue.** Assistant habits leaking into finished copy: praise for the question, "I hope this email finds you well," "Let's explore," offers of further help, and the aphoristic closer ("In the end, the real question is..."). Target: start with content; end on the last substantive sentence. Close a message with the specific next step when one exists.
+10. **Slogan headings.** Titles and headings built as comma-joined parallel imperatives or noun phrases with the "and" removed ("Pick the files, send the link"; "One command, zero config"), often with "the" pointing at things the reader hasn't met. They carry the rhythm of ad copy and hide what the section covers. Target: a heading names the section's subject or the question it answers, as a plain noun phrase or one ordinary clause. Test: the heading still works as an entry in a table of contents. If it reads as a tagline, rewrite it.
+    - Before: "Pick the files, send the link"
+    - After: "Sharing files by link"
+
+11. **Chat residue.** Assistant habits leaking into finished copy: praise for the question, "I hope this email finds you well," "Let's explore," offers of further help, and the aphoristic closer ("In the end, the real question is..."). Target: start with content; end on the last substantive sentence. Close a message with the specific next step when one exists.
     - Before: "Great question! ... Hope this helps, and let me know if you'd like me to go deeper!"
     - After: "... I'll send the revised contract Thursday."
 
