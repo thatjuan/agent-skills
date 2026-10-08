@@ -10,6 +10,7 @@
     "./skills/integrations/forge-suite",
     "./skills/integrations/typesafe-ai",
     "./skills/integrations/unifi-operator",
+    "./skills/creative/big-idea",
     "./skills/creative/clean-writing",
     "./skills/creative/creative-director",
     "./skills/creative/fal-studio",
