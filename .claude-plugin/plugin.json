@@ -6,6 +6,7 @@
     "./skills/engineering/orca-implement",
     "./skills/engineering/commitpush",
     "./skills/engineering/list-issues",
+    "./skills/engineering/runaway-cost-audit",
     "./skills/integrations/cloudbeds-api",
     "./skills/integrations/forge-suite",
     "./skills/integrations/typesafe-ai",
