@@ -169,6 +169,7 @@ def process_file(path: str) -> str:
 ## Client Usage
 
 ```python
+import os
 from temporalio.client import Client, TLSConfig
 
 # Local
@@ -188,7 +189,7 @@ client = await Client.connect(
 client = await Client.connect(
     "my-endpoint:7233",
     namespace="my-ns.acct-id",
-    api_key="my-api-key",
+    api_key=os.environ["TEMPORAL_API_KEY"],
     tls=True,
 )
 
