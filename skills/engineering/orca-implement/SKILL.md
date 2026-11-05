@@ -5,7 +5,7 @@ description: Implement every issue in a batch or GitHub milestone through superv
 
 # Orca implement
 
-You are the Orca coordinator. Plan the batch into waves, give every issue its own Orca worktree and a fresh supervised Orca worker, keep each worktree's board status true to where the issue stands, and close every Orca session the batch no longer needs. You own the Run, the worktrees, the board, the sessions, the commits, the pushes, and the pull requests. Workers own only the code change for their one issue.
+You are the Orca coordinator. Plan the batch into waves, give every issue its own Orca worktree and a fresh supervised Orca worker, keep each worktree's board status true to where the issue stands, and clean up every Orca session and worktree as soon as the batch no longer needs it. You own the Run, the worktrees, the board, the sessions, the commits, the pushes, and the pull requests. Workers own only the code change for their one issue.
 
 Every implementation runs in an Orca worker started with `worker-start`. The planning, repository reading, and spec writing are yours, done directly in this session.
 
@@ -56,12 +56,11 @@ Each issue worktree moves through the board with `ORCA worktree set --worktree i
 | ------------- | -------------------------------------------------------------------------------------------- |
 | `todo`        | Worktree created; waiting for its wave or its dependencies. Also after a failed attempt, with the blocker in the comment. |
 | `in-progress` | Set immediately before its `worker-start`, and on every retry.                                |
-| `in-review`   | Its change is committed and awaits human review: its PR is open, or it is merged into the integration branch and the batch PR is open or pending. |
-| `completed`   | Its pull request is merged. Set it only when you see the merge.                               |
+| `in-review`   | Its pull request is open and awaits human review.                                             |
 
-If the repository's board uses custom status ids, map onto those. The integration worktree follows the batch: `in-progress` while issues run, `in-review` once the batch PR is open.
+If the repository's board uses custom status ids, map onto those. A worktree leaves the board when **Clean up** removes it. In combined delivery that happens to each issue worktree once it merges into the integration branch, so the integration worktree carries the batch: `in-progress` while issues run, with its comment counting merged issues, then `in-review` once the batch PR is open.
 
-Attach every pull request to the worktrees it covers with `ORCA reference add <PR URL> --worktree id:<worktree_id> --json`: the issue's own PR in per-issue delivery, the batch PR on the integration worktree and every issue worktree it includes in combined delivery. Add `--unread` to the `worktree set` when a worktree needs a person: a blocker only the user can clear, or a PR ready for review.
+Attach every pull request to the worktree that holds it with `ORCA reference add <PR URL> --worktree id:<worktree_id> --json`: the issue's own PR in per-issue delivery, the batch PR on the integration worktree in combined delivery. Add `--unread` to the `worktree set` when a worktree needs a person: a blocker only the user can clear, or a PR ready for review.
 
 ## Start a worker
 
@@ -122,25 +121,38 @@ Run the orchestration guide's wait loop until every Task has settled. Keep your 
 
 - **Question:** answer from the issues and the repository. Ask the user only when the decision is theirs, and pass their answer back with `reply`.
 - **Succeeded:** validate the `worker_done` against the expected Dispatch. Review `git -C <path> diff` against the issue's acceptance list. When something is missing, create a follow-up Task naming the gap and start it on the same worker terminal (`worker-show` for its handle, then `worker-start --task <followup_task_id> --terminal <handle> --worktree id:<worktree_id>`). Once the change is complete, commit in the worktree with a message referencing the issue, release the worker, then:
-  - Combined delivery: `git -C <integration path> merge --no-ff <issue branch>`. Resolve a mechanical conflict yourself; for a substantive one, start a worker on the integration worktree with a spec describing both sides.
-  - Per-issue delivery: push the branch, open its pull request against its base (the default branch, or the dependency branch for a stacked issue) with `Closes #<number>` in the body, and attach the PR to the worktree.
+  - Combined delivery: `git -C <integration path> merge --no-ff <issue branch>`. Resolve a mechanical conflict yourself; for a substantive one, start a worker on the integration worktree with a spec describing both sides, and release it once the merge is done. Then remove the issue worktree (**Clean up**).
+  - Per-issue delivery: push the branch, open its pull request against its base (the default branch, or the dependency branch for a stacked issue) with `Closes #<number>` in the body, and attach the PR to the worktree. Set the worktree to `in-review` and close its sessions (**Clean up**); the worktree stays while its PR is open.
 
-  Set the worktree to `in-review`, clean up its sessions (**Clean up sessions**), then start every issue this unblocked.
+  Then start every issue this unblocked.
 - **Escalation:** the worker is still running. Send the missing context with `send --to dispatch:<dispatch_id>`, asking the user first when the blocker is theirs. When it cannot be unblocked, tell the worker to finish with `--outcome failed`.
-- **Failed:** if missing context caused it, set the worktree to `in-progress`, add the context to the spec, and retry with `worker-start --task <task_id> --retry-of <dispatch_id> --worktree id:<worktree_id> --agent <agent>`; the retry releases the failed worker's terminal. Otherwise release the worker, set the worktree to `todo` with the blocker as its comment and `--unread`, clean up its sessions, and hold back every issue that depends on it. When Orca circuit-breaks a Task after three failed starts, report it to the user rather than routing around it. Independent issues continue.
+- **Failed:** if missing context caused it, set the worktree to `in-progress`, add the context to the spec, and retry with `worker-start --task <task_id> --retry-of <dispatch_id> --worktree id:<worktree_id> --agent <agent>`; the retry releases the failed worker's terminal. Otherwise release the worker, set the worktree to `todo` with the blocker as its comment and `--unread`, close its sessions (**Clean up**), and hold back every issue that depends on it. When Orca circuit-breaks a Task after three failed starts, report it to the user rather than routing around it. Independent issues continue.
 
-## Clean up sessions
+## Clean up
 
-An Orca session the batch started is finished once its issue is committed or parked as blocked; close it then, rather than at the end of the batch. Scope cleanup to this batch's worktrees and Run, and leave sessions the user opened or asked you to keep.
+Clean up each worktree as soon as its part of the batch ends. Scope cleanup to this batch's worktrees and Run, and leave sessions the user opened or asked you to keep.
 
-1. Every worker in the worktree is already released, or retained because the user asked. Release is the only way to close a worker's session: follow a `release_pending` or `release_unknown` receipt's exact recovery action, never `terminal close`.
-2. List what remains in the worktree with `ORCA terminal list --worktree id:<worktree_id> --json`: the setup run, default shells, dev servers. Close each session the batch started with `terminal close --terminal <handle> --json`, or all of them at once with `terminal close --worktree id:<worktree_id> --all --json` when nothing there belongs to the user. Close a configured default tab only after confirming it is an idle shell.
-3. When you see an issue's pull request merge, its worktree is complete. If `git -C <path> status --porcelain` is empty, remove it with `ORCA worktree rm --worktree id:<worktree_id> --json`; Orca keeps the branch unless it can prove the branch merged. Keep any worktree whose PR is still open: it holds the review card.
+**Release first.** Every worker in the worktree is released, or retained because the user asked. Release the worker yourself with `worker-release --dispatch <dispatch_id> --json` rather than waiting for Orca's automatic release; its output stays readable through `worker-read`. Release is the only way to close a worker's session: follow a `release_pending` or `release_unknown` receipt's exact recovery action, never `terminal close`.
+
+**Close sessions** in a worktree that stays: a per-issue worktree whose PR is open, a failed issue parked as `todo`, and the integration worktree once the batch PR is open. List what remains with `ORCA terminal list --worktree id:<worktree_id> --json` (the setup run, default shells, dev servers) and close each session the batch started with `terminal close --terminal <handle> --json`, or all at once with `terminal close --worktree id:<worktree_id> --all --json` when nothing there belongs to the user. Close a configured default tab only after confirming it is an idle shell.
+
+**Remove the worktree** once nothing in the batch needs it:
+
+| Worktree                                      | Remove when                                            |
+| --------------------------------------------- | ------------------------------------------------------ |
+| Issue worktree, combined delivery             | Its branch is merged into the integration branch.      |
+| Issue worktree, per-issue delivery            | Its pull request is merged or closed.                  |
+| Integration worktree                          | The batch pull request is merged or closed.            |
+| Issue held back behind a failed dependency    | The batch settles: it never started and holds no work. |
+
+Check `git -C <path> status --porcelain` is empty, then `ORCA worktree rm --worktree id:<worktree_id> --json`, adding `--delete-branch` when the work is merged into the default branch (Orca keeps any branch it cannot prove merged). Removal stops the worktree's remaining sessions. A worktree with uncommitted changes stays in place and goes in the final report; removal is never forced.
+
+**Sweep merged PRs** at the end of the batch and whenever the user comes back to it (for status, review fixes, or cleanup): `gh pr view <PR URL> --json state` for every worktree still in place, and remove each one whose PR merged or closed.
 
 Your own coordinator session stays open until the final report.
 
 ## Deliver
 
-For combined delivery, push the integration branch once every issue that can land has landed, open one pull request covering the batch with a `Closes #<number>` line per merged issue, attach it, set the integration worktree to `in-review`, and clean up its sessions. For per-issue delivery, every pull request is already open.
+For combined delivery, push the integration branch once every issue that can land has landed, open one pull request covering the batch with a `Closes #<number>` line per merged issue, attach it, set the integration worktree to `in-review`, and close its sessions. For per-issue delivery, every pull request is already open. Then remove the held-back worktrees and sweep merged PRs (**Clean up**).
 
-The batch has settled when every Task has an outcome, `worker-list --run <run_id> --terminal-state reclaimable --json` returns none, and `terminal list` shows no batch-started session left in any batch worktree. Finish with a concise list per issue: status, agent, pull request link, and any unresolved blocker, plus any worker you retained or session you left open and why.
+The batch has settled when every Task has an outcome, `worker-list --run <run_id> --terminal-state reclaimable --json` returns none, `terminal list` shows no batch-started session left in any batch worktree, and every batch worktree is either removed or still holds an open PR, a parked blocker, or uncommitted changes. Finish with a concise list per issue: status, agent, pull request link, and any unresolved blocker, plus each worktree still in place and what it is waiting on, any worker you retained, and any session you left open and why. Tell the user to ask you to clean up the batch once its PRs merge.
