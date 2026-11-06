@@ -1,6 +1,6 @@
 # video-transcript
 
-> Turns a video link into a transcript with timestamps and metadata. Works on YouTube, X/Twitter, TikTok, Instagram, Vimeo, Loom, podcasts, and any other site yt-dlp reads.
+> Turns a video link into a transcript with timestamps and metadata. Works on YouTube, X/Twitter, TikTok, Instagram, Vimeo, Loom, podcasts, any other site yt-dlp reads, and local video or audio files.
 
 ## What it does
 
@@ -11,7 +11,7 @@ It takes the best text source available:
 1. **Published captions** in the spoken language, human ones over auto-generated, fetched with [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 2. **Speech-to-text** when a video has no captions or only partial ones (common on X): [ElevenLabs Scribe v2](https://elevenlabs.io/speech-to-text) when `ELEVENLABS_API_KEY` is set, which labels speakers, otherwise [parakeet-mlx](https://github.com/senstella/parakeet-mlx) or [mlx-whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper) running locally on Apple Silicon.
 
-For what is on screen rather than said (code, slides, demos), `--frames` saves a still at every scene change and at regular intervals, and for YouTube videos the skill asks Gemini about the video directly, clipped to the minutes that matter.
+For what is on screen rather than said (code, slides, demos), the [video-analysis](../video-analysis/README.md) skill pulls frames at the moments that matter. For a quick look, `--frames` saves a still at every scene change and at regular intervals, and for YouTube videos the skill asks Gemini about the video directly, clipped to the minutes that matter.
 
 The agent then answers from the transcript, ties each claim to a timestamp, and says when the text came from auto captions or speech-to-text.
 

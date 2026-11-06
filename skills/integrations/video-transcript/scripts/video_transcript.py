@@ -2,8 +2,9 @@
 """Fetch a video's metadata and transcript from a link, ready for an agent to read.
 
 Works on any site yt-dlp supports (YouTube, X/Twitter, TikTok, Vimeo, Instagram,
-Loom, podcasts, ...). Published captions come first; when a video has none, the
-audio is transcribed with ElevenLabs Scribe or a local MLX model.
+Loom, podcasts, ...) and on local video or audio files. Published captions come
+first; when a video has none, the audio is transcribed with ElevenLabs Scribe or
+a local MLX model.
 
 Usage:
     python3 video_transcript.py URL [--out DIR] [--lang CODE] [--asr ENGINE]
@@ -308,9 +309,9 @@ def extract_frames(base: list[str], info: Info, info_path: Path, dest: Path, lim
     gap = max(10, int(float(info.get("duration") or 0) / limit))
     run_ytdlp(base, [
         "--load-info-json", str(info_path), "-f", "bv*[height<=720]/b[height<=720]/bv*/b",
-        "-o", str(dest / "video.%(ext)s"),
+        "-o", str(dest / "frames-source.%(ext)s"),  # not video.*, which video-analysis keeps in the same folder
     ])
-    video = next(p for p in dest.glob("video.*") if p.suffix not in (".part", ".ytdl"))
+    video = next(p for p in dest.glob("frames-source.*") if p.suffix not in (".part", ".ytdl"))
     frames_dir = dest / "frames"
     frames_dir.mkdir(exist_ok=True)
     proc = subprocess.run([
@@ -441,8 +442,12 @@ def render(info: Info, segs: list[Segment], source: str, frames: list[tuple[floa
 
 
 def process(info: Info, base: list[str], out_root: Path, args: argparse.Namespace) -> int:
-    site = re.sub(r"[^a-z0-9]+", "", str(info.get("extractor_key") or info.get("extractor") or "video").lower())
-    dest = out_root / f"{site}-{info['id']}"
+    local = Path(args.url).expanduser()
+    if local.is_file():  # same folder name video-analysis uses, so both tools share one workspace
+        dest = out_root / f"local-{re.sub(r'[^A-Za-z0-9_-]+', '-', local.stem)}"
+    else:
+        site = re.sub(r"[^a-z0-9]+", "", str(info.get("extractor_key") or info.get("extractor") or "video").lower())
+        dest = out_root / f"{site}-{info['id']}"
     dest.mkdir(parents=True, exist_ok=True)
     info_path = dest / "info.json"
     info_path.write_text(json.dumps(info))
@@ -491,7 +496,7 @@ def process(info: Info, base: list[str], out_root: Path, args: argparse.Namespac
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("url")
+    ap.add_argument("url", help="video link, or a local video or audio file")
     ap.add_argument("--out", default=os.path.join(tempfile.gettempdir(), "video-transcripts"),
                     help="parent directory for the per-video folder")
     ap.add_argument("--lang", help="caption language to prefer, e.g. en, es, pt-BR (allows YouTube auto-translation)")
@@ -504,7 +509,10 @@ def main() -> int:
 
     try:
         base = ytdlp_base(args.cookies_from_browser)
-        info = extract_info(base, args.url)
+        local = Path(args.url).expanduser()
+        if local.is_file():
+            base += ["--enable-file-urls"]
+        info = extract_info(base, local.resolve().as_uri() if local.is_file() else args.url)
         out_root = Path(args.out).expanduser()
         if info.get("_type") == "playlist":
             entries = [e for e in info.get("entries") or [] if e]
