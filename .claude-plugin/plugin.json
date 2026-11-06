@@ -7,6 +7,7 @@
     "./skills/engineering/commitpush",
     "./skills/engineering/list-issues",
     "./skills/engineering/runaway-cost-audit",
+    "./skills/engineering/council",
     "./skills/integrations/cloudbeds-api",
     "./skills/integrations/forge-suite",
     "./skills/integrations/typesafe-ai",
