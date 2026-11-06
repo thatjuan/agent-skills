@@ -13,6 +13,7 @@
     "./skills/integrations/typesafe-ai",
     "./skills/integrations/unifi-operator",
     "./skills/integrations/video-transcript",
+    "./skills/integrations/video-analysis",
     "./skills/creative/big-idea",
     "./skills/creative/clean-writing",
     "./skills/creative/creative-director",
