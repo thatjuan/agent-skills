@@ -1,6 +1,6 @@
 ---
 name: video-analysis
-description: "Analyze what a video shows, from a link or a local file: fetch it, then pull time-stamped contact sheets, frames at exact moments, motion bursts, crops of on-screen text, scene cuts, and black, frozen, or silent stretches with ffmpeg, or ask Gemini about the whole video. Use when a question about a video depends on what is on screen: describing or reviewing footage, finding when something happens, reading code, slides, or UI shown in it, following a bug repro or screen recording, critiquing an ad's edit and pacing, counting or timing events, or checking a file's technical quality."
+description: "Analyze what a video shows, from a link or a local file: fetch it, then pull time-stamped contact sheets, frames at exact moments, motion bursts, crops of on-screen text, scene cuts, and black, frozen, or silent stretches with ffmpeg, or ask Gemini about the whole video. Use when a question about a video depends on what is on screen: describing or reviewing footage, finding when something happens, reading code, slides, or UI shown in it, following a bug repro or screen recording, critiquing an ad's edit and pacing, counting or timing events, checking a file's technical quality, or pulling the screens shared in a recorded meeting (Zoom, Teams, Meet) to match what its transcript says."
 ---
 
 # Video analysis
@@ -31,7 +31,8 @@ Name what the answer depends on, then take the first move for each row that appl
 | Text on screen: code, slides, UI labels, numbers, signs | `fetch --height 1080` or higher, then `frames` at full resolution, `--crop` to the region |
 | Editing and pacing: cuts, shot lengths, rhythm | `scenes`, then `sheet --scenes` for one tile per shot |
 | Technical quality: resolution, frame rate, black or frozen frames, dead air, loudness | `probe` (in `summary.md`), `events`, and the recipes reference |
-| A long video (over about 30 minutes) taken as a whole | `gemini` to locate, then frames to confirm (step 4) |
+| A recorded meeting with a screen share, often with the user's transcript | `screens` (step 4) |
+| A long video (over about 30 minutes) taken as a whole | `gemini` to locate, then frames to confirm (step 5) |
 
 ## 2. Fetch
 
@@ -62,7 +63,7 @@ Commands:
 
 - `sheet WS`: tiles stamped with their time, read left to right, top to bottom, and the spacing printed. With no flags, 16 tiles spread evenly over the whole video, each at the middle of its sixteenth. Choose moments with `--count N`, `--every 10`, `--scenes`, or `--at`, limited by `--from`/`--to`. Long runs split across several sheets. Tiles are about 390 px wide: enough for layout, people, action, and large text, never for small text. A sheet with `--every 0.25` over a few seconds is a cheap burst when the motion is large (a gesture, a car, a window opening); use `frames` when the detail is small (a cursor, a finger on a key, a number changing).
 - `frames WS`: full-resolution JPEGs named by time (`t00042.250.jpg` is 00:42.25). `--at 1:05,1:07`, `--every 0.25 --from 42 --to 45` for a burst, `--scenes` for one per shot, `--crop w:h:x:y` in source pixels to read a region at full detail.
-- `scenes WS`: every cut with shot lengths, saved to `scenes.txt`. The default threshold `0.3` suits camera footage; use `0.1` to `0.15` for screen recordings, slides, and motion graphics, where changes are subtle.
+- `scenes WS`: every cut with shot lengths, saved to `scenes.txt`. The default threshold `0.3` suits camera footage; use `0.1` to `0.15` for motion graphics. Slides and screen shares change too little for cut detection (a new slide on the same template scores about 0.02): use `screens` for those.
 - `events WS`: black, frozen, and silent stretches.
 
 The loop:
@@ -75,7 +76,31 @@ Questions of the form "does X ever happen" or "how many times" need a spacing sh
 
 For anything else ffmpeg can show (an audio waveform to find claps or music hits, a difference image of what changed between two moments, side-by-side comparison, embedded subtitles, loudness, letterboxing, exact frame times, clips for the user), read [`references/ffmpeg-recipes.md`](references/ffmpeg-recipes.md).
 
-## 4. Gemini for the whole video
+## 4. Meeting recordings with a screen share
+
+A recorded call (Zoom, Teams, Meet, Webex) and its transcript come together often, and the user wants the screens that were being talked about. The transcript is the map; the screen share is the evidence. `screens` joins them. It splits the share into its distinct **screens** (each slide, page, or app state, found as a stretch where the shared area holds still) and writes `screens/screens.md`: every screen's time range and settled frame, with the transcript lines said while it was up.
+
+1. **Layout.** Fetch the recording and look at one frame from mid-call (`frames --at`). Note the shared content's rectangle as `w:h:x:y` in source pixels, leaving out webcam tiles, the speaker thumbnail, and meeting toolbars. When the user has a shared-screen-only recording (Zoom can save one), use that file and skip the crop.
+2. **Timed transcript.** Video time = transcript time + offset.
+   - A transcript with times (Zoom or Teams `.vtt`, `.srt`, Otter or Meet text, `[00:12:03] Name:` lines) is used as given. One exported with the recording starts at zero. Wall-clock times (`10:32:15 AM`) or a notetaker that joined before the recording started need `--offset`. Whatever the offset, even zero, confirm it on an anchor: a line whose moment you can see, such as the share appearing at "can you see my screen" or a slide named aloud, must land on that moment.
+   - A transcript without times: run `video-transcript` on the recording and pass its `transcript.md`. Keep the user's transcript for names and wording.
+3. **Run it**:
+
+   ```bash
+   python3 <skill-dir>/scripts/video_analysis.py screens WS --crop <w:h:x:y> --transcript <file> [--offset=-10:30:00]
+   ```
+
+   It warns when transcript lines fall outside the video, which means the offset is wrong.
+4. **Survey** the overview sheet, then use `screens.md` as the index. Read the frames (`screens/s012-*.jpg`) of the screens the question needs.
+   - A screen's frame is its settled state, just before it changed: every slide build shown, typing finished. Consecutive screens of one slide are its build steps, so the line's time decides which state was showing. For the state at the moment a line was said, take `frames --at` that line's time plus a second or two; speakers point at what just appeared.
+   - `screens.md` lists under each screen only the lines said while it was up. A screen under "(nothing said)" was shown in silence or skipped past.
+   - A screen marked `moving` (scrolling, a live demo, a video played in the share) shows only its last moment. Sheet or burst its span.
+   - Pointing lines say where the screen matters most: "as you can see", "this slide", "next slide", "if I click here", "this number", "scroll down".
+   - Shares are recorded at modest resolution with heavy compression. Crop small text with `frames --crop` at full resolution, and say when it stays illegible.
+
+Transcript formats, finding the offset, call layouts, and tuning a recording that splits into too many or too few screens: [`references/meetings.md`](references/meetings.md).
+
+## 5. Gemini for the whole video
 
 Gemini watches video natively: frames at 1 fps plus the audio, at about 100 tokens per second of video. Reach for it to locate in a long video, or when the answer is a sequence too long to follow in stills.
 

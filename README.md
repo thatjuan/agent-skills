@@ -43,7 +43,7 @@ API, SDK, and tool domain expertise that fires off your code context — an impo
 - **[typesafe-ai](./skills/integrations/typesafe-ai/SKILL.md)** — Build application logic on TypeSafe AI's Jev decision model: typed Choice, Score, and Noul questions over a state, calibrated answers, control flow in code.
 - **[unifi-operator](./skills/integrations/unifi-operator/SKILL.md)** — Operate UniFi Network and Protect through their local APIs on a UDM/Cloud Key/self-hosted console — gateways, switches, APs, firewall, cameras, and events.
 - **[video-transcript](./skills/integrations/video-transcript/SKILL.md)**: Turn a video link (YouTube, X, TikTok, Vimeo, Loom, and more) or a local file into metadata and a timestamped transcript: published captions first, speech-to-text when there are none, frames or Gemini for what is on screen.
-- **[video-analysis](./skills/integrations/video-analysis/SKILL.md)**: See what a video shows, from a link or a local file: time-stamped contact sheets to survey it, full frames, bursts, and crops at the moments that matter, scene cuts, black, frozen, and silent stretches, and Gemini for whole-video questions.
+- **[video-analysis](./skills/integrations/video-analysis/SKILL.md)**: See what a video shows, from a link or a local file: time-stamped contact sheets to survey it, full frames, bursts, and crops at the moments that matter, scene cuts, black, frozen, and silent stretches, the screens of a recorded meeting matched to its transcript, and Gemini for whole-video questions.
 
 ### Creative
 

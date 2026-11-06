@@ -13,6 +13,8 @@ Timestamps are seconds (`75`, `75.5`) or clock time (`1:15`, `01:02:03.5`).
     frames WS            full-resolution stills at given times, at an interval
                          (bursts too), or at every scene cut; optional crop
     scenes WS            timestamps of every cut
+    screens WS           each distinct screen of a screen share or slide deck,
+                         its settled frame, and the transcript said over it
     events WS            black, frozen, and silent stretches
     gemini WS            ask Gemini about the video itself (frames + audio)
 
@@ -52,8 +54,10 @@ class Failure(Exception):
 
 
 def parse_time(text: str) -> float:
-    """`75`, `75.5`, `1:15`, `01:02:03.5` -> seconds."""
-    parts = text.strip().split(":")
+    """`75`, `75.5`, `1:15`, `01:02:03.5`, `-10:30:00` -> seconds."""
+    text = text.strip()
+    sign = -1.0 if text.startswith("-") else 1.0
+    parts = text.lstrip("+-").split(":")
     try:
         nums = [float(p) for p in parts]
     except ValueError:
@@ -61,7 +65,7 @@ def parse_time(text: str) -> float:
     secs = 0.0
     for n in nums:
         secs = secs * 60 + n
-    return secs
+    return sign * secs
 
 
 def clock(seconds: float, precise: bool = False) -> str:
@@ -163,13 +167,15 @@ def grab(src: Source, t: float, out: Path, vf: Optional[str] = None, raw_size: O
     return None
 
 
-def scene_cuts(src: Source, threshold: float, start: float, end: Optional[float]) -> list[float]:
-    """Times where the picture changes by more than `threshold` (0-1). Decodes
-    the whole range, downscaled, so it takes a while on long videos."""
+def scene_cuts(src: Source, threshold: float, start: float, end: Optional[float], crop: Optional[str] = None) -> list[float]:
+    """Times where the picture changes by more than `threshold` (0-1), within
+    `crop` when given. Decodes the whole range, downscaled, so it takes a while
+    on long videos."""
     cmd = ["ffmpeg", "-hide_banner", "-nostats", "-ss", f"{start:.3f}"]
     if end is not None:
         cmd += ["-to", f"{end:.3f}"]
-    cmd += src.input_args() + ["-an", "-sn", "-vf", f"scale=320:-2,select='gt(scene,{threshold})',showinfo",
+    region = f"crop={crop.replace(',', ':')}," if crop else ""
+    cmd += src.input_args() + ["-an", "-sn", "-vf", f"{region}scale=320:-2,select='gt(scene,{threshold})',showinfo",
                                "-fps_mode", "vfr", "-f", "null", "-"]
     proc = run(cmd, "scene detection")
     # With input-side -ss, output timestamps restart at zero.
@@ -362,7 +368,7 @@ def pick_times(args: argparse.Namespace, root: Path, src: Source, default_count:
         step = parse_time(args.every)
         times = [start + i * step for i in range(int((end - start) / step) + 1)]
     elif args.scenes:
-        cuts = scene_cuts(src, args.threshold, start, end)
+        cuts = scene_cuts(src, args.threshold, start, end, getattr(args, "crop", None))
         times = [start] + [c + 0.1 for c in cuts]  # just past the cut, clear of transition blur
     else:
         count = args.count or default_count
@@ -467,59 +473,93 @@ def stamp(canvas: bytearray, width: int, x0: int, y0: int, text: str, scale: int
                         canvas[row:row + scale * 3] = b"\xff" * (scale * 3)
 
 
-def cmd_sheet(args: argparse.Namespace) -> int:
-    root, src = open_workspace(args.ws)
+def video_size(root: Path, src: Source, crop: Optional[str]) -> tuple[int, int]:
+    """Displayed width and height: the crop's, else the video's after rotation."""
+    if crop:
+        w, h = crop.replace(",", ":").split(":")[:2]
+        return int(w), int(h)
     probe = json.loads((root / "probe.json").read_text()) if (root / "probe.json").exists() else ffprobe(src)
     video = next((s for s in probe.get("streams", []) if s.get("codec_type") == "video"), None)
     if not video:
-        raise Failure("No video stream to sheet.")
+        raise Failure("No video stream.")
     vw, vh = int(video["width"]), int(video["height"])
     if any(abs(int(sd.get("rotation", 0))) in (90, 270) for sd in video.get("side_data_list", [])):
         vw, vh = vh, vw
-    aspect = vw / vh if vh else 16 / 9
-    cols = args.cols or (4 if aspect >= 1.2 else 5 if aspect >= 0.8 else 6)
-    gap = 4
-    tile_w = (args.width - gap * (cols + 1)) // cols // 2 * 2
-    tile_h = int(tile_w / aspect) // 2 * 2
-    rows_per_sheet = max(1, (args.width - gap) // (tile_h + gap))  # keep each sheet no taller than wide
-    times = pick_times(args, root, src, cols * min(rows_per_sheet, 4))
+    return vw, vh
 
+
+@dataclass
+class SheetLayout:
+    cols: int
+    tile_w: int
+    tile_h: int
+    rows_per_sheet: int
+    scale: int  # timestamp glyph size
+    label_h: int  # strip above each tile holding its time, so no content is covered
+    gap: int = 4
+
+
+def sheet_layout(size: tuple[int, int], width: int, cols: Optional[int]) -> SheetLayout:
+    vw, vh = size
+    aspect = vw / vh if vh else 16 / 9
+    cols = cols or (4 if aspect >= 1.2 else 5 if aspect >= 0.8 else 6)
+    gap = 4
+    tile_w = (width - gap * (cols + 1)) // cols // 2 * 2
+    tile_h = int(tile_w / aspect) // 2 * 2
+    scale = max(2, tile_w // 120)
+    label_h = 9 * scale
+    rows = max(1, (width - gap) // (label_h + tile_h + gap))  # keep each sheet no taller than wide
+    return SheetLayout(cols, tile_w, tile_h, rows, scale, label_h, gap)
+
+
+def render_sheets(src: Source, times: list[float], layout: SheetLayout, out: Path, prefix: str,
+                  crop: Optional[str] = None) -> list[Path]:
+    """Tile the frames at `times` into time-stamped sheets; prints one line per sheet."""
+    cols, tw, th, gap, lh = layout.cols, layout.tile_w, layout.tile_h, layout.gap, layout.label_h
+    vf = f"crop={crop.replace(',', ':')}" if crop else None
     with ThreadPoolExecutor(max_workers=6) as pool:
-        tiles = list(pool.map(lambda t: grab(src, t, Path(), raw_size=(tile_w, tile_h)), times))
+        tiles = list(pool.map(lambda t: grab(src, t, Path(), vf, raw_size=(tw, th)), times))
     if not any(tiles):
         raise Failure("No frames could be read. Check the workspace with `probe`.")
-
-    out = Path(args.out or root / "sheets").expanduser()
     out.mkdir(parents=True, exist_ok=True)
     precise = any(t % 1 for t in times)
-    scale = max(2, tile_w // 120)
-    per_sheet = cols * rows_per_sheet
-    first_tag = f"{times[0]:08.2f}"
+    per_sheet = cols * layout.rows_per_sheet
+    paths: list[Path] = []
     for n in range(math.ceil(len(times) / per_sheet)):
         chunk = list(zip(times, tiles))[n * per_sheet:(n + 1) * per_sheet]
         rows = math.ceil(len(chunk) / cols)
-        sw, sh = gap + cols * (tile_w + gap), gap + rows * (tile_h + gap)
+        sw, sh = gap + cols * (tw + gap), gap + rows * (lh + th + gap)
         canvas = bytearray(b"\x20" * (sw * sh * 3))
         for i, (t, tile) in enumerate(chunk):
-            x, y = gap + (i % cols) * (tile_w + gap), gap + (i // cols) * (tile_h + gap)
+            x, y = gap + (i % cols) * (tw + gap), gap + (i // cols) * (lh + th + gap)
+            stamp(canvas, sw, x, y, clock(t, precise), layout.scale)
             if tile:
-                for r in range(tile_h):
-                    dst = ((y + r) * sw + x) * 3
-                    canvas[dst:dst + tile_w * 3] = tile[r * tile_w * 3:(r + 1) * tile_w * 3]
-            stamp(canvas, sw, x, y, clock(t, precise), scale)
-        path = out / f"sheet-{first_tag}-{n + 1:02d}.jpg"
+                for r in range(th):
+                    dst = ((y + lh + r) * sw + x) * 3
+                    canvas[dst:dst + tw * 3] = tile[r * tw * 3:(r + 1) * tw * 3]
+        path = out / f"{prefix}-{n + 1:02d}.jpg"
         subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
                         "-s", f"{sw}x{sh}", "-i", "-", "-frames:v", "1", "-q:v", "3", "-y", str(path)],
                        input=bytes(canvas), check=True)
         span = f"{clock(chunk[0][0], precise)}-{clock(chunk[-1][0], precise)}"
         print(f"{path}  ({len(chunk)} tiles, {span}, {sw}x{sh}, ~{image_tokens(sw, sh):,} tokens)")
-    gaps = [b - a for a, b in zip(times, times[1:])]
-    if gaps:
-        print(f"Spacing {min(gaps):.2f} s" + (f" to {max(gaps):.2f} s" if max(gaps) - min(gaps) > 0.01 else "")
-              + f"; tiles {tile_w}x{tile_h}")
+        paths.append(path)
     missing = sum(1 for t in tiles if not t)
     if missing:
         print(f"{missing} tile(s) left blank: no frame at that time.", file=sys.stderr)
+    return paths
+
+
+def cmd_sheet(args: argparse.Namespace) -> int:
+    root, src = open_workspace(args.ws)
+    layout = sheet_layout(video_size(root, src, args.crop), args.width, args.cols)
+    times = pick_times(args, root, src, layout.cols * min(layout.rows_per_sheet, 4))
+    out = Path(args.out or root / "sheets").expanduser()
+    render_sheets(src, times, layout, out, f"sheet-{times[0]:08.2f}", args.crop)
+    gaps = [b - a for a, b in zip(times, times[1:])]
+    if gaps:
+        print(f"Spacing {min(gaps):.2f} s" + (f" to {max(gaps):.2f} s" if max(gaps) - min(gaps) > 0.01 else "")
+              + f"; tiles {layout.tile_w}x{layout.tile_h}")
     return 0
 
 
@@ -530,7 +570,7 @@ def cmd_scenes(args: argparse.Namespace) -> int:
     root, src = open_workspace(args.ws)
     start = parse_time(args.start) if args.start else 0.0
     end = parse_time(args.end) if args.end else None
-    cuts = scene_cuts(src, args.threshold, start, end)
+    cuts = scene_cuts(src, args.threshold, start, end, args.crop)
     dur = end or duration_of(root, src)
     bounds = [start] + cuts + [dur]
     shots = [(a, b) for a, b in zip(bounds, bounds[1:]) if b > a]
@@ -542,6 +582,176 @@ def cmd_scenes(args: argparse.Namespace) -> int:
     if lengths:
         print(f"{len(cuts)} cuts, {len(shots)} shots, average {sum(lengths) / len(lengths):.2f} s, "
               f"shortest {min(lengths):.2f} s, longest {max(lengths):.2f} s (threshold {args.threshold}). Saved to {root / 'scenes.txt'}")
+    return 0
+
+
+# ---------------------------------------------------------------- screens (meetings, screen shares)
+
+CUE = re.compile(r"((?:\d+:)?\d{1,2}:\d{2}[.,]\d{3})\s*-->")
+STAMP = re.compile(r"(?<![\d:])(\d{1,2}:\d{2}(?::\d{2})?(?:[.,]\d+)?)(\s*[AaPp]\.?[Mm]\.?)?(?![\d:])")
+
+
+@dataclass
+class Line:
+    t: float
+    text: str
+
+
+def speaker_of(text: str) -> Optional[str]:
+    head, sep, _ = text.partition(": ")
+    return head if sep and len(head) <= 40 else None
+
+
+def parse_transcript(path: Path) -> list[Line]:
+    """Timed lines from a meeting transcript: WebVTT or SRT cues (Zoom, Teams,
+    Meet exports), or text where a time starts a line or a speaker header
+    (`[00:12:03] Ana: ...`, `Ana  12:03`, `10:32:15 AM Ana: ...`). Untimed lines
+    join the timed line before them."""
+    raw = path.read_text(encoding="utf-8", errors="replace").replace("\r", "")
+    raw = raw.split("\n## Transcript\n", 1)[-1]  # video-transcript's transcript.md: skip the metadata header
+    lines: list[Line] = []
+    if CUE.search(raw):
+        for block in re.split(r"\n\s*\n", raw):
+            m = CUE.search(block)
+            if not m:
+                continue
+            body = block[block.index("\n", m.end()) + 1:] if "\n" in block[m.end():] else ""
+            body = re.sub(r"<v(?:\.[^ >]*)? ([^>]+)>", r"\1: ", body)  # Teams voice tags
+            text = " ".join(re.sub(r"<[^>]+>", "", body).split())
+            if text:
+                lines.append(Line(parse_time(m.group(1).replace(",", ".")), text))
+    else:
+        for row in raw.splitlines():
+            row = row.strip()
+            if not row:
+                continue
+            m = STAMP.search(row[:48])
+            if m:
+                t = parse_time(m.group(1).replace(",", "."))
+                if m.group(2) and re.match(r"\s*[Pp]", m.group(2)) and t < 12 * 3600 and m.group(1).count(":") == 2:
+                    t += 12 * 3600
+                rest = (row[:m.start()] + " " + row[m.end():]).strip(" []()-|\t")
+                lines.append(Line(t, rest))
+            elif lines:
+                last = lines[-1]
+                if last.text and speaker_of(row):  # a new speaker inside one timed block (Meet)
+                    lines.append(Line(last.t, row))
+                elif last.text and ": " not in last.text and len(last.text) <= 40:
+                    last.text = f"{last.text.rstrip(':')}: {row}"  # a speaker header (Otter, Meet), then their words
+                else:
+                    last.text = f"{last.text} {row}".strip()
+    return [ln for ln in lines if ln.text]
+
+
+def merge_speakers(lines: list[Line]) -> list[Line]:
+    """Join consecutive lines by the same speaker, keeping the first time."""
+    merged: list[Line] = []
+    for ln in lines:
+        who = speaker_of(ln.text)
+        if merged and who and who == speaker_of(merged[-1].text):
+            merged[-1].text += " " + ln.text[len(who) + 2:]
+        else:
+            merged.append(Line(ln.t, ln.text))
+    return merged
+
+
+def still_spans(src: Source, start: float, end: float, crop: Optional[str], noise: float, shortest: float) -> list[tuple[float, float]]:
+    """Stretches where the picture (within `crop`) holds still for at least
+    `shortest` seconds. On a screen share each one is a screen: a slide, a
+    page, an app state. Any change of content ends one; a moving cursor
+    stays under the noise floor."""
+    region = f"crop={crop.replace(',', ':')}," if crop else ""
+    cmd = ["ffmpeg", "-hide_banner", "-nostats", "-ss", f"{start:.3f}", "-to", f"{end:.3f}"] + src.input_args()
+    cmd += ["-an", "-sn", "-vf", f"{region}fps=4,scale=640:-2,freezedetect=n={noise}dB:d={shortest}", "-f", "null", "-"]
+    log = run(cmd, "still detection").stderr
+    spans: list[tuple[float, float]] = []
+    opened: Optional[float] = None
+    for edge, t in re.findall(r"freeze_(start|end): ([\d.]+)", log):
+        if edge == "start":
+            opened = start + float(t)
+        elif opened is not None:
+            spans.append((opened, start + float(t)))
+            opened = None
+    if opened is not None:
+        spans.append((opened, end))
+    return spans
+
+
+def cmd_screens(args: argparse.Namespace) -> int:
+    root, src = open_workspace(args.ws)
+    dur = duration_of(root, src)
+    start = parse_time(args.start) if args.start else 0.0
+    end = min(parse_time(args.end), dur) if args.end else dur
+
+    lines: list[Line] = []
+    note = "none given"
+    if args.transcript:
+        path = Path(args.transcript).expanduser()
+        if not path.is_file():
+            raise Failure(f"Transcript not found: {path}")
+        offset = parse_time(args.offset) if args.offset else 0.0
+        lines = [Line(ln.t + offset, ln.text) for ln in parse_transcript(path)]
+        if not lines:
+            raise Failure(f"No timestamps found in {path.name}. Transcribe the video with video-transcript and pass "
+                          "its transcript.md instead; keep the user's transcript for names and wording.")
+        inside = [ln for ln in lines if -1 <= ln.t <= dur + 1]
+        note = f"{path.name}, offset {offset:+.1f} s, {len(inside)} of {len(lines)} lines inside the video"
+        if len(inside) < len(lines) * 0.9:
+            print(f"WARNING: only {len(inside)} of {len(lines)} transcript lines fall inside the video "
+                  f"({clock(lines[0].t)} to {clock(lines[-1].t)} against a {clock(dur)} video). The transcript's "
+                  "clock is offset (wall-clock times, or a recorder started at another moment): pass --offset so "
+                  "that video time = transcript time + offset.", file=sys.stderr)
+
+    stills = still_spans(src, start, end, args.crop, args.noise, args.shortest)
+    if not stills:
+        raise Failure("No still stretches found: something in the frame always moves. Look at one frame "
+                      "(`frames --at`), then pass --crop w:h:x:y around the shared content, leaving out webcam "
+                      "tiles and the speaker thumbnail. If the share itself is a video or constant scrolling, "
+                      "use `sheet` and `frames --every` instead.")
+    # Each screen runs from where the previous one ended (transitions belong to what comes next) to where
+    # it changes. A moving stretch at least `shortest` long between two stills is a screen of its own.
+    screens: list[tuple[float, float, float, bool]] = []  # covered from, covered to, frame time, moving
+    cursor = start
+    for a, b in stills:
+        if a - cursor >= args.shortest:
+            screens.append((cursor, a, max(cursor, a - 0.3), True))
+            cursor = a
+        screens.append((cursor, b, round(max(a, b - 0.3), 3), False))  # settled: builds done, typing finished
+        cursor = b
+    if end - cursor >= args.shortest:
+        screens.append((cursor, end, max(cursor, end - 0.3), True))
+    elif screens:
+        first, _, t, moving = screens[-1]
+        screens[-1] = (first, end, t, moving)
+
+    out = Path(args.out or root / "screens").expanduser()
+    out.mkdir(parents=True, exist_ok=True)
+    vf = f"crop={args.crop.replace(',', ':')}" if args.crop else None
+    frame_times = [t for _, _, t, _ in screens]
+    files = [out / f"s{i + 1:03d}-{t:09.2f}.jpg" for i, t in enumerate(frame_times)]
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        list(pool.map(lambda pair: grab(src, pair[0], pair[1], vf), zip(frame_times, files)))
+    layout = sheet_layout(video_size(root, src, args.crop), args.width, args.cols)
+    sheets = render_sheets(src, frame_times, layout, out, "overview", args.crop)
+
+    doc = [f"# Screens: {root.name}", "",
+           f"{len(screens)} screens in {clock(start)}-{clock(end)} (still for {args.shortest:g} s or more at "
+           f"{args.noise:g} dB{', crop ' + args.crop if args.crop else ''}). A screen's frame is its settled state, "
+           "just before it changed; a moving screen (scrolling, typing, video) shows its last moment only. "
+           f"Transcript: {note}.", "", f"Overview: {', '.join(p.name for p in sheets)}", ""]
+    for i, ((a, b, _, moving), f) in enumerate(zip(screens, files)):
+        tag = " · moving" if moving else ""
+        doc += [f"## Screen {i + 1} · {clock(a)}-{clock(b)} ({b - a:.0f} s){tag} · {f.name}", ""]
+        said = [ln for ln in lines if a <= ln.t < b or (i == 0 and ln.t < a) or (i == len(screens) - 1 and ln.t >= b)]
+        doc += [f"[{clock(ln.t)}] {ln.text}" for ln in merge_speakers(said)] or (["(nothing said)"] if lines else [])
+        doc.append("")
+    md = out / "screens.md"
+    md.write_text("\n".join(doc))
+    moving_n = sum(1 for sc in screens if sc[3])
+    print(f"{len(screens)} screens ({moving_n} moving); frames and {md}")
+    if len(screens) > 80:
+        print("Many screens: compression noise or small constant motion. Try --noise -55 or -50, a tighter --crop, "
+              "or a larger --shortest.", file=sys.stderr)
     return 0
 
 
@@ -677,6 +887,7 @@ def main() -> int:
     p.add_argument("--count", type=int, help="evenly spaced tiles over the range (default: one sheet's worth)")
     p.add_argument("--cols", type=int, help="tiles per row (default 4 landscape, 5 square, 6 portrait)")
     p.add_argument("--width", type=int, default=1568, help="sheet width in px (default 1568)")
+    p.add_argument("--crop", help="w:h:x:y in source pixels: tile only this region")
     p.set_defaults(run=cmd_sheet)
 
     p = sub.add_parser("frames", help="full-resolution stills")
@@ -691,7 +902,23 @@ def main() -> int:
     p.add_argument("--threshold", type=float, default=0.3, help="0-1 (default 0.3; 0.1 for screen recordings)")
     p.add_argument("--from", dest="start")
     p.add_argument("--to", dest="end")
+    p.add_argument("--crop", help="w:h:x:y: detect changes only in this region")
     p.set_defaults(run=cmd_scenes)
+
+    p = sub.add_parser("screens", help="distinct screens of a screen share, with the transcript said over each")
+    p.add_argument("ws")
+    p.add_argument("--transcript", help="the meeting transcript: .vtt, .srt, or text with timestamps")
+    p.add_argument("--offset", help="added to transcript times to get video times, e.g. --offset=-10:30:00 for wall-clock times (note the =)")
+    p.add_argument("--crop", help="w:h:x:y of the shared content, leaving out webcam tiles and toolbars")
+    p.add_argument("--noise", type=float, default=-60, help="dB below which a change is noise (default -60; "
+                   "-50 if compression noise splits one screen into many, -70 to catch a single edited cell)")
+    p.add_argument("--shortest", type=float, default=2.0, help="shortest still stretch that counts as a screen, s (default 2)")
+    p.add_argument("--from", dest="start")
+    p.add_argument("--to", dest="end")
+    p.add_argument("--cols", type=int, help="overview tiles per row")
+    p.add_argument("--width", type=int, default=1568, help="overview sheet width in px")
+    p.add_argument("--out", help="output folder (default: <workspace>/screens)")
+    p.set_defaults(run=cmd_screens)
 
     p = sub.add_parser("events", help="black, frozen, and silent stretches")
     p.add_argument("ws")
