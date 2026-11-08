@@ -8,7 +8,7 @@
 
 The loop is built to resist the usual ways review councils go soft:
 
-- **A fixed rubric.** The criteria and score anchors are written before round 1, from your answers to any priority questions, and never move, so the goalposts stay put.
+- **A fixed rubric.** The criteria and score anchors are written before round 1, from your priorities plus the ones the council adds to raise the standard, and never move, so the goalposts stay put.
 - **Blind verdicts.** Members score independently each round and see each other's points only through the author's change log, so nobody anchors on the first score.
 - **A hidden bar.** Members know the rubric and the anchors (9 means it would ship to a demanding expert audience with nothing worth changing) but not the pass mark or the round cap, so they score the work rather than toward an exit.
 - **Earned scores.** A member who raises or lowers a score names the change that moved it.
@@ -24,7 +24,7 @@ When the council stalls (the round cap, or no progress for two rounds), it stops
 - *"Run the onboarding flow past a council of three models and improve it."*
 - *"Have a council review this API design doc."*
 
-If you name no models, it asks which ones to seat before starting. If a fair score depends on something you left open (which quality wins when two conflict, a property the work must have, where it ships), it asks you one to three questions first and builds the rubric from your answers.
+If you name no models, it asks which ones to seat before starting. It sets the priorities the work is scored on from your prompt, then raises them toward a better result, adding what a demanding expert would also hold the work to. It asks you one to three questions only when a priority is still unclear.
 
 **Not the right skill if** you want a single review with no revision (ask for a review), or a batch of GitHub issues implemented (→ [`orca-implement`](../orca-implement/)).
 
@@ -37,7 +37,7 @@ If you name no models, it asks which ones to seat before starting. If a fair sco
 **What the skill does**
 
 1. **Seats the council**: an `opus` member on `claude` and a `gpt-5-5` member on `codex`.
-2. **Asks one question**: should the page win on price or on features? The answer sets which criterion weighs most.
+2. **Sets the priorities**: from the prompt, a fair comparison for developers; added by the council, every claim checkable against the competitors' own pages. One stays unclear, so it asks: should the page win on price or on features?
 3. **Writes the rubric**: clarity of the plan differences, honesty of the comparison, visual hierarchy, mobile layout, call to action, each with what a 10 looks like.
 4. **Round 1**: screenshots the page at phone and desktop widths, light and dark, into `.council/pricing-page/round-1/`. Both members score it (6 and 7) and list changes.
 5. **Triage and revise**: accepts eleven changes, rejects one ("drop the free tier" conflicts with the goal), rebuilds, re-screenshots.
