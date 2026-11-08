@@ -1,6 +1,6 @@
 ---
 name: council
-description: Adversarially improve anything (a design, writing, code, a plan, a prompt) with a council of Orca agents on models the user names, who score and critique each revision until every member rates it at least 9/10. Use when the user asks for a council, an adversarial critique-and-revise loop, or to iterate on something until reviewers agree it is a 9 out of 10.
+description: Adversarially improve anything (a concept, a design, writing, code, a plan, a prompt) with a council of Orca agents on models the user names, who score and critique each revision until every member rates it at least 9/10. Use when the user asks for a council, an adversarial critique-and-revise loop, to sharpen an idea or concept with several critics, or to iterate on something until reviewers agree it is a 9 out of 10.
 ---
 
 # Council
@@ -17,11 +17,11 @@ Invoke the `orchestration` skill, resolve the Orca executable it describes, and 
 
 1. **Models.** Seat one member per model named in the prompt; a model named twice seats two members. When the prompt names no models, ask which models sit on the council, in the same message as any priority questions (step 4), and wait for the answer before anything else.
 2. **Agents.** Map each model to the Orca agent that serves it (Claude models → `claude`, OpenAI models → `codex`; the rest from the `--agent` list in `ORCA orchestration worker-start --help`) and pass its provider model id with `--model`. Pass `--effort` only when the user names one.
-3. **Artifact.** Identify what is being improved and how a member will see it (**Evidence**). When the prompt asks for something that does not exist yet, make the first version yourself; that is round 1.
+3. **Artifact.** Identify what is being improved and how a member will see it (**Evidence**). When the prompt asks for something that does not exist yet, make the first version yourself; that is round 1. When the artifact is a concept (an idea judged on whether it deserves to exist: a product, feature, campaign, brand, business, story, or strategy; a plan or design doc whose goal is settled is judged as itself), read [references/concepts.md](references/concepts.md) now; its rules apply at every later step.
 4. **Priorities.** Settle the priorities a fair score rests on: which quality wins when two conflict, the properties the work must have, and the conditions it is judged under (the audience, where it ships, what it competes with). Take them from the prompt first, then enrich them toward a better result: add what a demanding expert in this kind of work would also hold it to, and lift each stated priority to the standard the goal implies (a launch post that should be "clear" should also make a skeptical reader want to try the thing). Enrichment sharpens the user's priorities and never overrides one. Ask the user only when a priority is still unclear, meaning two reasonable readings would produce different rubrics: then ask 1–3 questions, each saying what its answer changes, and wait for the answers. When the priorities are clear, ask nothing.
 5. **Rubric.** Write 4–7 criteria drawn from the user's goal, the audience, the priorities, and the artifact's kind, and for each one what a 10 looks like. Add these anchors for the overall score: 10 is the best example of its kind you have seen; 9 would ship to a demanding expert audience with nothing worth changing; 7 is competent and forgettable; 5 has a problem a user would notice. The rubric is fixed for the whole council, so every round is scored against the same goalposts.
 6. **Record.** Create `.council/<slug>/` at the workspace root and add `.council/` to `.git/info/exclude`. Write the rubric to `rubric.md` there, headed by the priorities, each marked as stated by the user, added by the council, or answered by the user. Name each member after its model (`opus`, `gpt-5-5`, with `-2` for a repeat).
-7. Show the user the members (model and agent), the priorities the council added, the rubric, the bar, and the round cap (default 6), then start.
+7. Show the user the members (model and agent), the priorities the council added, the rubric, the bar, and the round cap (default 6), then start. A concept adds what [references/concepts.md](references/concepts.md) names.
 
 ## Evidence
 
@@ -30,6 +30,7 @@ Each round lives in `.council/<slug>/round-<n>/`, holding a pinned copy of the v
 | Artifact               | What goes in the round directory                                                                                         |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | Design, UI, a page     | Screenshots of every screen and state in scope, at phone and desktop widths, light and dark when both exist, plus the URL |
+| Concept                | `concept.md` in the form [references/concepts.md](references/concepts.md) sets                                          |
 | Writing                | A copy of the text, and where it will be published                                                                       |
 | Code                   | The diff against the starting point, and the commands that build and test it                                             |
 | Anything else          | Whatever a demanding reviewer would ask to see before scoring it                                                         |
@@ -56,10 +57,10 @@ Members learn the rubric and the anchors, never the bar or the round cap. A crit
 
 ## Run the rounds
 
-Orca wakes you as members report. Once every member has reported:
+Orca wakes you as members report. Once every member has reported (on a concept, reread [references/concepts.md](references/concepts.md) first, and again before Finish):
 
 1. **Tally.** Record each member's overall score for the round in `.council/<slug>/scores.md`.
-2. **Pass check.** The council passes when every member scored this round's version at or above the bar and no Blocking item is open. On a pass, go to **Finish**.
+2. **Pass check.** The council passes when every member scored this round's version at or above the bar, no Blocking item is open, and on a concept every pass gate holds. On a pass, go to **Finish**.
 3. **Triage** every Blocking item and Change into one disposition, written to `round-<n>/changelog.md` with the member it came from:
    - **Accept**: you will make the change.
    - **Reject**: it conflicts with the user's goal, the rubric, or another member's stronger point. State the reason on substance; the member may contest it.
@@ -69,7 +70,7 @@ Orca wakes you as members report. Once every member has reported:
 4. **Revise.** Make every accepted change, protecting each member's Keep list. Verify the result the way the artifact demands (rebuild and screenshot a design, run the tests on code, reread prose end to end).
 5. **Convene** round n+1: pin the new version in `round-<n+1>/`, then `send` each member the new round directory and the change log, asking for a fresh verdict. End your turn.
 
-**Stop early** and report to the user when the round cap is reached, or when the lowest score has not risen for two rounds in a row. Report each member's last score, the open Blocking items, and the dispute keeping the council apart, then ask how to proceed: another round, a ruling from the user, or stop here.
+**Stop early** and report to the user when the round cap is reached, or when the lowest score has not risen for two rounds in a row. Report each member's last score, the open Blocking items, and the dispute keeping the council apart, then ask how to proceed: another round, a ruling from the user, or stop here, which goes to **Finish**.
 
 ## Finish
 
