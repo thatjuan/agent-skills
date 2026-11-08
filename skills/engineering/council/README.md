@@ -23,8 +23,8 @@ An idea not yet built (a product, feature, campaign, brand, business, story, or 
 
 - **A spine and a recorded bet.** Idea, audience, insight, and edge, one line each, and a one-line bet in your pitch's terms: who it is for, what it promises, and how it delivers. The author sharpens the spine freely. Anything that changes the bet is a pivot, and pivots are yours to pick.
 - **Premortem and breakout.** Each member says why the concept would fail, and what would make it the talk of its category, so critique pushes up as well as down.
-- **Scored rivals.** In round 1 every member writes the strongest different concept they can. The strongest, and the strongest that makes a different bet, are fleshed out to the same form and scored unattributed against the current one, by members who did not write them. A pivot that leads comes to you with the scores.
-- **A sanding check.** Before every round the author compares the spine with your original pitch and restores an edge revisions have dulled, and members check it too.
+- **Scored rivals.** In round 1 every member writes the strongest different concept they can. The strongest, and the strongest that makes a different bet, are fleshed out to the same form and scored unattributed against the current one, setting aside proposers' scores when other members' remain. A pivot that leads comes to you with the scores.
+- **A sanding check.** Before every round the author compares the spine with your pitch, or the last pivot you took, and restores an edge revisions have dulled, and members check it too.
 - **Honest standing.** Researched alternatives, assumptions marked `untested` until something bears directly on them, and a final report that says *ready to test*, *supported for commitment*, *did not pass*, or *killed*. Market questions get a kill test, not a debate.
 
 You get back a one-page concept beside your original, which stays untouched, plus the pivots you took or declined and the open assumptions with the cheapest test for each, riskiest first.
