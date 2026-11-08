@@ -100,4 +100,4 @@ Triage Changes against the concept that survives Rivals.
 
 ## Finish
 
-Write the final `concept.md` to `<slug>-concept.md`, beside the source document or at the workspace root when the concept came in chat. Leave the source untouched, and name the path. Add to the report the final spine; its standing (*ready to test*, *supported for commitment*, *did not pass* with the last scores and open Blocking items, or *killed* with the reason); the pivots the user took or declined; any Fatal the user overruled; and the open assumptions with their kill tests, riskiest first.
+Write the final `concept.md` to `<slug>-concept.md`, beside the source document or at the workspace root when the concept came in chat. Leave the source untouched, and name the path. Add to the report the final spine; its standing (*ready to test*, *supported for commitment*, *did not pass* with the last scores and open Blocking items, or *killed* with the reason); the pivots the user took or declined; any other closed rival that makes a different bet; any Fatal the user overruled; and the open assumptions with their kill tests, riskiest first.
