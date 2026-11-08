@@ -15,12 +15,13 @@ Invoke the `orchestration` skill, resolve the Orca executable it describes, and 
 
 ## Seat the council
 
-1. **Models.** Seat one member per model named in the prompt; a model named twice seats two members. When the prompt names no models, ask which models sit on the council and wait for the answer before anything else.
+1. **Models.** Seat one member per model named in the prompt; a model named twice seats two members. When the prompt names no models, ask which models sit on the council, in the same message as any priority questions (step 4), and wait for the answer before anything else.
 2. **Agents.** Map each model to the Orca agent that serves it (Claude models → `claude`, OpenAI models → `codex`; the rest from the `--agent` list in `ORCA orchestration worker-start --help`) and pass its provider model id with `--model`. Pass `--effort` only when the user names one.
 3. **Artifact.** Identify what is being improved and how a member will see it (**Evidence**). When the prompt asks for something that does not exist yet, make the first version yourself; that is round 1.
-4. **Rubric.** Write 4–7 criteria drawn from the user's goal, the audience, and the artifact's kind, and for each one what a 10 looks like. Add these anchors for the overall score: 10 is the best example of its kind you have seen; 9 would ship to a demanding expert audience with nothing worth changing; 7 is competent and forgettable; 5 has a problem a user would notice. The rubric is fixed for the whole council, so every round is scored against the same goalposts.
-5. **Record.** Create `.council/<slug>/` at the workspace root and add `.council/` to `.git/info/exclude`. Write the rubric to `rubric.md` there. Name each member after its model (`opus`, `gpt-5-5`, with `-2` for a repeat).
-6. Show the user the members (model and agent), the rubric, the bar, and the round cap (default 6), then start.
+4. **Priorities.** Decide whether a fair score depends on something the prompt leaves open: which quality wins when two conflict, a property the work must have, or the conditions it is judged under (the audience, where it ships, what it competes with). If it does, ask the user 1–3 questions before the first round, each saying what its answer changes in the rubric, and wait for the answers. Ask nothing the prompt already settles, and drop any question whose answer would not change a criterion or what a 10 looks like for it.
+5. **Rubric.** Write 4–7 criteria drawn from the user's goal, the audience, the answers to the priority questions, and the artifact's kind, and for each one what a 10 looks like. Add these anchors for the overall score: 10 is the best example of its kind you have seen; 9 would ship to a demanding expert audience with nothing worth changing; 7 is competent and forgettable; 5 has a problem a user would notice. The rubric is fixed for the whole council, so every round is scored against the same goalposts.
+6. **Record.** Create `.council/<slug>/` at the workspace root and add `.council/` to `.git/info/exclude`. Write the rubric to `rubric.md` there, headed by the priority questions and the user's answers. Name each member after its model (`opus`, `gpt-5-5`, with `-2` for a repeat).
+7. Show the user the members (model and agent), the rubric, the bar, and the round cap (default 6), then start.
 
 ## Evidence
 
@@ -39,7 +40,7 @@ Members score the current version on its own merits. The previous round's direct
 
 Start every member in the same turn with `worker-start --worktree current --agent <agent> --model <id> --task-title "council: <member>" --spec-file .council/<slug>/spec-<member>.md`, then end your turn. Each spec carries:
 
-- The user's goal, the audience, and any constraints, in the user's words.
+- The user's goal, the audience, any constraints, and the answers to the priority questions, in the user's words.
 - The rubric file and the round directory to judge.
 - The verdict to write to `round-<n>/<member>.md`:
   - **Score**: the overall score and one per criterion, each a whole number with a one-line reason.
