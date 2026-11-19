@@ -28,7 +28,7 @@ The product keeps its identity, layout, and features. The skill polishes; it doe
 **What the skill does**
 
 1. **Scope.** Lists the screens and states: inbox list, message view, empty inbox, loading, selection, both themes.
-2. **See the UI.** Runs the app, screenshots each one, then reads the theme tokens and the list and message components.
+2. **See the UI.** Starts the app locally, screenshots each one, then reads the theme tokens and the list and message components.
 3. **Propose.** Settles on changes with exact values, favoring token-level fixes.
 4. **File.** Creates a "Design polish" milestone with issues such as:
 

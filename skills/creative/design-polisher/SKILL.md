@@ -17,7 +17,7 @@ The scope is what the user named. "The main UI" means the screens a user spends 
 
 ## 2. See the UI
 
-Judge the rendered interface. Run the product and capture each screen in scope with whatever browser or screen tool the session has: light and dark themes, the widths it supports, and its hover, focus, empty, loading, and error states. When you cannot run it, ask the user for screenshots.
+Judge the rendered interface. Start the product locally (for a web UI, its dev server) and screenshot each screen in scope with whatever browser or screen tool the session has: light and dark themes, the widths it supports, and its hover, focus, empty, loading, and error states. Stop any server you started once the review is done. When you cannot run it, ask the user for screenshots.
 
 Then read the styling code behind what you saw (tokens, theme, shared components) so every proposal can name real files and current values.
 
